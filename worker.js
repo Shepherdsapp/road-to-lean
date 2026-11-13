@@ -20,7 +20,7 @@
      COFID_KEY          optional: a CoFID API key from the Quadram Institute (secret)
      ANTHROPIC_API_KEY  only for reading InBody screenshots   (secret)
    Optional variables:
-     ALLOWED_ORIGINS    default https://sitbackco.github.io
+     ALLOWED_ORIGINS    default https://sitbackco.github.io and https://shepherdsapp.github.io
      MODEL              default claude-haiku-4-5-20251001
      LIMIT_SCAN         daily ceiling for InBody reads (default 12)
    Optional binding:
@@ -28,7 +28,7 @@
    ═══════════════════════════════════════════════════════════════════════════ */
 
 const DEFAULT_MODEL = 'claude-haiku-4-5-20251001';
-const DEFAULT_ORIGINS = 'https://sitbackco.github.io';
+const DEFAULT_ORIGINS = 'https://sitbackco.github.io,https://shepherdsapp.github.io';
 const MAX_SYNC_BYTES = 5 * 1024 * 1024;
 
 export const SCAN_PROMPT = `You read screenshots from the InBody app (body composition scans) and return the numbers as JSON. Reply with ONE JSON object and nothing else.
@@ -576,7 +576,7 @@ export default {
     if (req.method === 'OPTIONS') return new Response(null, { status: c.ok ? 204 : 403, headers: c.headers });
     if (origin && !c.ok) return json({ ok: false, error: 'Origin not allowed.' }, 403, c.headers);
     if (url.pathname === '/health' || url.pathname === '/') {
-      return json({ ok: true, app: 'ascend', version: 8, food: true, push: !!env.SYNC, fatsecret: !!(env.FATSECRET_ID && env.FATSECRET_SECRET), cofid: !!env.COFID_KEY, ai: !!env.ANTHROPIC_API_KEY, kv: !!env.SYNC, auth: !!env.APP_KEY, model: env.MODEL || DEFAULT_MODEL }, 200, c.headers);
+      return json({ ok: true, app: 'ascend', version: 9, food: true, push: !!env.SYNC, fatsecret: !!(env.FATSECRET_ID && env.FATSECRET_SECRET), cofid: !!env.COFID_KEY, ai: !!env.ANTHROPIC_API_KEY, kv: !!env.SYNC, auth: !!env.APP_KEY, model: env.MODEL || DEFAULT_MODEL }, 200, c.headers);
     }
     if (!env.APP_KEY) return json({ ok: false, error: 'APP_KEY is not set on the worker.' }, 500, c.headers);
     const ip = ipOf(req);
