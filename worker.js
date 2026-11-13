@@ -198,7 +198,9 @@ async function handleBarcode(code, cors) {
   return json(item ? { ok: true, found: true, item } : { ok: true, found: false }, 200, cors);
 }
 function corsHeaders(origin, env) {
-  const allowed = String(env.ALLOWED_ORIGINS || DEFAULT_ORIGINS).split(',').map(s => s.trim()).filter(Boolean);
+  // the app's own two GitHub Pages addresses are always trusted, whatever ALLOWED_ORIGINS says (the repository moved once,
+  // and a stale variable left the app locked out of its own System)
+  const allowed = (String(env.ALLOWED_ORIGINS || '') + ',' + DEFAULT_ORIGINS).split(',').map(s => s.trim()).filter(Boolean);
   const ok = origin && (allowed.includes(origin) || allowed.includes('*') ||
     (env.ALLOW_LOCALHOST === '1' && /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)));
   const h = {
@@ -576,7 +578,7 @@ export default {
     if (req.method === 'OPTIONS') return new Response(null, { status: c.ok ? 204 : 403, headers: c.headers });
     if (origin && !c.ok) return json({ ok: false, error: 'Origin not allowed.' }, 403, c.headers);
     if (url.pathname === '/health' || url.pathname === '/') {
-      return json({ ok: true, app: 'ascend', version: 9, food: true, push: !!env.SYNC, fatsecret: !!(env.FATSECRET_ID && env.FATSECRET_SECRET), cofid: !!env.COFID_KEY, ai: !!env.ANTHROPIC_API_KEY, kv: !!env.SYNC, auth: !!env.APP_KEY, model: env.MODEL || DEFAULT_MODEL }, 200, c.headers);
+      return json({ ok: true, app: 'ascend', version: 10, origins: (String(env.ALLOWED_ORIGINS || '') + ',' + DEFAULT_ORIGINS).split(',').map(s => s.trim()).filter(Boolean), food: true, push: !!env.SYNC, fatsecret: !!(env.FATSECRET_ID && env.FATSECRET_SECRET), cofid: !!env.COFID_KEY, ai: !!env.ANTHROPIC_API_KEY, kv: !!env.SYNC, auth: !!env.APP_KEY, model: env.MODEL || DEFAULT_MODEL }, 200, c.headers);
     }
     if (!env.APP_KEY) return json({ ok: false, error: 'APP_KEY is not set on the worker.' }, 500, c.headers);
     const ip = ipOf(req);
