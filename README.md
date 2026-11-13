@@ -250,3 +250,15 @@ Edit files in `src/`, run `node build.mjs`, then run the tests. If saved data ch
 | `./test/all.sh` | All of the above, one after another |
 
 The browser tests need Playwright with Chromium. They use ports 8123 and 8124: never run two at once. The full browser run takes about 80 minutes, most of it the three day-by-day seasons.
+
+## V22 · OPERATION 79.9 (13 Nov – 31 Dec 2026)
+
+A season layered on top of the existing data (nothing is reset; days before 13 Nov keep their old targets).
+86.5 kg → 79.9 kg by the 31 Dec weigh-in. Max 1,450 kcal on diet days (under 1,300 is too little), protein 150–160 g,
+Iceland 9–13 Dec at maintenance, 21 Dec max 1,700, 25 Dec max 2,100. Home shows the 79.9 tracker (judged on the weight
+logged, with the 7-day average beside it), the deficit bank, a seven-tick checklist, an 8pm "still open" nudge, a Sunday
+review and a verse reference for each day. Gym burn is by level (175 / 275 / 325), football by minutes and effort,
+incline walk 7 kcal a minute. Unbeaten bosses were redrawn onto the remaining days; the remaining heroes all unlock by 80.0 kg.
+
+Build: `node build.mjs` (from `src/`). Tests: `node test/run-core.js` and `node test/op-tests.js`.
+The worker (version 8) adds the 8pm phone nudge; paste `worker.js` into Cloudflare to get it.

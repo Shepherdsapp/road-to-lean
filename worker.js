@@ -543,6 +543,11 @@ export function reminderDue(state, now, sent) {
     const want = Math.round(wt * (now.h - 8) / 13 / 50) * 50;
     if (water < wt && water < want - 100) return { slot: 'w' + now.h, msg: { title: '💧 Water check', body: nf(water) + 'ml of ' + (wt / 1000) + 'L so far. Aim for about ' + nf(want) + 'ml by now. Have a glass, then tap to log it.', tag: 'water', url: './?do=water' } };
   }
+  // OPERATION 79.9: at 8pm, say exactly which of today's ticks are still open (the app writes the list into its cloud copy)
+  const nudge = state.meta && state.meta.nudge;
+  if (state.op && now.h === 20 && done.indexOf('n20') < 0 && nudge && nudge.day === now.day && typeof nudge.text === 'string' && nudge.text) {
+    return { slot: 'n20', msg: { title: '⏳ Still open today', body: nudge.text.slice(0, 220), tag: 'nudge', url: './' } };
+  }
   if (st.macros !== false && MACRO_HOURS.indexOf(now.h) >= 0 && done.indexOf('m' + now.h) < 0) {
     if (now.h === 13 && !foods.length) return { slot: 'm13', msg: { title: '🍽️ Nothing logged yet', body: 'Log breakfast and lunch so the System can keep your calories and protein on track.', tag: 'macros', url: './?do=log' } };
     const want = Math.round(pt * (now.h - 8) / 14);
@@ -571,7 +576,7 @@ export default {
     if (req.method === 'OPTIONS') return new Response(null, { status: c.ok ? 204 : 403, headers: c.headers });
     if (origin && !c.ok) return json({ ok: false, error: 'Origin not allowed.' }, 403, c.headers);
     if (url.pathname === '/health' || url.pathname === '/') {
-      return json({ ok: true, app: 'ascend', version: 7, food: true, push: !!env.SYNC, fatsecret: !!(env.FATSECRET_ID && env.FATSECRET_SECRET), cofid: !!env.COFID_KEY, ai: !!env.ANTHROPIC_API_KEY, kv: !!env.SYNC, auth: !!env.APP_KEY, model: env.MODEL || DEFAULT_MODEL }, 200, c.headers);
+      return json({ ok: true, app: 'ascend', version: 8, food: true, push: !!env.SYNC, fatsecret: !!(env.FATSECRET_ID && env.FATSECRET_SECRET), cofid: !!env.COFID_KEY, ai: !!env.ANTHROPIC_API_KEY, kv: !!env.SYNC, auth: !!env.APP_KEY, model: env.MODEL || DEFAULT_MODEL }, 200, c.headers);
     }
     if (!env.APP_KEY) return json({ ok: false, error: 'APP_KEY is not set on the worker.' }, 500, c.headers);
     const ip = ipOf(req);

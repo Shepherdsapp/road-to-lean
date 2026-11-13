@@ -1318,6 +1318,55 @@ html[data-theme="inferno"]{--night:#140705;--night-2:#22100a;--night-top:#1d0a06
 /* V21: the opening as a video, full screen behind "tap to skip"; it fades in over its first frames */
 #splash .iz-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;opacity:0;transition:opacity .18s ease;pointer-events:none;background:transparent}
 #splash.vplay .iz-vid{opacity:1}
+
+/* ───────────── V22 · OPERATION 79.9 ───────────── */
+.opcard{display:block;width:100%;text-align:left;color:inherit;font:inherit;margin-bottom:12px;cursor:pointer;
+  background:linear-gradient(155deg,rgba(255,255,255,.085),rgba(255,255,255,.02) 42%,rgba(var(--deep),.55)),linear-gradient(160deg,var(--panel-2),var(--panel));
+  -webkit-backdrop-filter:blur(14px) saturate(1.3);backdrop-filter:blur(14px) saturate(1.3);
+  box-shadow:0 1px 0 rgba(255,255,255,.16) inset,0 -1px 0 rgba(0,0,0,.35) inset,0 18px 40px -22px #000}
+.opcard.lift{transition:transform .14s var(--spring),box-shadow .2s}
+.opcard.lift:active{transform:scale(.975)}
+.optrack{--c:var(--holo)} .optrack.st-green{--c:var(--good)} .optrack.st-amber{--c:var(--warn)} .optrack.st-red{--c:var(--bad)} .optrack.st-hold{--c:var(--train)}
+.optrack.st-red{border-color:rgba(255,107,142,.4)} .optrack.st-green{border-color:rgba(124,240,192,.32)}
+.op-top{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:12px}
+.op-big b{font-size:44px;line-height:1;font-weight:800;letter-spacing:-.02em;background:linear-gradient(180deg,#fff,var(--c));-webkit-background-clip:text;background-clip:text;color:transparent}
+.op-big span{display:block;font-size:12px;color:var(--ink-3);margin-top:4px}
+.op-state{display:flex;flex-direction:column;align-items:flex-end;gap:5px;text-align:right;min-width:0}
+.op-pill{font-size:11.5px;font-weight:800;letter-spacing:.14em;padding:5px 11px;border-radius:999px;color:var(--c);
+  background:color-mix(in srgb,var(--c) 15%,transparent);border:1px solid color-mix(in srgb,var(--c) 55%,transparent);box-shadow:0 0 18px -6px var(--c)}
+.op-detail{font-size:12.5px;color:var(--ink-2);max-width:170px}
+.op-line{position:relative;height:10px;border-radius:999px;background:rgba(var(--deep),.7);border:1px solid var(--line);margin:4px 2px 0}
+.op-fill{position:absolute;left:0;top:0;bottom:0;border-radius:999px;background:linear-gradient(90deg,color-mix(in srgb,var(--c) 35%,transparent),var(--c));box-shadow:0 0 14px -2px var(--c);transition:width .5s var(--spring)}
+.op-line .tk{position:absolute;top:-3px;width:2px;height:14px;margin-left:-1px;border-radius:2px;background:var(--ink-3);opacity:.55}
+.op-line .tk.hit{background:var(--good);opacity:1} .op-line .tk.miss{background:var(--bad);opacity:1}
+.op-me{position:absolute;top:50%;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;background:#fff;border:3px solid var(--c);box-shadow:0 0 14px var(--c)}
+.op-ends{display:flex;justify-content:space-between;font-size:11px;color:var(--ink-3);margin:5px 2px 10px}
+.op-warn{margin-top:10px;padding:9px 11px;border-radius:12px;font-size:12.5px;line-height:1.4;color:var(--ink);background:color-mix(in srgb,var(--c) 10%,transparent);border:1px solid color-mix(in srgb,var(--c) 40%,transparent)}
+.op-warn.soft{--c:var(--ink-3)}
+.bankbar{height:10px;margin:2px 0 12px} .bankbar i{background:linear-gradient(90deg,var(--good),var(--holo))}
+.op-verdict{margin:10px 0 0;font-size:14px;line-height:1.45;color:var(--ink);font-weight:600}
+.opverse{--c:var(--gold);text-decoration:none} .opverse .vref{font-size:18px;font-weight:800;color:var(--gold);margin-bottom:4px}
+.opverse .vline{margin:0 0 10px;font-size:14px;line-height:1.5;color:var(--ink-2)}
+.opfinish.won{box-shadow:0 0 0 1px rgba(255,227,163,.5),0 0 40px -10px var(--gold)}
+.op-burn{margin:12px 0;padding:10px 12px;border-radius:12px;font-size:13.5px;text-align:center;background:rgba(var(--acc),.08);border:1px solid rgba(var(--acc),.3);font-variant-numeric:tabular-nums}
+.seg.segfull{display:flex;width:100%;margin:6px 0 4px} .seg.segfull button{flex:1;min-height:46px;padding:6px 4px;line-height:1.15;transition:background .12s,color .12s}
+.seg.segfull button small{display:block;font-size:10.5px;opacity:.7;margin-top:2px}
+.seg.segfull button[aria-pressed="true"]{background:linear-gradient(180deg,rgba(var(--acc),.3),rgba(var(--acc),.12));color:#fff;box-shadow:0 0 0 1px rgba(var(--acc),.5) inset}
+.treatrow{border:1px solid var(--line);border-radius:14px;padding:10px 12px;background:rgba(255,227,163,.05);color:inherit;font:inherit;cursor:pointer}
+.treatrow.done{border-color:rgba(255,227,163,.55);background:rgba(255,227,163,.12)}
+
+/* V22 speed: short, sharp transitions; no tap delay */
+button,a,[data-act],.tab,.tile{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.view.on{animation-duration:.2s} .view.on.from-r,.view.on.from-l{animation-duration:.2s}
+.view.on>.win,.view.on>.plancard,.view.on>.opcard{animation-duration:.3s}
+.view.on>*:nth-child(2){animation-delay:.02s}.view.on>*:nth-child(3){animation-delay:.04s}.view.on>*:nth-child(4){animation-delay:.06s}.view.on>*:nth-child(n+5){animation-delay:.08s}
+.scrim{animation-duration:.14s} .sheet{animation-duration:.24s}
+.btn{transition:transform .1s var(--spring),box-shadow .16s,border-color .16s}
+#layer-ghost{position:fixed;inset:0;z-index:49;pointer-events:none}
+#layer-ghost .scrim{animation:fadeOut .16s forwards} #layer-ghost .sheet{animation:sheetDown .16s ease-in forwards}
+#layer-ghost .scrim>*:not(.sheet){animation:popOut .14s ease-in forwards}
+@keyframes fadeOut{to{opacity:0}} @keyframes sheetDown{to{transform:translateY(46px);opacity:0}} @keyframes popOut{to{transform:scale(.96);opacity:0}}
+@media (prefers-reduced-motion:reduce){#layer-ghost{display:none}}
 </style>
 </head>
 <body>
@@ -1327,7 +1376,7 @@ html[data-theme="inferno"]{--night:#140705;--night-2:#22100a;--night-top:#1d0a06
   <div class="sp-t">ASCEND</div>
   <div class="sp-s">8 OCT – 31 DEC</div>
   <div class="sp-skip">tap to skip</div>
-  <div class="sp-ver">V21</div>
+  <div class="sp-ver">V22</div>
 </div>
 <div id="nojs"><div class="nj-t">ASCEND</div><p><b>This is only a preview.</b> The app’s code is switched off in this window, so nothing here can be tapped.</p><p>That happens when the file is opened inside a chat or a file viewer. To use the app, upload <b>index.html</b> and <b>sw.js</b> to GitHub, then open your app’s web address in Safari or Chrome, or tap its Home Screen icon.</p><p class="nj-v">V21</p></div>
 <script>
@@ -1501,6 +1550,7 @@ function normalizeFood(f) {
     conf: ['high', 'medium', 'low'].indexOf(f.conf) >= 0 ? f.conf : 'medium',
     note: String(f.note || '').slice(0, 200), t: num(f.t, 0)
   };
+  if (f.tr) o.tr = 1; // OPERATION 79.9: marked as the day's one treat
   return o;
 }
 function normalizeWorkout(w) {
@@ -1513,7 +1563,10 @@ function normalizeWorkout(w) {
 function normalizeActivity(a) {
   if (!isObj(a)) return null;
   var type = ACTIVITY_TYPES.indexOf(a.type) >= 0 ? a.type : 'other';
-  return { id: cleanId(a.id), type: type, min: Math.max(0, num(a.min)), kcal: Math.max(0, num(a.kcal)), t: num(a.t, 0) };
+  var o = { id: cleanId(a.id), type: type, min: Math.max(0, num(a.min)), kcal: Math.max(0, num(a.kcal)), t: num(a.t, 0) };
+  if (type === 'gym' && GYM_LEVELS[a.lvl]) o.lvl = a.lvl;         // light | moderate | high
+  if (type === 'football' && FOOT_INT[a.int]) o.int = a.int;      // low | medium | high
+  return o;
 }
 function emptyDay() { return { foods: [], workouts: [], activities: [], water: 0, steps: 0, weight: null, bf: null, meas: {}, lightsOut: false, recover: false, penaltyDone: false, supps: {} }; }
 function normalizeDay(d) {
@@ -1528,6 +1581,7 @@ function normalizeDay(d) {
   o.lightsOut = !!d.lightsOut; o.recover = !!d.recover; o.penaltyDone = !!d.penaltyDone;
   o.supps = {}; if (isObj(d.supps)) Object.keys(d.supps).forEach(function (k) { if (d.supps[k]) o.supps[String(k).slice(0, 20)] = true; });
   var tg = normalizeTg(d.tg); if (tg) o.tg = tg;
+  if (d.bowl) o.bowl = true; // OPERATION 79.9: the yogurt bowl, ticked by hand
   return o;
 }
 /* tg = the targets a day was judged against, stored with the day so later plan changes never re-mark it.
@@ -1584,6 +1638,15 @@ function normalize(raw) {
   if (!isKey(s.duels.start)) s.duels.start = '';
   var dw = {}; if (isObj(s.duels.won)) Object.keys(s.duels.won).forEach(function (i) { if (DUELS[+i] && isKey(s.duels.won[i])) dw[+i] = s.duels.won[i]; }); s.duels.won = dw;
   s.shape.back = clamp(num(s.shape.back, 0.8), 0, 1);
+  // OPERATION 79.9: its switch, the boss days it drew and the hero weights it set (anything malformed is dropped, and ensureOp sets it again)
+  if (s.op !== undefined && !(isObj(s.op) && s.op.v === 1)) delete s.op;
+  if (isObj(s.op)) { s.op = { v: 1, at: isKey(s.op.at) ? s.op.at : OP.start, final: isObj(s.op.final) && num(s.op.final.kg, 0) > 30 && isKey(s.op.final.day) ? { kg: num(s.op.final.kg), day: s.op.final.day } : undefined }; if (!s.op.final) delete s.op.final; }
+  if (s.duels.op !== undefined) { var dop = s.duels.op, sc = {}, hd = {};
+    if (isObj(dop) && isObj(dop.sched)) { Object.keys(dop.sched).forEach(function (i) { if (DUELS[+i] && isKey(dop.sched[i])) sc[+i] = dop.sched[i]; }); if (isObj(dop.hard)) Object.keys(dop.hard).forEach(function (i) { if (DUELS[+i] && dop.hard[i]) hd[+i] = 1; }); s.duels.op = { day: isKey(dop.day) ? dop.day : OP.start, sched: sc, hard: hd }; }
+    else delete s.duels.op; }
+  if (s.heroes.op !== undefined) { var hop = s.heroes.op;
+    if (isObj(hop) && Array.isArray(hop.had) && Array.isArray(hop.needs) && hop.had.length + hop.needs.length === HEROES.length && hop.needs.every(function (v) { return num(v, 0) > 30; })) s.heroes.op = { day: isKey(hop.day) ? hop.day : OP.start, from: num(hop.from, OP.startKg), had: hop.had.map(function (d) { return isKey(d) ? d : OP.start; }), needs: hop.needs.map(function (v) { return r2(num(v)); }) };
+    else delete s.heroes.op; }
   if (!isObj(s.player.ach)) s.player.ach = {};
   if (!isObj(s.player.bossLoot)) s.player.bossLoot = {};
   s.player.maxLevel = Math.max(1, Math.round(num(s.player.maxLevel, 1))); s.player.msLegacy = clamp(Math.round(num(s.player.msLegacy, 0)), 0, 200); s.player.msLegacyAt = isKey(s.player.msLegacyAt) ? s.player.msLegacyAt : '';
@@ -1753,7 +1816,7 @@ function upgradeToV7(s, oldT, todayK) {
 
 /* ───────────────────────── day types ───────────────────────── */
 var DAY_TYPES = ['gym', 'football', 'rest'];
-var ACTIVITY_TYPES = ['gym', 'football', 'cardio', 'sprint', 'ballwork', 'abs', 'other'];
+var ACTIVITY_TYPES = ['gym', 'football', 'cardio', 'sprint', 'ballwork', 'abs', 'other', 'incline'];
 function tgOf(s, k) { var d = s.days[k]; return d && d.tg ? d.tg : null; }
 /* the day type the weekly pattern gives (no "today is a…" override) */
 function patternType(s, k) {
@@ -1768,11 +1831,12 @@ function isMidweekNight(s, k) {
   var off = diffDays(s.week.midweekWed, k); return (((off % 14) + 14) % 14 === 0);
 }
 /* the weekday's calories (1,900 Sunday, 1,600 otherwise) stay as they are unless the day's type really changes */
-function liveCal(s, k) { var d = s.targets.calDay[weekday(k)], ov = s.overrides && s.overrides[k]; if (d > 0 && (!ov || ov === patternType(s, k))) return d; return num(s.targets.cal[liveType(s, k)], 1600); }
+function liveCal(s, k) { if (inOp(s, k) && opCap(k)) return opCap(k); var d = s.targets.calDay[weekday(k)], ov = s.overrides && s.overrides[k]; if (d > 0 && (!ov || ov === patternType(s, k))) return d; return num(s.targets.cal[liveType(s, k)], 1600); }
 function calTarget(s, k) { var g = tgOf(s, k); return g ? g.c : liveCal(s, k); }
 /* the other targets a day is judged against */
-function dayRules(s, k) { var g = tgOf(s, k), T = s.targets; return g ? { protein: g.p, waterMl: g.w, fibreQuest: g.fb, calTol: g.tol, floor: g.fl, stepsMin: g.m, legacy: !!g.lg } : { protein: T.protein, waterMl: T.waterMl, fibreQuest: T.fibreQuest, calTol: T.calTol, floor: T.floor, stepsMin: T.stepsMin, legacy: false }; }
-function liveStepsBase(s, k) { var v = s.targets.stepsDay[weekday(k)]; return v > 0 ? v : s.targets.steps; }
+function dayRules(s, k) { var r = dayRules0(s, k); if (inOp(s, k)) r.floor = OP.low; return r; } // OPERATION 79.9: 1,450 is the most you eat; under 1,300 is too little
+function dayRules0(s, k) { var g = tgOf(s, k), T = s.targets; return g ? { protein: g.p, waterMl: g.w, fibreQuest: g.fb, calTol: g.tol, floor: g.fl, stepsMin: g.m, legacy: !!g.lg } : { protein: T.protein, waterMl: T.waterMl, fibreQuest: T.fibreQuest, calTol: T.calTol, floor: T.floor, stepsMin: T.stepsMin, legacy: false }; }
+function liveStepsBase(s, k) { if (inOp(s, k) && isIceland(k)) return OP.icelandSteps; var v = s.targets.stepsDay[weekday(k)]; return v > 0 ? v : s.targets.steps; }
 function snapshotTargets(s, k) { var T = s.targets; return { t: liveType(s, k), c: liveCal(s, k), s: liveStepsBase(s, k), p: T.protein, w: T.waterMl, fb: T.fibreQuest, tol: T.calTol, fl: T.floor, m: T.stepsMin }; }
 /* store today's targets with every day before `upto` (and `upto` itself when inclusive) that doesn't have them yet.
    Called before anything changes the targets, so the past keeps the result it had. */
@@ -1820,10 +1884,10 @@ function gymSessions(d) {
 function footballMinutes(d) { return (d.activities || []).filter(function (a) { return a.type === 'football'; }).reduce(function (a, b) { return a + (b.min > 0 ? b.min : 0); }, 0); } // a 0-minute entry is 0 minutes
 function activityKcal(s, d) {
   var steps = (d.steps || 0) / 1000 * s.tdee.perKSteps;
-  var gym = gymSessions(d) * s.tdee.gym;
-  var foot = footballMinutes(d) / 60 * s.tdee.footballPerHour;
-  var other = (d.activities || []).filter(function (a) { return a.type !== 'gym' && a.type !== 'football'; }).reduce(function (a, b) { return a + (b.kcal || 0); }, 0);
-  return Math.round(steps + gym + foot + other);
+  var gym = gymKcal(s, d);            // a session's effort (light 175, moderate 275, high 325) when you chose one
+  var foot = footballKcal(s, d);      // minutes played × the per-minute burn × effort (low 0.75, medium 1, high 1.2)
+  var other = (d.activities || []).filter(function (a) { return a.type !== 'gym' && a.type !== 'football' && a.type !== 'incline'; }).reduce(function (a, b) { return a + (b.kcal || 0); }, 0);
+  return Math.round(steps + gym + foot + inclineKcal(s, d) + other);
 }
 function tdeeFor(s, d) { return Math.round(s.tdee.base + activityKcal(s, d)); }
 /* what the plan expects a day to burn and to leave as a deficit */
@@ -1832,8 +1896,8 @@ function plannedDeficit(s, k) { return Math.max(0, plannedBurn(s, k) - calTarget
 var DEFICIT_AMBER = 1100; // a single day's deficit above this is shown as a caution, not as a win
 function deficit(s, d) { return Math.round(tdeeFor(s, d) - dayTotals(d).cal); }
 function energyBreakdown(s, d) {
-  return { base: s.tdee.base, steps: Math.round((d.steps || 0) / 1000 * s.tdee.perKSteps), gym: gymSessions(d) * s.tdee.gym,
-    football: Math.round(footballMinutes(d) / 60 * s.tdee.footballPerHour), tdee: tdeeFor(s, d), eaten: dayTotals(d).cal, deficit: deficit(s, d) };
+  return { base: s.tdee.base, steps: Math.round((d.steps || 0) / 1000 * s.tdee.perKSteps), gym: Math.round(gymKcal(s, d)),
+    football: Math.round(footballKcal(s, d)), incline: Math.round(inclineKcal(s, d)), tdee: tdeeFor(s, d), eaten: dayTotals(d).cal, deficit: deficit(s, d) };
 }
 function macroStatus(val, target, mode) {
   // mode: 'min' (reach it), 'max' (stay under), 'range' handled separately
@@ -1957,6 +2021,7 @@ function trainingDone(s, k, d) {
   return !!d.recover || gymSessions(d) > 0 || footballMinutes(d) > 0;
 }
 function questStatus(s, k) {
+  if (inOp(s, k)) return opQuests(s, k);
   var d = getDay(s, k), tot = dayTotals(d), T = dayRules(s, k), ct = calTarget(s, k), type = dayType(s, k);
   var map = {
     protein: { done: tot.p >= T.protein, val: tot.p, target: T.protein, unit: 'g', label: Math.round(tot.p) + ' / ' + T.protein + 'g' },
@@ -2001,9 +2066,9 @@ function streaks(s, today) {
   var start = s.profile.startDate, cur = 0, best = 0, pcur = 0, pbest = 0, pending = 0, perDay = {};
   if (today < start) return { clear: 0, bestClear: 0, protein: 0, bestProtein: 0, pendingRestore: 0, perDay: perDay };
   rangeKeys(start, lastSeasonDay(s, today)).forEach(function (k) {
-    var clear = isClear(s, k), isToday = k === today;
+    var clear = isClear(s, k), isToday = k === today, hol = opMode(s, k) === 'iceland'; // a holiday day never breaks a streak
     if (clear) { cur += 1; pending = 0; }
-    else if (!isToday) {
+    else if (!isToday && !hol) {
       var nk = addDays(k, 1), pen = nk <= today ? penaltyFor(s, nk) : null;
       if (pen && pen.done) cur = Math.floor(cur / 2);
       else { if (nk === today && pen) pending = Math.floor(cur / 2); cur = 0; }
@@ -2011,7 +2076,7 @@ function streaks(s, today) {
     perDay[k] = clear ? cur : 0;
     if (cur > best) best = cur;
     var pr = dayTotals(getDay(s, k)).p >= dayRules(s, k).protein;
-    if (pr) pcur += 1; else if (!isToday) pcur = 0;
+    if (pr) pcur += 1; else if (!isToday && !hol) pcur = 0;
     if (pcur > pbest) pbest = pcur;
   });
   return { clear: cur, bestClear: best, protein: pcur, bestProtein: pbest, pendingRestore: pending, perDay: perDay };
@@ -2664,11 +2729,11 @@ function commitItems(s, k, items, token, nowMs, timeStr) {
   var d = s.days[k] ? s.days[k] : (s.days[k] = emptyDay());
   var t = num(nowMs, Date.now()), meal = defaultMeal(timeStr), added = [];
   items.forEach(function (it, i) {
-    if (it.kind === 'food') { var f = normalizeFood({ id: uid(), meal: it.meal || meal, name: it.name, qty: it.qty, cal: it.cal, p: it.p, c: it.c, s: it.s, f: it.f, fib: it.fib, conf: it.conf, note: it.note, t: t + i }); d.foods.push(f); added.push({ list: 'foods', id: f.id }); }
+    if (it.kind === 'food') { var f = normalizeFood({ id: uid(), meal: it.meal || meal, name: it.name, qty: it.qty, cal: it.cal, p: it.p, c: it.c, s: it.s, f: it.f, fib: it.fib, conf: it.conf, note: it.note, t: t + i, tr: it.tr }); d.foods.push(f); added.push({ list: 'foods', id: f.id }); }
     else if (it.kind === 'exercise') { var w = normalizeWorkout({ id: uid(), ex: it.ex || it.name, name: it.name, sets: it.sets, t: t + i }); if (w) { d.workouts.push(w); added.push({ list: 'workouts', id: w.id }); } }
     else if (it.kind === 'activity') {
       if (it.type === 'steps') { added.push({ field: 'steps', prev: d.steps }); d.steps = Math.round(it.steps); }
-      else { var a = normalizeActivity({ id: uid(), type: it.type, min: it.min, kcal: it.kcal || 0, t: t + i }); d.activities.push(a); added.push({ list: 'activities', id: a.id }); }
+      else { var a = normalizeActivity({ id: uid(), type: it.type, min: it.min, kcal: it.kcal || 0, t: t + i, lvl: it.lvl, int: it.int }); d.activities.push(a); added.push({ list: 'activities', id: a.id }); }
     }
     else if (it.kind === 'body') {
       if (it.weight != null) { added.push({ field: 'weight', prev: d.weight }); d.weight = r2(it.weight); }
@@ -3103,7 +3168,16 @@ function auraPalette(hex) {
    Heroes come out in the hidden, shuffled order the save was given. (v16 used the 7-day average, which lagged days
    behind the scale.) */
 var HERO_KG = 1;
+function heroOp(s) { var o = s.heroes && s.heroes.op; return isObj(o) && Array.isArray(o.had) && Array.isArray(o.needs) && isKey(o.day) ? o : null; }
 function heroMilestones(s, k) {
+  var op = heroOp(s);
+  if (op) { // OPERATION 79.9: the heroes already freed stay freed; the rest are spread evenly down to 80.0kg, counted from 13 Nov
+    var list = [], low = null, lst = null, lstDay = '', ws = weightSeries(s).filter(function (w) { return w.key >= op.day && w.key <= s.profile.seasonEnd && w.key <= k; });
+    ws.forEach(function (w) { var v = r2(w.kg); lst = v; lstDay = w.key; if (low == null || v < low) low = v; });
+    op.had.forEach(function (day, j) { list.push({ n: j + 1, need: r2(s.profile.startKg - (j + 1) * HERO_KG), hit: true, hitDay: day, before: true }); });
+    op.needs.forEach(function (need, j) { var day = ''; ws.forEach(function (w) { if (!day && r2(w.kg) <= need + 1e-9) day = w.key; }); list.push({ n: op.had.length + j + 1, need: need, hit: !!day, hitDay: day }); });
+    return { list: list, avg: lst, avgDay: lstDay, lowest: low == null ? latestWeight(s, k) : low, latest: lst };
+  }
   var start = s.profile.startKg, hit = {}, lowest = null, last = null, lastDay = '';
   weightSeries(s).forEach(function (w) {
     if (w.key < s.profile.startDate || w.key > s.profile.seasonEnd || w.key > k) return;
@@ -3301,13 +3375,16 @@ var DUEL_GYM_ONLY = {
   'Dead hang': ['Farmer carry', ['Carry two heavy shopping bags or water packs, standing tall: 4 × 45 seconds', '4 × 60 seconds, standing tall', '5 × 60 seconds, slow steps, shoulders back']],
   'Lat activation': ['Doorway rows', ['Hold a sturdy door frame and lean back: 3 × 10 slow rows', '3 × 12, squeeze 2 seconds at the top', '4 × 12, 2-second squeeze, feet closer to the door']]
 };
+var DUEL_FINISHERS = ['20 push-ups', 'a 60-second plank', 'a 10-minute brisk walk', '30 bodyweight squats', '15 burpees, steady pace', 'a 45-second hollow hold'];
 function duelStart(s) { return isKey(s.duels.start) ? s.duels.start : ''; }
 function duelInfo(i, s) {
   var b = DUELS[i]; if (!b) return null;
   var tier = Math.min(2, Math.floor(i * 3 / DUELS.length)), task = DUEL_TASKS[(i * 7) % DUEL_TASKS.length], gym = !!DUEL_GYM_ONLY[task[0]];
   if (gym && s) { var day = duelDay(s, i); if (day && dayType(s, day) !== 'gym') { task = DUEL_GYM_ONLY[task[0]]; gym = false; } }
-  var art = DUEL_ART[i], nn = (art < 10 ? '0' : '') + art;
-  return { art: 'art/b/' + nn + '.webp', wart: 'art/w/' + nn + '.webp', i: i, no: i + 1, name: b[0], anime: b[1], title: b[2], weapon: b[3], icon: b[4], tier: tier, task: task[0], taskText: task[1][tier], gymTask: gym, line: DUEL_LINES[(i * 11) % DUEL_LINES.length] };
+  var art = DUEL_ART[i], nn = (art < 10 ? '0' : '') + art, text = task[1][tier], back = false;
+  // a boss that escaped before OPERATION 79.9 is back, and harder: the next level up of its challenge, plus a finisher
+  if (s && duelOp(s) && duelOp(s).hard && duelOp(s).hard[i] && !s.duels.won[i]) { back = true; text = task[1][Math.min(2, tier + 1)] + '. Then ' + DUEL_FINISHERS[i % DUEL_FINISHERS.length]; }
+  return { art: 'art/b/' + nn + '.webp', wart: 'art/w/' + nn + '.webp', i: i, no: i + 1, name: b[0], anime: b[1], title: b[2], weapon: b[3], icon: b[4], tier: tier, task: task[0], taskText: text, gymTask: gym, returned: back, line: DUEL_LINES[(i * 11) % DUEL_LINES.length] };
 }
 /* All 90 bosses arrive, in order, between the day the bosses began and the last day of the arc. With 90 or more days to
    go that is one a day. With fewer, the final days bring two each (and, if the app was first opened very late, more),
@@ -3322,7 +3399,8 @@ function duelOffset(s, i) {
   if (p.squeezed) return Math.min(p.days - 1, Math.floor(i * p.days / DUELS.length));
   return i < p.single ? i : p.single + Math.floor((i - p.single) / 2);
 }
-function duelDay(s, i) { var o = duelOffset(s, i); return o < 0 ? '' : addDays(duelStart(s), o); }
+function duelOp(s) { var o = s.duels && s.duels.op; return isObj(o) && isObj(o.sched) ? o : null; }
+function duelDay(s, i) { var op = duelOp(s); if (op && isKey(op.sched[i]) && !s.duels.won[i]) return op.sched[i]; var o = duelOffset(s, i); return o < 0 ? '' : addDays(duelStart(s), o); }
 /* 'won' | 'upcoming' | 'active' | 'escaped'. A boss can be fought on its day and the day after, never after the arc has ended. */
 function duelStatus(s, i, k) {
   if (s.duels.won[i]) return 'won';
@@ -3344,7 +3422,7 @@ function duelSummary(s, k) {
 }
 function duelTitles(s) { var out = []; for (var i = 0; i < DUELS.length; i++) if (s.duels.won[i]) out.push(DUELS[i][2]); return out; }
 /* does this day hold anything you logged? (an empty shell with only stored targets does not count) */
-function dayHasData(d) { return !!(d && ((d.foods && d.foods.length) || (d.workouts && d.workouts.length) || (d.activities && d.activities.length) || d.water || d.steps || d.weight != null || d.bf != null || (d.meas && Object.keys(d.meas).length) || d.lightsOut || d.recover || d.penaltyDone || (d.supps && Object.keys(d.supps).length))); }
+function dayHasData(d) { return !!(d && ((d.foods && d.foods.length) || (d.workouts && d.workouts.length) || (d.activities && d.activities.length) || d.water || d.steps || d.weight != null || d.bf != null || (d.meas && Object.keys(d.meas).length) || d.lightsOut || d.recover || d.penaltyDone || d.bowl || (d.supps && Object.keys(d.supps).length))); }
 function loggedDays(s) { var n = 0; if (isObj(s) && isObj(s.days)) Object.keys(s.days).forEach(function (k) { if (dayHasData(s.days[k])) n++; }); return n; }
 /* the few facts needed to compare two copies of your data: how many days, last weight, when it last changed */
 function stateSummary(s) { var ws = isObj(s) && isObj(s.days) ? weightSeries(s) : []; return { days: loggedDays(s), kg: ws.length ? ws[ws.length - 1].kg : null, changedAt: Math.max(0, num(s && s.meta && s.meta.changedAt, 0)) }; }
@@ -3393,6 +3471,7 @@ function stepsTarget(s, k) {
   var g = tgOf(s, k); if (g && g.st > 0) return g.st; // a day from before v12 keeps the target it had
   var base = stepsBase(s, k), yk = addDays(k, -1), y = s.days[yk], min = dayRules(s, k).stepsMin, owed = 0;
   if (y && y.steps > 0 && y.steps < min && yk >= s.profile.startDate) owed = Math.min(5000, min - y.steps);
+  var b = opBoost(s, k); if (b) owed += b.steps; // behind a checkpoint: +2,000 a day for the week after it
   return Math.round(Math.max(base, Math.min(base + owed, STEP_CAP)));
 }
 function stepsOwed(s, k) { return stepsTarget(s, k) - stepsBase(s, k); }
@@ -3406,10 +3485,10 @@ function programDoneOn(s, k, prog) { var d = s.days[k]; return !!d && d.workouts
 /* which session today: the weekday's, or (if you moved a gym day) the one you've gone longest without */
 function sessionFor(s, k) {
   if (dayType(s, k) !== 'gym') return null;
-  var p = PROGRAM[weekday(k)];
+  var PR = inOp(s, k) ? OP_PROGRAM : PROGRAM, p = PR[weekday(k)];
   if (!p) {
     var best = null, bestAge = -1;
-    Object.keys(PROGRAM).forEach(function (wd) { var pr = PROGRAM[wd], last = null; Object.keys(s.days).sort().forEach(function (dk) { if (dk < k && programDoneOn(s, dk, pr)) last = dk; }); var age = last ? diffDays(last, k) : 999; if (age > bestAge) { bestAge = age; best = pr; } });
+    Object.keys(PR).forEach(function (wd) { var pr = PR[wd], last = null; Object.keys(s.days).sort().forEach(function (dk) { if (dk < k && programDoneOn(s, dk, pr)) last = dk; }); var age = last ? diffDays(last, k) : 999; if (age > bestAge) { bestAge = age; best = pr; } });
     p = best;
   }
   return p;
@@ -3454,8 +3533,9 @@ function liftSessions(s, ex, k) {
 function liftsDropping(s, k) {
   var out = [];
   function dropped(a, b) { return b.e < a.e - 0.05 && b.top <= a.top; }
-  Object.keys(PROGRAM).forEach(function (wd) { PROGRAM[wd].list.forEach(function (e) {
-    if (e[4] !== 'c') return; var h = liftSessions(s, e[0], k), n = h.length;
+  var seen = {}, PR = inOp(s, k) ? OP_PROGRAM : PROGRAM;
+  Object.keys(PR).forEach(function (wd) { PR[wd].list.forEach(function (e) {
+    if (e[4] !== 'c' || seen[e[0]]) return; seen[e[0]] = 1; var h = liftSessions(s, e[0], k), n = h.length;
     if (n >= 3 && dropped(h[n - 3], h[n - 2]) && dropped(h[n - 2], h[n - 1])) out.push(exerciseByKey(e[0]).name);
   }); });
   return out;
@@ -3500,7 +3580,7 @@ function seasonSummary(s, k) {
     bossesWon: duel.won, bossesTotal: duel.total, heroes: hero.unlocked, heroesTotal: hero.total, weeklyBosses: bossesUpTo(s, last).filter(function (b) { return b.defeated; }).length,
     level: p.level, rank: p.rank, xp: p.xp, awards: Object.keys(s.player.ach).length, checkpointsHit: cps.filter(function (c) { return c.hit; }).length, checkpoints: cps.length, bfNow: currentBf(s, last), bfStart: s.profile.startBf };
 }
-function reviewDue(s, k) { var r = reviewDate(s, k); return !!r && k <= s.profile.seasonEnd && !(isKey(s.plan.lastReview) && s.plan.lastReview >= r); }
+function reviewDue(s, k) { if (inOp(s, k)) return false; /* the Sunday review replaces the fortnightly one; calories no longer move */ var r = reviewDate(s, k); return !!r && k <= s.profile.seasonEnd && !(isKey(s.plan.lastReview) && s.plan.lastReview >= r); }
 function nextReview(s, k) { var e = s.plan.reviewEvery, n = Math.max(0, diffDays(s.profile.startDate, k)), d = addDays(s.profile.startDate, (Math.floor(n / e) + 1) * e); return d < s.profile.seasonEnd ? d : ''; }
 /* apply a review's calorie / step change. It starts tomorrow, never goes below the floor, and each review allows one change. */
 function applyAdjustment(s, kcal, steps, k) {
@@ -3521,12 +3601,14 @@ function applyAdjustment(s, kcal, steps, k) {
 function checkpoints(s, k) {
   return s.plan.checkpoints.map(function (c) {
     var past = c.date <= k, avg = past ? (rollingAvg(s, c.date) != null ? rollingAvg(s, c.date) : (s.days[c.date] && s.days[c.date].weight)) : null;
+    if (inOp(s, c.date)) { var w = past ? weighNear(s, c.date) : null; return { date: c.date, kg: c.kg, past: past, actual: w ? w.kg : null, hit: w ? w.kg <= c.kg + 1e-9 : null, daysLeft: Math.max(0, diffDays(k, c.date)) }; } // the weight you logged, at or under the line
     return { date: c.date, kg: c.kg, past: past, actual: avg != null ? avg : null, hit: avg != null ? avg <= c.kg + 0.5 : null, daysLeft: Math.max(0, diffDays(k, c.date)) };
   });
 }
 /* the plan line: a straight line between checkpoints */
 function planLine(s, k) {
   var pts = [{ date: s.profile.startDate, kg: s.profile.startKg }].concat(s.plan.checkpoints);
+  if (hasOp(s) && s.profile.startDate < OP.start) pts = [pts[0], { date: OP.start, kg: OP.startKg }].concat(s.plan.checkpoints.filter(function (c) { return c.date > OP.start; }));
   if (k <= pts[0].date) return pts[0].kg;
   for (var i = 1; i < pts.length; i++) if (k <= pts[i].date) { var a = pts[i - 1], b = pts[i]; return a.kg + (b.kg - a.kg) * diffDays(a.date, k) / diffDays(a.date, b.date); }
   return pts[pts.length - 1].kg;
@@ -3572,6 +3654,298 @@ function noticeLines(s, k) {
   return out;
 }
 
+/* ───────────────────────── OPERATION 79.9 (Fri 13 Nov – Thu 31 Dec 2026) ─────────────────────────
+   A season inside the Winter Arc. Everything logged before it is kept and stays judged by the rules of its day; from
+   13 Nov the day is judged by the checklist below. Nothing here runs unless the save carries s.op (set by ensureOp). */
+var OP = {
+  start: '2026-11-13', end: '2026-12-31', startKg: 86.5, target: 79.9, need: 47000,
+  cal: 1450, low: 1300, protein: 150, proteinGoal: 160, fat: 50, fibre: 25, treatMax: 150, walkMin: 20,
+  iceland: ['2026-12-09', '2026-12-13'], icelandCap: 2250, icelandSteps: 10000, noWeigh: ['2026-12-09', '2026-12-14'],
+  caps: { '2026-12-21': 1700, '2026-12-25': 2100 },
+  checkpoints: [{ date: '2026-11-20', kg: 84.9 }, { date: '2026-11-27', kg: 83.9 }, { date: '2026-12-04', kg: 82.8 }, { date: '2026-12-07', kg: 82.4 }, { date: '2026-12-16', kg: 82.4 }, { date: '2026-12-21', kg: 81.3 }, { date: '2026-12-25', kg: 80.7 }, { date: '2026-12-31', kg: 79.9 }],
+  dayDeficit: { gym: 1090, rest: 975, football: 1800 }, // what the plan expects each kind of diet day to bank
+  seasonKg: 90.5, seasonFrom: '2026-09-14', yearKg: 100, heroAt: 80,
+  stepsDay: [13000, 13000, 13000, 15000, 15000, 10000, 13000], pattern: ['gym', 'gym', 'gym', 'rest', 'rest', 'football', 'gym']
+};
+var GYM_LEVELS = { light: 175, moderate: 275, high: 325 };      // kcal for a session of about five exercises
+var FOOT_INT = { low: 0.75, medium: 1, high: 1.2 };            // football effort, times the per-minute burn
+var OP_QUESTS = [
+  { id: 'bowl', name: 'Yogurt bowl', icon: '🥣', xp: 20, gold: 5 },
+  { id: 'calories', name: 'Food', icon: '🔥', xp: 40, gold: 15 },
+  { id: 'steps', name: 'Steps', icon: '👣', xp: 20, gold: 5 },
+  { id: 'training', name: 'Training', icon: '⚔️', xp: 30, gold: 10 },
+  { id: 'treat', name: 'Treat', icon: '🍫', xp: 20, gold: 5 },
+  { id: 'weigh', name: 'Weigh-in', icon: '⚖️', xp: 20, gold: 5 },
+  { id: 'lights', name: 'In bed by 11', icon: '🌙', xp: 20, gold: 5 }
+];
+/* his split: weekdays two exercises × three sets per muscle group; weekends different exercises × two sets */
+var OP_PROGRAM = {
+  1: { key: 'cbb', name: 'Chest, back, biceps', list: [['incline_db_press', 3, 8, 10, 'c'], ['machine_chest_press', 3, 10, 12, 'c'], ['lat_pulldown', 3, 8, 12, 'c', 'wide grip'], ['cs_row', 3, 8, 12, 'c'], ['bicep_curl', 3, 10, 12, 'i'], ['hammer_curl', 3, 10, 12, 'i']] },
+  2: { key: 'stl', name: 'Shoulders, triceps, legs', list: [['db_shoulder_press', 3, 8, 10, 'c', 'seated'], ['lateral_raise', 3, 12, 15, 'i', 'cable'], ['tricep_pushdown', 3, 10, 15, 'i'], ['overhead_tricep_ext', 3, 10, 15, 'i'], ['leg_press', 3, 10, 12, 'c'], ['leg_curl', 3, 10, 15, 'i', 'seated']] },
+  6: { key: 'upper', name: 'Chest, back, arms, shoulders', list: [['db_bench', 2, 8, 10, 'c'], ['dip', 2, 8, 12, 'c'], ['cable_row', 2, 10, 12, 'c'], ['straight_arm_pulldown', 2, 12, 15, 'i'], ['hammer_curl', 2, 10, 12, 'i'], ['tricep_pushdown', 2, 10, 15, 'i'], ['machine_shoulder_press', 2, 8, 10, 'c'], ['reverse_pec_deck', 2, 12, 15, 'i']] },
+  0: { key: 'legsabs', name: 'Legs and abs', note: 'After church', list: [['hip_thrust', 3, 8, 12, 'c'], ['db_rdl', 3, 10, 12, 'c', 'flat back'], ['split_squat', 2, 10, 12, 'c'], ['calf_raise', 3, 12, 15, 'i'], ['cable_crunch', 3, 12, 15, 'i'], ['hanging_knee_raise', 3, 10, 15, 'i']] }
+};
+/* one verse a day. The NIV is a copyrighted translation, so the app carries the reference and a one-line summary in our
+   own words, and opens the verse itself in the NIV when tapped. */
+var OP_VERSES = [
+  ['Hebrews 12:11', 'Discipline stings today and pays you back later.'],
+  ['Proverbs 25:28', 'No self-control is a city with its walls down.'],
+  ['1 Corinthians 9:27', 'Make your body follow you, not lead you.'],
+  ['Galatians 5:22-23', 'Self-control is grown by the Spirit, not forced.'],
+  ['Philippians 3:14', 'Keep pushing toward what God has called you to.'],
+  ['Philippians 4:13', 'The strength for this is not only yours.'],
+  ['1 Corinthians 9:24-25', 'Run to win. Athletes train hard for a prize that fades; yours does not.'],
+  ['1 Corinthians 10:13', 'Every temptation comes with a way out.'],
+  ['Romans 12:1', 'Your body is something to offer back to God.'],
+  ['1 Corinthians 6:19-20', 'Your body is not only yours, so honour God with it.'],
+  ['1 Corinthians 10:31', 'Even eating and drinking can be done for God.'],
+  ['Romans 5:3-4', 'Hard days build endurance, endurance builds character, character builds hope.'],
+  ['Galatians 6:9', 'Do not quit doing good: the harvest is on its way.'],
+  ['2 Timothy 1:7', 'Fear is not from God. Power, love and self-discipline are.'],
+  ['Hebrews 12:1', 'Drop what slows you down and run your race with endurance.'],
+  ['Hebrews 10:36', 'Keep going: the promise is on the far side of perseverance.'],
+  ['James 1:2-4', 'Testing produces staying power. Let it finish its work.'],
+  ['James 1:12', 'Blessing waits for the one who holds firm under trial.'],
+  ['Isaiah 40:31', 'Hope in the Lord and your strength is renewed.'],
+  ['Isaiah 41:10', 'Do not be afraid: God holds you up.'],
+  ['Joshua 1:9', 'Be brave. God goes with you wherever you go.'],
+  ['Proverbs 13:4', 'Wanting is not enough: the diligent are the ones satisfied.'],
+  ['Proverbs 16:3', 'Hand your plans to God and they stand firm.'],
+  ['Proverbs 16:32', 'Ruling yourself beats conquering a city.'],
+  ['Proverbs 21:5', 'Steady, careful work wins; shortcuts cost you.'],
+  ['Proverbs 24:16', 'Fall seven times, get up seven times.'],
+  ['Psalm 121:8', 'God watches over your going out and your coming home.'],
+  ['Psalm 19:1', 'The sky itself tells you how great God is.'],
+  ['Psalm 46:1', 'God is your shelter and your strength, close at hand.'],
+  ['Matthew 11:28', 'Tired? Come to Jesus and rest.'],
+  ['Psalm 37:5', 'Commit your way to God and trust him with it.'],
+  ['Lamentations 3:22-23', 'Mercy is fresh every morning.'],
+  ['Proverbs 3:5-6', 'Trust God over your own read of things and he straightens the path.'],
+  ['Psalm 73:26', 'Body and heart may give out; God does not.'],
+  ['Psalm 119:105', 'God’s word lights the next step.'],
+  ['Psalm 28:7', 'God is both your strength and your cover.'],
+  ['Matthew 6:33', 'Put God’s kingdom first; the rest follows.'],
+  ['Matthew 26:41', 'Stay alert and pray: wanting to do right is not the same as having the strength.'],
+  ['Matthew 4:4', 'You live on more than food.'],
+  ['Luke 16:10', 'Faithful in small things, faithful in big ones.'],
+  ['Luke 9:23', 'Following Jesus means saying no to yourself daily.'],
+  ['Colossians 3:23', 'Whatever you do, do it wholeheartedly, for the Lord.'],
+  ['Luke 2:10-11', 'Good news of great joy: a Saviour is born.'],
+  ['1 Timothy 4:8', 'Training the body has value; godliness has more.'],
+  ['Titus 2:11-12', 'Grace teaches you to say no.'],
+  ['2 Peter 1:5-6', 'Build on your faith: goodness, knowledge, self-control, perseverance.'],
+  ['2 Corinthians 12:9', 'Grace is enough, and strength shows up in weakness.'],
+  ['Philippians 1:6', 'God finishes what he starts in you.'],
+  ['2 Timothy 4:7', 'Fight well, finish the race, keep the faith.']
+];
+function hasOp(s) { return isObj(s.op) && s.op.v === 1; }
+function inOp(s, k) { return hasOp(s) && k >= OP.start && k <= OP.end; }
+function isIceland(k) { return k >= OP.iceland[0] && k <= OP.iceland[1]; }
+/* '' outside the operation · 'diet' · 'iceland' (maintenance, 9–13 Dec) · 'off' (21 Dec at 1,700, Christmas Day at 2,100) */
+function opMode(s, k) { if (!inOp(s, k)) return ''; return isIceland(k) ? 'iceland' : OP.caps[k] ? 'off' : 'diet'; }
+function opCap(k) { return isIceland(k) ? OP.icelandCap : OP.caps[k] || 0; }
+function opNoWeigh(k) { return k >= OP.noWeigh[0] && k <= OP.noWeigh[1]; }
+function opVerse(k) { var i = diffDays(OP.start, k), v = OP_VERSES[i]; if (!v || i < 0) return null; return { ref: v[0].replace(/-/g, '–'), line: v[1], url: 'https://www.biblegateway.com/passage/?search=' + encodeURIComponent(v[0]) + '&version=NIV', n: i + 1, total: OP_VERSES.length }; }
+/* banned at home until 31 Dec unless it is the day's one treat */
+function isBannedFood(name) {
+  var n = String(name || '').toLowerCase();
+  if (/whey|protein|isolate|shake|skyr|yog/.test(n)) return false; // a chocolate protein shake is not a chocolate snack
+  return /mutton\s*roll|samosa|cr[eêe]pe|chocolate|\bchoc\b|brownie|nutella|kit\s?kat|twix|snickers|mars bar|dairy milk|maltesers|bounty|ferrero|kinder|galaxy|oreo|m&m/.test(n);
+}
+function opTreats(d) {
+  var foods = (d && d.foods) || [], tr = foods.filter(function (f) { return f.tr; }), ban = foods.filter(function (f) { return !f.tr && isBannedFood(f.name); });
+  return { n: tr.length, kcal: r1(tr.reduce(function (a, f) { return a + f.cal; }, 0)), list: tr, banned: ban };
+}
+/* the yogurt bowl: ticked by hand, or seen in breakfast (yogurt and whey logged there) */
+function bowlDone(d) {
+  if (!d) return false; if (d.bowl) return true;
+  var b = (d.foods || []).filter(function (f) { return f.meal === 'breakfast'; });
+  return b.some(function (f) { return /yog|skyr/i.test(f.name); }) && b.some(function (f) { return /whey|protein/i.test(f.name); });
+}
+function inclineMinutes(d) { return ((d && d.activities) || []).filter(function (a) { return a.type === 'incline'; }).reduce(function (a, b) { return a + (b.min > 0 ? b.min : 0); }, 0); }
+function gymKcal(s, d) {
+  var acts = (d.activities || []).filter(function (a) { return a.type === 'gym'; });
+  if (!acts.length) return d.workouts && d.workouts.length ? s.tdee.gym : 0;
+  return acts.reduce(function (a, x) { return a + (GYM_LEVELS[x.lvl] || s.tdee.gym); }, 0);
+}
+function footballKcal(s, d) { return (d.activities || []).filter(function (a) { return a.type === 'football'; }).reduce(function (a, x) { return a + (x.min > 0 ? x.min : 0) / 60 * s.tdee.footballPerHour * (FOOT_INT[x.int] || 1); }, 0); }
+function inclineKcal(s, d) { return inclineMinutes(d) * num(s.tdee.inclinePerMin, 7); }
+/* the weight you logged on a day, or (for a checkpoint) the last one in the two days before it */
+function weighNear(s, k, back) {
+  for (var i = 0; i <= (back == null ? 2 : back); i++) { var d = s.days[addDays(k, -i)]; if (d && d.weight != null) return { kg: d.weight, day: addDays(k, -i) }; }
+  return null;
+}
+/* the behind-schedule rule: more than 0.3kg over a checkpoint → for the week after it, +2,000 steps a day and +20
+   minutes of incline walk on gym days. Calories never move. */
+function opBoost(s, k) {
+  if (opMode(s, k) !== 'diet') return null;
+  var cp = null; OP.checkpoints.forEach(function (c) { if (c.date < k && k <= addDays(c.date, 7)) cp = c; });
+  if (!cp) return null; var w = weighNear(s, cp.date); if (!w) return null;
+  var over = r1(w.kg - cp.kg); return over > 0.3 ? { steps: 2000, walk: 20, cp: cp, over: over, weighed: w } : null;
+}
+function opWalkNeed(s, k) { return OP.walkMin + (opBoost(s, k) ? 20 : 0); }
+function opQuests(s, k) {
+  var d = getDay(s, k), tot = dayTotals(d), mode = opMode(s, k), ct = calTarget(s, k), P = dayRules(s, k).protein, type = dayType(s, k), relaxed = mode !== 'diet';
+  var st = stepsTarget(s, k), tr = opTreats(d), logged = d.foods.length > 0, sess = sessionFor(s, k), walk = inclineMinutes(d), need = opWalkNeed(s, k);
+  var gymDone = gymSessions(d) > 0, footDone = footballMinutes(d) > 0, nf = function (v) { return Math.round(v).toLocaleString('en-GB'); };
+  var foodOk = logged && tot.cal <= ct && (mode === 'off' || tot.p >= P) && (relaxed || tot.cal >= OP.low);
+  var trainDone, trainLabel, trainPct, trainName;
+  if (relaxed) { trainDone = true; trainPct = 1; trainName = 'Training'; trainLabel = mode === 'iceland' ? 'Holiday: walk and enjoy it' : 'Day off: nothing owed'; }
+  else if (type === 'gym') { trainDone = gymDone && walk >= need; trainPct = (gymDone ? 0.5 : 0) + 0.5 * clamp(walk / need, 0, 1); trainName = sess ? sess.name : 'Gym'; trainLabel = (gymDone ? 'Gym ✓' : 'Gym') + ' + incline walk ' + Math.round(walk) + '/' + need + ' min'; }
+  else if (type === 'football') { trainDone = footDone; trainPct = footDone ? 1 : 0; trainName = 'Football'; trainLabel = footDone ? Math.round(footballMinutes(d)) + ' min played' : 'Log your minutes after the game'; }
+  else { trainDone = !!d.recover || gymDone || footDone; trainPct = trainDone ? 1 : 0; trainName = 'Recover'; trainLabel = 'Rest day: stretch or walk'; }
+  var treatDone = mode === 'off' ? true : mode === 'iceland' ? tr.n <= 1 : logged && tr.n <= 1 && tr.kcal <= OP.treatMax && !tr.banned.length;
+  var treatLabel = mode === 'off' ? 'Day off' : tr.banned.length ? esc0(tr.banned[0].name) + ' is banned unless it is your treat' : tr.n > 1 ? tr.n + ' treats today, 1 allowed' : tr.n === 1 ? nf(tr.kcal) + ' kcal' + (mode === 'diet' ? ' of ' + OP.treatMax + ' max' : '') : mode === 'iceland' ? 'One a day' : logged ? 'None today' : 'One allowed, ' + OP.treatMax + ' kcal max';
+  var map = {
+    bowl: { done: relaxed || bowlDone(d), label: relaxed ? 'Not needed today' : bowlDone(d) ? 'Eaten' : 'Before 10am · 377 kcal, 72g protein' },
+    calories: { done: foodOk, val: tot.cal, target: ct, unit: 'kcal', label: nf(tot.cal) + ' / ' + nf(ct) + ' max' + (mode === 'off' ? '' : ' · ' + Math.round(tot.p) + '/' + P + 'g protein'), pct: clamp(ct ? tot.cal / ct : 0, 0, 1) },
+    steps: { done: mode === 'off' || d.steps >= st, val: d.steps, target: st, unit: '', label: nf(d.steps) + ' / ' + nf(st), pct: clamp(st ? d.steps / st : 0, 0, 1) },
+    training: { done: trainDone, label: trainLabel, pct: trainPct, name: trainName },
+    treat: { done: treatDone, label: treatLabel },
+    weigh: { done: d.weight != null || opNoWeigh(k), label: d.weight != null ? d.weight + 'kg' : opNoWeigh(k) ? 'No weigh-ins until 15 Dec' : 'Morning, fasted, after the toilet' },
+    lights: { done: relaxed || !!d.lightsOut, label: mode === 'iceland' ? 'Holiday' : mode === 'off' ? 'Day off' : lightsLabel(s.targets.lightsOut) }
+  };
+  return OP_QUESTS.map(function (q) { var m = map[q.id]; return { id: q.id, name: m.name || q.name, icon: q.icon, xp: q.xp, gold: q.gold, done: !!m.done, val: m.val == null ? (m.done ? 1 : 0) : m.val, target: m.target == null ? 1 : m.target, unit: m.unit || '', label: m.label, pct: m.pct == null ? (m.done ? 1 : 0) : m.pct }; });
+}
+function esc0(x) { return String(x == null ? '' : x).slice(0, 40); }
+/* the operation's own plan line: 86.5kg on 13 Nov, then checkpoint to checkpoint */
+function opLine(k) {
+  var pts = [{ date: OP.start, kg: OP.startKg }].concat(OP.checkpoints);
+  if (k <= pts[0].date) return pts[0].kg;
+  for (var i = 1; i < pts.length; i++) if (k <= pts[i].date) { var a = pts[i - 1], b = pts[i]; return a.kg + (b.kg - a.kg) * diffDays(a.date, k) / diffDays(a.date, b.date); }
+  return OP.target;
+}
+/* the 79.9 Tracker. Judged on the weight you log, against the plan for the day you logged it.
+   green = on or under the line · amber = 0.1–0.3kg over · red = more than 0.3kg over */
+function opTracker(s, k) {
+  if (!hasOp(s)) return null;
+  var kk = k > OP.end ? OP.end : k, ws = weightSeries(s).filter(function (w) { return w.key >= OP.start && w.key <= kk; }), last = ws.length ? ws[ws.length - 1] : null;
+  var cur = last ? last.kg : OP.startKg, curDay = last ? last.key : OP.start, plan = r1(opLine(curDay)), diff = r1(cur - plan), age = diffDays(curDay, kk);
+  var cps = OP.checkpoints.map(function (c) { var w = c.date <= kk ? weighNear(s, c.date) : null; return { date: c.date, kg: c.kg, past: c.date < kk || (c.date === kk && !!w), actual: w ? w.kg : null, hit: w ? w.kg <= c.kg + 1e-9 : null, daysLeft: Math.max(0, diffDays(kk, c.date)) }; });
+  var next = cps.filter(function (c) { return c.date >= kk && c.hit == null; })[0] || cps.filter(function (c) { return c.date >= kk; })[0] || null;
+  var hold = isIceland(kk) || (opNoWeigh(kk) && age > 0), state = !last ? 'none' : hold ? 'hold' : diff <= 0 ? 'green' : diff <= 0.3 ? 'amber' : 'red';
+  var total = OP.startKg - OP.target, lost = r1(OP.startKg - cur);
+  return { cur: cur, curDay: curDay, age: age, stale: !hold && !!last && age >= 3, weighed: !!last, avg7: rollingAvg(s, kk), plan: plan, planToday: r1(opLine(kk)), diff: diff, state: state, next: next, checkpoints: cps,
+    daysLeft: Math.max(0, diffDays(kk, OP.end)), toGo: r1(Math.max(0, cur - OP.target)), lost: lost, pct: clamp(lost / total, 0, 1), target: OP.target, startKg: OP.startKg,
+    // said plainly whenever you are behind: there is almost no slack in this plan
+    warn: state === 'amber' || state === 'red' ? 'The margin is about 0.1kg. A few slips from here finishes around 80.3–80.5kg, not 79.9.' : '' };
+}
+/* the deficit bank: 47,000 kcal to lose the fat. A day counts once its food is logged (a day with nothing logged banks
+   nothing); a day in surplus takes out of the bank, whatever kind of day it was. */
+function opBank(s, k) {
+  if (!hasOp(s)) return null;
+  var banked = 0, missing = [], days = [], kk = k > OP.end ? addDays(OP.end, 1) : k;
+  rangeKeys(OP.start, addDays(kk, -1)).forEach(function (dk) {
+    var d = s.days[dk];
+    if (d && d.foods.length) { var v = deficit(s, d); banked += v; days.push({ day: dk, deficit: v, mode: opMode(s, dk) }); }
+    else { days.push({ day: dk, deficit: 0, mode: opMode(s, dk), missing: true }); if (opMode(s, dk) === 'diet') missing.push(dk); }
+  });
+  var td = k <= OP.end ? s.days[k] : null, today = td && td.foods.length ? deficit(s, td) : null, dietLeft = 0, dietTotal = 0, dietDone = 0;
+  rangeKeys(OP.start, OP.end).forEach(function (dk) { if (opMode(s, dk) !== 'diet') return; dietTotal++; if (dk >= kk) dietLeft++; else dietDone++; });
+  var left = Math.max(0, OP.need - banked), perDay = dietLeft ? Math.ceil(left / dietLeft / 10) * 10 : null, should = Math.round(OP.need * dietDone / Math.max(1, dietTotal));
+  return { need: OP.need, banked: Math.round(banked), left: Math.round(left), pct: clamp(banked / OP.need, 0, 1), dietLeft: dietLeft, dietTotal: dietTotal, perDay: perDay, planPerDay: Math.round(OP.need / dietTotal), today: today,
+    should: should, behind: Math.round(should - banked), missing: missing, days: days, kgFat: r2(banked / 7700) };
+}
+/* over the calorie cap today: the steps that cover it (35 kcal per 1,000 steps) */
+function opOver(s, k) {
+  if (!inOp(s, k)) return null; var d = getDay(s, k), over = dayTotals(d).cal - calTarget(s, k);
+  return over > 0 ? { over: Math.round(over), steps: Math.ceil(over / s.tdee.perKSteps * 1000 / 100) * 100, walkMin: Math.ceil(over / num(s.tdee.inclinePerMin, 7) / 5) * 5 } : null;
+}
+/* what is still missing today (the 8pm nudge and the phone reminder) */
+function opMissing(s, k) {
+  if (opMode(s, k) !== 'diet') return [];
+  var d = getDay(s, k), tot = dayTotals(d), P = dayRules(s, k).protein, ct = calTarget(s, k), st = stepsTarget(s, k), type = dayType(s, k), out = [], nf = function (v) { return Math.round(v).toLocaleString('en-GB'); };
+  if (!d.foods.length) out.push('no food logged');
+  else { if (tot.p < P) out.push(Math.ceil(P - tot.p) + 'g protein to go'); if (tot.cal < OP.low) out.push(nf(ct - tot.cal) + ' kcal still to eat'); }
+  if (d.steps < st) out.push(nf(st - d.steps) + ' steps left');
+  if (type === 'gym') { if (!gymSessions(d)) out.push('gym not logged'); var need = opWalkNeed(s, k), w = inclineMinutes(d); if (w < need) out.push(Math.round(need - w) + ' min incline walk'); }
+  else if (type === 'football' && !footballMinutes(d)) out.push('football not logged');
+  if (d.weight == null && !opNoWeigh(k)) out.push('no weigh-in');
+  return out;
+}
+/* the Sunday review: the week (Mon–Sun) holding k, as far as k */
+function opWeek(s, k) {
+  if (!hasOp(s)) return null;
+  var mon = mondayOf(k), sun = addDays(mon, 6), from = mon < OP.start ? OP.start : mon, to = k < sun ? k : sun; if (to > OP.end) to = OP.end;
+  if (to === k && !(s.days[k] && s.days[k].foods.length)) to = addDays(k, -1); // today only counts once its food is logged
+  if (from > to) return null;
+  var keys = rangeKeys(from, to), def = 0, target = 0, perfect = 0, prot = 0, logged = 0, unlogged = 0, ws = [], diet = 0;
+  keys.forEach(function (dk) {
+    var d = s.days[dk], mode = opMode(s, dk);
+    if (mode === 'diet') { diet++; target += OP.dayDeficit[dayType(s, dk)] || 0; }
+    if (d && d.foods.length) { def += deficit(s, d); prot += dayTotals(d).p; logged++; } else if (mode === 'diet') unlogged++;
+    if (d && d.weight != null) ws.push(d.weight);
+    if (isClear(s, dk)) perfect++;
+  });
+  var avg = ws.length ? r2(ws.reduce(function (a, b) { return a + b; }, 0) / ws.length) : null, cp = null; OP.checkpoints.forEach(function (c) { if (c.date <= to) cp = c; });
+  var w = cp ? weighNear(s, cp.date) : null, pAvg = logged ? Math.round(prot / logged) : null, short = Math.round(target - def), line;
+  def = Math.round(def); target = Math.round(target);
+  if (!diet) line = 'Holiday week. Hold the line: protein at every meal, walk, one treat a day.';
+  else if (!logged) line = 'Nothing was logged this week, so nothing was banked. Log today and the count starts again.';
+  else if (short <= 0 && perfect >= Math.min(5, keys.length)) line = 'On the numbers: the deficit is banked and the days were clean. Same again next week.';
+  else if (short <= 0) line = 'The deficit is there but only ' + perfect + ' of ' + keys.length + ' days were perfect. The ticks you skip are the ones that slip first.';
+  else if (short <= target * 0.15) line = short.toLocaleString('en-GB') + ' kcal short of the week’s deficit, about ' + Math.round(short / 7.7) + 'g of fat still on you. Two incline walks cover it.';
+  else line = 'Short by ' + short.toLocaleString('en-GB') + ' kcal, about ' + r1(short / 7700) + 'kg of fat. At this rate 31 Dec lands above 79.9. Hit 1,450 and your steps every day next week.';
+  if (pAvg != null && pAvg < OP.protein) line += ' Protein averaged ' + pAvg + 'g: under ' + OP.protein + 'g costs muscle.';
+  if (unlogged >= 2) line += ' ' + unlogged + ' days had no food logged, so they banked nothing.';
+  return { from: from, to: to, days: keys.length, full: keys.length === 7, deficit: def, target: target, short: short, perfect: perfect, proteinAvg: pAvg, logged: logged, unlogged: unlogged, avg: avg, checkpoint: cp, actual: w ? w.kg : null, diff: cp && w ? r1(w.kg - cp.kg) : null, line: line };
+}
+/* possible muscle loss: a compound lift down two sessions running, or muscle down on two scans running */
+function opMuscle(s, k) {
+  if (!inOp(s, k)) return null;
+  var lifts = liftsDropping(s, k), sc = s.inbody.filter(function (x) { return x.date <= k && (x.smm != null || x.lbm != null); }), n = sc.length, f = function (x) { return x.smm != null ? x.smm : x.lbm; };
+  var scans = n >= 3 && f(sc[n - 1]) < f(sc[n - 2]) - 0.05 && f(sc[n - 2]) < f(sc[n - 3]) - 0.05;
+  if (!lifts.length && !scans) return null;
+  return { lifts: lifts, scans: scans, text: (lifts.length ? lifts.join(' and ') + ' dropped two sessions in a row. ' : '') + (scans ? 'Muscle is down on your last two scans. ' : '') + 'Possible muscle loss: keep protein at ' + OP.protein + '–' + OP.proteinGoal + 'g, lift heavy and do not cut training volume.' };
+}
+/* 31 Dec: the weigh-in decides it. Anything above 79.9 is not done. */
+function opFinish(s, k) {
+  if (!hasOp(s) || k < OP.end) return null;
+  var d = s.days[OP.end], kg = d && d.weight != null ? d.weight : null, st = streaks(s, OP.end), bank = opBank(s, addDays(OP.end, 1)), perfect = 0, duel = duelSummary(s, k), hero = heroStatus(s, OP.end), hit = 0;
+  rangeKeys(OP.start, OP.end).forEach(function (dk) { if (s.days[dk] && isClear(s, dk)) perfect++; });
+  opTracker(s, OP.end).checkpoints.forEach(function (c) { if (c.hit) hit++; });
+  return { weighed: kg != null, kg: kg, done: kg != null && kg <= OP.target + 1e-9, over: kg != null ? r1(Math.max(0, kg - OP.target)) : null, confirmed: !!(s.op.final && s.op.final.kg === kg && kg != null),
+    lostOp: kg != null ? r1(OP.startKg - kg) : null, lostSeason: kg != null ? r1(OP.seasonKg - kg) : null, lostYear: kg != null ? r1(OP.yearKg - kg) : null,
+    perfect: perfect, days: diffDays(OP.start, OP.end) + 1, banked: bank.banked, need: OP.need, bestStreak: st.bestClear, bestProtein: st.bestProtein, bossesWon: duel.won, bossesTotal: duel.total, heroes: hero.unlocked, heroesTotal: hero.total, checkpointsHit: hit, checkpoints: OP.checkpoints.length };
+}
+function confirmOpFinish(s, k) { var f = opFinish(s, k); if (!f || !f.weighed) return null; s.op.final = { kg: f.kg, day: k }; return opFinish(s, k); }
+/* starts the operation on a save (once). Everything logged is kept; days before 13 Nov keep the targets and rules they
+   were judged by. Bosses already beaten stay beaten; every other boss is drawn onto a new day between now and 30 Dec
+   (no bosses in Iceland), some days two, and a boss that had escaped comes back with a harder challenge. Heroes already
+   freed stay freed; the rest are spread evenly from 86.5kg so the last one breaks free at 80.0kg. */
+function ensureOp(s, todayK) {
+  if (hasOp(s)) return false;
+  var k = isKey(todayK) ? todayK : dayKey(); if (k < OP.start) k = OP.start; if (k > OP.end) k = OP.end;
+  var hs = heroStatus(s, k), had = hs.milestones.filter(function (x) { return x.hit; }).map(function (x) { return x.hitDay || OP.start; });
+  var rest = [], missed = {}; for (var i = 0; i < DUELS.length; i++) if (!s.duels.won[i]) { rest.push(i); if (duelStart(s) && duelStatus(s, i, k) === 'escaped') missed[i] = 1; }
+  freezeDays(s, OP.start, false);
+  Object.keys(s.days).forEach(function (dk) { if (dk >= OP.start && s.days[dk].tg) delete s.days[dk].tg; }); // from 13 Nov the new checklist judges the day
+  var T = s.targets;
+  T.calDay = [OP.cal, OP.cal, OP.cal, OP.cal, OP.cal, OP.cal, OP.cal]; T.cal = { gym: OP.cal, football: OP.cal, rest: OP.cal }; T.floor = FLOOR_MIN;
+  T.protein = OP.protein; T.fat = OP.fat; T.fibre = OP.fibre; T.fibreQuest = OP.fibre; T.carbsMin = 70; T.carbsMax = 110; T.waterMl = 3000; T.lightsOut = '23:00';
+  T.stepsDay = OP.stepsDay.slice(); T.steps = 13000; T.stepsMin = 10000;
+  s.week.pattern = OP.pattern.slice();
+  s.plan.checkpoints = clone(OP.checkpoints); s.plan.deloads = s.plan.deloads.filter(function (d) { return d[1] < OP.start; });
+  s.tdee.base = 1900; s.tdee.perKSteps = 35; s.tdee.footballPerHour = 670; s.tdee.inclinePerMin = 7;
+  s.profile.goalKg = OP.target; s.profile.seasonEnd = OP.end;
+  rangeKeys(OP.iceland[0], OP.iceland[1]).forEach(function (dk) { s.overrides[dk] = 'rest'; });
+  // heroes
+  var left = HEROES.length - had.length, needs = []; for (var j = 1; j <= left; j++) needs.push(r2(OP.startKg - j * (OP.startKg - OP.heroAt) / left));
+  s.heroes.op = { day: OP.start, from: OP.startKg, had: had, needs: needs };
+  // bosses
+  if (duelStart(s) && rest.length) {
+    var last = addDays(OP.end, -1), days = rangeKeys(k > last ? last : k, last).filter(function (dk) { return !isIceland(dk); }); if (!days.length) days = [OP.end];
+    var rnd = seededRandom(hash((Array.isArray(s.heroes.order) ? s.heroes.order.join(',') : '') + '|' + duelStart(s) + '|' + k));
+    var sh = function (a) { for (var x = a.length - 1; x > 0; x--) { var y = Math.floor(rnd() * (x + 1)), t = a[x]; a[x] = a[y]; a[y] = t; } return a; };
+    sh(rest); var per = Math.floor(rest.length / days.length), extra = rest.length - per * days.length, bonus = {}; sh(days.slice()).slice(0, extra).forEach(function (dk) { bonus[dk] = 1; });
+    var sched = {}, at = 0; days.forEach(function (dk) { for (var c = per + (bonus[dk] ? 1 : 0); c > 0 && at < rest.length; c--) sched[rest[at++]] = dk; });
+    while (at < rest.length) sched[rest[at++]] = days[days.length - 1];
+    s.duels.op = { day: k, sched: sched, hard: missed };
+  }
+  s.op = { v: 1, at: k };
+  return true;
+}
+
 var API = {
   STATE_VERSION: STATE_VERSION, TZ: TZ, FLOOR_MIN: FLOOR_MIN, STEP_CAP: STEP_CAP, TOO_FAST_KG: TOO_FAST_KG,
   num: num, clamp: clamp, r1: r1, r2: r2, uid: uid, cleanId: cleanId, clone: clone, hash: hash,
@@ -3597,7 +3971,10 @@ var API = {
   programRange: programRange, sessionFor: sessionFor, lastSets: lastSets, setsOn: setsOn, liftSessions: liftSessions, exerciseTarget: exerciseTarget, sessionPlan: sessionPlan, absThisWeek: absThisWeek, rollingAvg: rollingAvg, liftsDropping: liftsDropping,
   planAdvice: planAdvice, reviewDue: reviewDue, reviewDate: reviewDate, nextReview: nextReview, applyAdjustment: applyAdjustment, checkpoints: checkpoints, planWeightOn: planWeightOn, planLine: planLine, planStatus: planStatus, avgWindow: avgWindow, underFloorNow: underFloorNow, floorBreach: floorBreach, leanMassAlert: leanMassAlert, weeklyBudget: weeklyBudget,
   syncDecision: syncDecision, dayHasData: dayHasData, loggedDays: loggedDays, stateSummary: stateSummary, HEROES: HEROES, HERO_KG: HERO_KG, heroMilestones: heroMilestones, THEMES: THEMES, LIGHT_THEMES: LIGHT_THEMES, cleanPhoto: cleanPhoto, AURA: AURA, auraInfo: auraInfo, auraOrder: auraOrder, auraToday: auraToday, auraDiscovered: auraDiscovered, auraPalette: auraPalette, seededRandom: seededRandom, HERO_DROP: HERO_DROP, HERO_WEEKS: HERO_WEEKS, validHeroOrder: validHeroOrder, shuffledHeroes: shuffledHeroes, heroInfo: heroInfo, lockHeroWeeks: lockHeroWeeks, recheckHeroWeek: recheckHeroWeek, heroStatus: heroStatus, DUELS: DUELS, DUEL_ART: DUEL_ART, DUEL_CUT: DUEL_CUT, DUEL_TASKS: DUEL_TASKS, DUEL_GYM_ONLY: DUEL_GYM_ONLY, DUEL_LINES: DUEL_LINES, duelStart: duelStart, duelPlan: duelPlan, duelInfo: duelInfo, duelDay: duelDay, duelStatus: duelStatus, duelsToday: duelsToday, defeatDuel: defeatDuel, undoDuel: undoDuel, duelSummary: duelSummary, duelTitles: duelTitles,
-  createStore: createStore, STORE_KEY: STORE_KEY, exportState: exportState, importState: importState, noticeLines: noticeLines
+  createStore: createStore, STORE_KEY: STORE_KEY, exportState: exportState, importState: importState, noticeLines: noticeLines,
+  OP: OP, GYM_LEVELS: GYM_LEVELS, FOOT_INT: FOOT_INT, OP_QUESTS: OP_QUESTS, OP_PROGRAM: OP_PROGRAM, OP_VERSES: OP_VERSES, hasOp: hasOp, inOp: inOp, isIceland: isIceland, opMode: opMode, opCap: opCap, opNoWeigh: opNoWeigh, opVerse: opVerse,
+  isBannedFood: isBannedFood, opTreats: opTreats, bowlDone: bowlDone, inclineMinutes: inclineMinutes, gymKcal: gymKcal, footballKcal: footballKcal, inclineKcal: inclineKcal, weighNear: weighNear, opBoost: opBoost, opWalkNeed: opWalkNeed,
+  opQuests: opQuests, opLine: opLine, opTracker: opTracker, opBank: opBank, opOver: opOver, opMissing: opMissing, opWeek: opWeek, opMuscle: opMuscle, opFinish: opFinish, confirmOpFinish: confirmOpFinish, ensureOp: ensureOp, duelOp: duelOp, heroOp: heroOp
 };
 if (typeof module !== 'undefined' && module.exports) module.exports = API;
 else root.RTL = API;
@@ -5622,7 +5999,9 @@ function swipeToClose(sh) {
   sh.addEventListener('touchmove', function (e) { if (y0 == null) return; dy = Math.max(0, e.touches[0].clientY - y0); sh.style.transform = dy ? 'translateY(' + dy + 'px)' : ''; }, { passive: true });
   sh.addEventListener('touchend', function () { if (y0 == null) return; y0 = null; sh.style.transition = 'transform .25s var(--spring)'; if (dy > 90) { sh.style.transform = 'translateY(110%)'; setTimeout(closeLayer, 180); } else sh.style.transform = ''; });
 }
-function closeLayer() { stopScanner(); $('#layer').innerHTML = ''; if (window.Aura && window.Aura.hold) window.Aura.hold(false); if (window.Puzzle) window.Puzzle.hold(false); pending = null; pendingScan = null; portionState = null; setTimeout(nextInbox, 450); }
+function closeLayer() { stopScanner();
+  try { var L = $('#layer'), sc = L.firstElementChild; if (sc && !sc.querySelector('video,canvas')) { var g = document.getElementById('layer-ghost'); if (g) g.remove(); g = document.createElement('div'); g.id = 'layer-ghost'; g.setAttribute('aria-hidden', 'true'); g.appendChild(sc); g.querySelectorAll('[id]').forEach(function (n) { n.removeAttribute('id'); }); document.body.appendChild(g); setTimeout(function () { g.remove(); }, 190); } } catch (e) {}
+  $('#layer').innerHTML = ''; if (window.Aura && window.Aura.hold) window.Aura.hold(false); if (window.Puzzle) window.Puzzle.hold(false); pending = null; pendingScan = null; portionState = null; setTimeout(nextInbox, 450); }
 function confirmBox(title, msg, okLabel, onOk, danger) {
   openLayer(win(esc(title), '<p class="muted" style="margin:0 0 14px">' + esc(msg) + '</p><div class="row end"><button class="btn ghost" data-act="close">Cancel</button><button class="btn ' + (danger ? 'danger' : 'primary') + '" id="cb-ok">' + esc(okLabel) + '</button></div>', danger ? 'danger' : ''), { center: true });
   $('#cb-ok').onclick = function () { closeLayer(); onOk(); };
@@ -5630,6 +6009,7 @@ function confirmBox(title, msg, okLabel, onOk, danger) {
 
 /* ───────────── persistence ───────────── */
 function persist(quiet) {
+  try { var nt = opNudgeText(); S.meta.nudge = { day: today(), text: nt || '' }; } catch (e0) {}
   if (quiet !== true) S.meta.changedAt = Math.max(Date.now(), (S.meta.changedAt || 0) + 1); // when this copy last really changed
   if (!store.save(S)) { if (!storageBlocked) toast('Couldn’t save on this device. Export a backup in Settings.', { bad: true, ms: 5000 }); else if (quiet !== true && !saveWarned) { saveWarned = true; toast('Not saved: this window cannot store anything. Open Winter Arc from its web address or your Home Screen icon.', { bad: true, ms: 8000 }); } }
   if (quiet === true) return;
@@ -5751,7 +6131,7 @@ function loadState(next) { S = R.normalize(next); lastPRCount = R.strengthLog(S)
 /* the bosses begin on day one of the arc, or the day the app is first opened if that is later (also after a reset, a restore or a copy loaded from the cloud) */
 function duelsBegin() { if (!R.duelStart(S)) S.duels.start = today() > S.profile.startDate ? today() : S.profile.startDate; }
 /* quiet upkeep whenever the app opens, the day rolls over or another copy is loaded: every finished day keeps the targets it was judged against */
-function housekeeping() { try { R.freezeDays(S, today()); R.lockHeroWeeks(S, today()); } catch (e) { reportErr(e, 'housekeeping'); } }
+function housekeeping() { try { opStart(); } catch (e0) { reportErr(e0, 'operation'); } try { R.freezeDays(S, today()); R.lockHeroWeeks(S, today()); } catch (e) { reportErr(e, 'housekeeping'); } }
 function adoptCloud(next, savedAt, why) {
   backupLocal(why || 'Replaced by the cloud copy');
   loadState(next); persist(true);
@@ -5962,7 +6342,9 @@ function renderStatus() {
     return h;
   });
   var over = R.seasonOver(S, k), pre = R.notStarted(S, k);
-  html += safe('WINTER ARC', function () { return over ? finishCardHTML(k) : pre ? startCardHTML(k) : planCardHTML(k); });
+  var op = opOn(k);
+  html += safe('WINTER ARC', function () { return over ? finishCardHTML(k) : pre ? startCardHTML(k) : op ? (k >= OPK.end ? opFinishCardHTML(k) : '') + trackerCardHTML(k) : planCardHTML(k); });
+  if (op) html += safe('TONIGHT', function () { return nudgeHTML(k); });
   html += safe('TODAY’S BOSS', function () { return over && !R.duelsToday(S, k).length ? '' : duelCardsHTML(k, true); });
   html += safe('TODAY', function () {
     var d = R.getDay(S, k), tot = R.dayTotals(d), ct = R.calTarget(S, k), eb = R.energyBreakdown(S, d), DR = R.dayRules(S, k);
@@ -5982,15 +6364,17 @@ function renderStatus() {
   else if (pre) html += '<div class="alert cyan" id="arc-soon"><span>❄️</span><div>The arc starts ' + startsWhen(k) + ', ' + esc(R.fmtDate(S.profile.startDate)) + '. You can log food, weight and training now and it is all kept, but nothing counts towards XP, streaks, bosses or heroes until then. Weigh in on the first morning: everything is measured from your ' + n1(S.profile.startKg) + 'kg start.</div></div>' +
     alertList([function () { return !connected() ? '<div class="alert cyan"><span>🔌</span><div class="grow">Connect the System in Settings for cloud backup and the online food databases. The built-in UK menus and foods work without it.</div><button class="btn small" data-act="settings">Connect</button></div>' : ''; }]);
   else {
+    if (op) html += safe('DEFICIT BANK', function () { return bankCardHTML(k); }) + safe('OPERATION', function () { return opAlertsHTML(k); });
     html += planAlertsHTML(k) + alertsHTML(k);
-    html += safe('DAILY QUESTS', function () { var q = R.questStatus(S, k), doneN = q.filter(function (x) { return x.done; }).length; return '<div class="sec-h"><h2>Daily quests</h2><span class="num">' + doneN + '/7 · +' + R.CLEAR_XP + ' XP for all</span></div><div class="tiles">' + q.map(tileHTML).join('') + '</div>'; });
+    html += safe('DAILY QUESTS', function () { var q = R.questStatus(S, k), doneN = q.filter(function (x) { return x.done; }).length; return '<div class="sec-h"><h2>' + (op ? 'Today’s checklist' : 'Daily quests') + '</h2><span class="num">' + doneN + '/7 · +' + R.CLEAR_XP + ' XP for all</span></div><div class="tiles">' + q.map(tileHTML).join('') + '</div>'; });
+    if (op) html += '<div style="height:14px"></div>' + safe('REVIEW', function () { return reviewCardHTML(k); }) + safe('VERSE', function () { return verseCardHTML(k); });
     html += '<div style="height:14px"></div>' + safe('WEEKLY BOSS', function () { return bossHTML(R.bossFor(S, R.mondayOf(k), k), true); });
   }
   $('#v-status').innerHTML = html;
   if (gold != null) countUp($('#st-gold'), gold);
 }
 function tileHTML(x) {
-  var hint = x.done ? 'Complete' : ({ water: 'Tap for +250ml', steps: 'Tap to update', training: 'Tap when done', lights: 'Tap at bedtime' })[x.id] || 'Tap to log food';
+  var hint = x.done ? 'Complete' : ({ water: 'Tap for +250ml', steps: 'Tap to update', training: 'Tap to log', lights: 'Tap at bedtime', bowl: 'Tap to log it', treat: 'Tap to mark it', weigh: 'Tap to weigh in' })[x.id] || 'Tap to log food';
   return '<button class="tile lift ' + (x.done ? 'done' : '') + '" style="--c:' + QCOL[x.id] + '" data-act="qtile" data-q="' + x.id + '"><span class="rw">+' + x.xp + ' XP</span><span class="ic">' + x.icon + '</span><span class="nm">' + esc(x.name) + '</span><span class="vl">' + esc(x.label) + '</span><span class="act">' + hint + '</span><span class="fill" style="width:' + Math.round(x.pct * 100) + '%"></span></button>';
 }
 /* every alert is worked out on its own: one that fails is skipped, the rest still show */
@@ -6025,6 +6409,10 @@ function renderQuests() {
     var act = '';
     if (x.id === 'water') act = '<button class="btn small" data-act="water" data-ml="250">+250ml</button><button class="btn small" data-act="water" data-ml="500">+500ml</button>';
     else if (x.id === 'steps') act = '<input class="inp num" id="q-steps" type="number" inputmode="numeric" min="0" max="100000" placeholder="Steps" value="' + (d.steps || '') + '" style="max-width:130px"><button class="btn small" data-act="steps-save">Save</button>';
+    else if (x.id === 'bowl') act = '<button class="btn small tint" style="--c:var(--protein)" data-act="op-bowl">' + (x.done ? 'Bowl ✓' : 'Yogurt bowl') + '</button>';
+    else if (x.id === 'treat') act = '<button class="btn small tint" style="--c:var(--gold)" data-act="op-treat">Treat</button>';
+    else if (x.id === 'weigh') act = '<button class="btn small tint" style="--c:var(--holo)" data-act="weigh">' + (d.weight != null ? 'Change' : 'Weigh in') + '</button>';
+    else if (x.id === 'training' && opOn(k) && type !== 'rest') act = '<button class="btn small" data-act="' + (type === 'gym' ? 'gym-done' : 'football-done') + '">' + (type === 'gym' ? (R.gymSessions(d) ? 'Add incline walk' : 'Log gym + walk') : 'Log football') + '</button>';
     else if (x.id === 'training') act = type === 'gym' ? '<button class="btn small ' + (x.done ? 'done' : '') + '" data-act="gym-done"' + (x.done ? ' disabled' : '') + '>' + (x.done ? 'Gym logged' : 'Gym done') + '</button>' : type === 'football' ? '<button class="btn small ' + (x.done ? 'done' : '') + '" data-act="football-done"' + (x.done ? ' disabled' : '') + '>' + (x.done ? 'Football logged' : 'Played 60 min') + '</button>' : '<button class="btn small ' + (d.recover ? 'done' : '') + '" data-act="recover">' + (d.recover ? 'Recovered ✓' : 'I recovered') + '</button>';
     else if (x.id === 'lights') act = '<button class="btn small ' + (d.lightsOut ? 'done' : '') + '" data-act="lights">' + (d.lightsOut ? 'Checked in ✓' : 'Lights out') + '</button>';
     else act = '<button class="btn small tint" style="--c:' + QCOL[x.id] + '" data-act="open-cmd">Log food</button>';
@@ -6056,14 +6444,14 @@ function renderLog() {
     var x = mt[m], head = '<div class="meal-h"><div class="qname">' + MEAL_NAME[m] + (x ? ' <span class="dim num">' + n0(x.cal) + ' kcal</span>' : '') + '</div><button class="btn small ghost meal-add" data-act="add-to-meal" data-meal="' + m + '" aria-label="Add food to ' + MEAL_NAME[m] + '">＋ Add</button></div>';
     if (!x) { meals += head; return; }
     meals += head + '<div class="scroll-x"><table class="tbl"><thead><tr><th>Food</th><th>kcal</th><th>P</th><th>C</th><th>S</th><th>F</th><th>Fib</th></tr></thead><tbody>' +
-      x.items.map(function (f) { return '<tr class="rowbtn" data-act="food-item" data-id="' + esc(f.id) + '"><td><span class="fname">' + esc(f.name) + '</span><span class="fq">' + esc(f.qty) + (f.conf === 'low' ? ' · low confidence' : '') + '</span></td><td class="cK">' + n0(f.cal) + '</td><td class="cP">' + n1(f.p) + '</td><td class="cC">' + n1(f.c) + '</td><td class="cS">' + n1(f.s) + '</td><td class="cF">' + n1(f.f) + '</td><td class="cB">' + n1(f.fib) + '</td></tr>'; }).join('') +
+      x.items.map(function (f) { return '<tr class="rowbtn" data-act="food-item" data-id="' + esc(f.id) + '"><td><span class="fname">' + (f.tr ? '🍫 ' : '') + esc(f.name) + '</span><span class="fq">' + esc(f.qty) + (f.conf === 'low' ? ' · low confidence' : '') + '</span></td><td class="cK">' + n0(f.cal) + '</td><td class="cP">' + n1(f.p) + '</td><td class="cC">' + n1(f.c) + '</td><td class="cS">' + n1(f.s) + '</td><td class="cF">' + n1(f.f) + '</td><td class="cB">' + n1(f.fib) + '</td></tr>'; }).join('') +
       '<tr class="tot"><td>Meal total</td><td>' + n0(x.cal) + '</td><td>' + n1(x.p) + '</td><td>' + n1(x.c) + '</td><td>' + n1(x.s) + '</td><td>' + n1(x.f) + '</td><td>' + n1(x.fib) + '</td></tr></tbody></table></div>';
   });
   if (!tot.cal && !d.foods.length) meals = '<p class="muted" style="margin:0 0 4px">Nothing logged yet. Tap ＋ Add on a meal, or the glowing orb, and search a food like “kfc hot wing”.</p>' + meals;
   html += win('INTAKE', meals + '<div class="row" style="margin-top:12px"><button class="btn small tint" style="--c:var(--kcal)" data-act="open-cmd">✦ Log something</button><button class="btn small tint" style="--c:var(--kcal)" data-act="quick-add">＋ Quick add</button><button class="btn small" data-act="recipes">🍲 My recipes</button><button class="btn small" data-act="saved">⚡ Saved meals</button><button class="btn small ghost" data-act="copy-yday">Copy from previous day</button><button class="btn small ghost" data-act="manual">Manual entry</button></div>');
 
   function st(val, target, mode) { var s = R.macroStatus(val, target, mode); var label = { hit: 'hit', close: 'close', under: 'under', ok: 'on track', over: 'over' }[s]; return '<span class="status ' + (s === 'ok' ? 'hit' : s) + '">' + label + '</span>'; }
-  var calS = !d.foods.length ? '<span class="status under">nothing yet</span>' : Math.abs(tot.cal - ct) <= DR.calTol ? (tot.cal >= Math.min(DR.floor, ct) || DR.legacy ? '<span class="status hit">on track</span>' : '<span class="status under">under floor</span>') : tot.cal > ct ? '<span class="status over">over</span>' : '<span class="status under">under</span>';
+  var calS = !d.foods.length ? '<span class="status under">nothing yet</span>' : opOn(k) ? (tot.cal > ct ? '<span class="status over">over the max</span>' : tot.cal < DR.floor && R.opMode(S, k) === 'diet' ? '<span class="status under">too low so far</span>' : '<span class="status hit">inside the max</span>') : Math.abs(tot.cal - ct) <= DR.calTol ? (tot.cal >= Math.min(DR.floor, ct) || DR.legacy ? '<span class="status hit">on track</span>' : '<span class="status under">under floor</span>') : tot.cal > ct ? '<span class="status over">over</span>' : '<span class="status under">under</span>';
   var carbS = tot.c > T.carbsMax ? '<span class="status over">over</span>' : tot.c >= T.carbsMin ? '<span class="status hit">in range</span>' : '<span class="status under">under</span>';
   html += win('DAILY TOTAL VS TARGETS', '<div class="scroll-x"><table class="tbl"><thead><tr><th></th><th>Eaten</th><th>Target</th><th>Left</th><th>Status</th></tr></thead><tbody>' +
     '<tr><td>Calories</td><td>' + n0(tot.cal) + '</td><td>' + ct + '</td><td>' + n0(ct - tot.cal) + '</td><td>' + calS + '</td></tr>' +
@@ -6072,12 +6460,12 @@ function renderLog() {
     '<tr><td>Sugar</td><td>' + n1(tot.s) + 'g</td><td class="dim">—</td><td class="dim">—</td><td></td></tr>' +
     '<tr><td>Fat</td><td>' + n1(tot.f) + 'g</td><td>' + T.fat + 'g</td><td>' + n1(Math.max(0, T.fat - tot.f)) + 'g</td><td>' + st(tot.f, T.fat, 'max') + '</td></tr>' +
     '<tr><td>Fibre</td><td>' + n1(tot.fib) + 'g</td><td>' + T.fibre + 'g</td><td>' + n1(Math.max(0, T.fibre - tot.fib)) + 'g</td><td>' + st(tot.fib, T.fibre, 'min') + '</td></tr></tbody></table></div>' +
-    '<div style="margin-top:12px"><div class="kv"><span>Baseline</span><b>' + n0(eb.base) + '</b></div><div class="kv"><span>Steps (' + n0(d.steps) + ')</span><b>+' + n0(eb.steps) + '</b></div><div class="kv"><span>Gym</span><b>+' + n0(eb.gym) + '</b></div><div class="kv"><span>Football</span><b>+' + n0(eb.football) + '</b></div>' +
+    '<div style="margin-top:12px"><div class="kv"><span>Baseline</span><b>' + n0(eb.base) + '</b></div><div class="kv"><span>Steps (' + n0(d.steps) + ')</span><b>+' + n0(eb.steps) + '</b></div><div class="kv"><span>Gym</span><b>+' + n0(eb.gym) + '</b></div><div class="kv"><span>Football</span><b>+' + n0(eb.football) + '</b></div>' + (eb.incline ? '<div class="kv"><span>Incline walk</span><b>+' + n0(eb.incline) + '</b></div>' : '') +
     '<div class="kv"><span>Burn (TDEE)</span><b>' + n0(eb.tdee) + '</b></div><div class="kv"><span>Eaten</span><b>−' + n0(eb.eaten) + '</b></div><div class="kv" style="border-top:1px solid var(--line);margin-top:4px;padding-top:6px"><span><b style="font-family:var(--font);font-weight:600">Deficit</b></span><b style="color:' + deficitCol(eb.deficit) + '">' + (eb.deficit >= 0 ? '' : '−') + n0(Math.abs(eb.deficit)) + ' kcal</b></div>' + (eb.deficit > R.DEFICIT_AMBER ? '<p class="dim" style="font-size:12px;margin:6px 0 0">Amber: this deficit is bigger than about ' + n0(R.DEFICIT_AMBER) + ' kcal. Fine on a football day now and then; if it keeps happening, eat to your target.</p>' : '') + '</div>');
 
   var tr = '';
   d.workouts.forEach(function (w) { tr += '<div class="quest"><div class="qicon">🏋️</div><div><div class="qname">' + esc(w.name) + '</div><div class="qsub num">' + w.sets.map(function (s) { return (s.kg ? n1(s.kg) + 'kg×' : '') + s.reps; }).join(' · ') + '</div></div><button class="btn small ghost" data-act="del" data-list="workouts" data-id="' + esc(w.id) + '" aria-label="Delete">✕</button></div>'; });
-  d.activities.forEach(function (a) { tr += '<div class="quest"><div class="qicon">' + ({ gym: '⚔️', football: '⚽', cardio: '🚶', sprint: '⚡', ballwork: '🎯', abs: '🧱', other: '✦' })[a.type] + '</div><div><div class="qname">' + ({ gym: 'Gym session', football: 'Football', cardio: 'Cardio', sprint: 'Sprints', ballwork: 'Ball work', abs: 'Home abs', other: 'Activity' })[a.type] + '</div><div class="qsub num">' + n0(a.min) + ' min' + (a.kcal ? ' · ' + n0(a.kcal) + ' kcal' : '') + '</div></div><button class="btn small ghost" data-act="del" data-list="activities" data-id="' + esc(a.id) + '" aria-label="Delete">✕</button></div>'; });
+  d.activities.forEach(function (a) { tr += '<div class="quest"><div class="qicon">' + ({ gym: '⚔️', football: '⚽', cardio: '🚶', sprint: '⚡', ballwork: '🎯', abs: '🧱', other: '✦', incline: '⛰️' })[a.type] + '</div><div><div class="qname">' + ({ gym: 'Gym session', football: 'Football', cardio: 'Cardio', sprint: 'Sprints', ballwork: 'Ball work', abs: 'Home abs', other: 'Activity', incline: 'Incline walk' })[a.type] + (a.lvl ? ' · ' + a.lvl : '') + (a.int ? ' · ' + a.int + ' effort' : '') + '</div><div class="qsub num">' + n0(a.min) + ' min' + (opOn(k) && a.type === 'gym' ? ' · ' + n0(R.GYM_LEVELS[a.lvl] || S.tdee.gym) + ' kcal' : opOn(k) && a.type === 'football' ? ' · ' + n0(a.min / 60 * S.tdee.footballPerHour * (R.FOOT_INT[a.int] || 1)) + ' kcal' : a.type === 'incline' ? ' · ' + n0(a.min * 7) + ' kcal' : a.kcal ? ' · ' + n0(a.kcal) + ' kcal' : '') + '</div></div><button class="btn small ghost" data-act="del" data-list="activities" data-id="' + esc(a.id) + '" aria-label="Delete">✕</button></div>'; });
   if (!tr) tr = '<p class="muted" style="margin:0">No training logged. Try “lat pulldown 60kg 3x10” or “football 1 hour”.</p>';
   html += win('TRAINING & ACTIVITY', tr);
   html += win('BODY & HABITS', '<div class="kv"><span>Steps</span><b>' + (d.steps > 0 ? n0(d.steps) + ' / ' + n0(R.stepsTarget(S, k)) : '<span class="dim">not logged</span>') + '</b></div><div class="kv"><span>Water</span><b>' + n0(d.water) + 'ml</b></div><div class="kv"><span>Weight</span><b>' + (d.weight != null ? n1(d.weight) + 'kg' : '—') + '</b></div>' + (d.bf != null ? '<div class="kv"><span>Body fat</span><b>' + n1(d.bf) + '%</b></div>' : '') +
@@ -6486,7 +6874,7 @@ function itemHTML(it, i) {
   } else if (it.kind === 'activity') {
     if (it.type === 'steps') { head = '<div class="qname">Steps</div>'; body = ed ? numInput(i, 'steps', it.steps, '1', 'Steps') : '<div class="num" style="font-size:18px">' + n0(it.steps) + '</div><div class="assume">Replaces this day’s step count.</div>'; }
     else {
-      head = ed ? '<select class="inp" data-ci="' + i + '" data-cf="type">' + ['gym', 'football', 'cardio', 'sprint', 'ballwork', 'abs', 'other'].map(function (t) { return '<option value="' + t + '"' + (it.type === t ? ' selected' : '') + '>' + ({ gym: 'Gym session', football: 'Football', cardio: 'Cardio', sprint: 'Sprints', ballwork: 'Ball work', abs: 'Home abs', other: 'Other' })[t] + '</option>'; }).join('') + '</select>' : '<div class="qname">' + ({ gym: 'Gym session', football: 'Football', cardio: 'Cardio', sprint: 'Sprints', ballwork: 'Ball work', abs: 'Home abs', other: 'Activity' })[it.type] + '</div>';
+      head = ed ? '<select class="inp" data-ci="' + i + '" data-cf="type">' + ['gym', 'football', 'cardio', 'sprint', 'ballwork', 'abs', 'incline', 'other'].map(function (t) { return '<option value="' + t + '"' + (it.type === t ? ' selected' : '') + '>' + ({ gym: 'Gym session', football: 'Football', cardio: 'Cardio', sprint: 'Sprints', ballwork: 'Ball work', abs: 'Home abs', other: 'Other', incline: 'Incline walk' })[t] + '</option>'; }).join('') + '</select>' : '<div class="qname">' + ({ gym: 'Gym session', football: 'Football', cardio: 'Cardio', sprint: 'Sprints', ballwork: 'Ball work', abs: 'Home abs', other: 'Activity' })[it.type] + '</div>';
       body = ed ? '<div class="grid2" style="margin-top:6px"><label class="field">Minutes' + numInput(i, 'min', it.min, '1', 'Minutes') + '</label><label class="field">kcal (optional)<input class="inp num" type="number" inputmode="decimal" data-ci="' + i + '" data-cf="kcal" value="' + esc(vfmt(it.kcal)) + '"></label></div>' : '<div class="num">' + n0(it.min) + ' min' + (it.kcal ? ' · ' + n0(it.kcal) + ' kcal' : '') + '</div>';
     }
   } else if (it.kind === 'body') {
@@ -6584,6 +6972,7 @@ function foodItemSheet(id) {
   var k = viewDay || today(), d = R.getDay(S, k), f = d.foods.filter(function (x) { return x.id === id; })[0]; if (!f) return;
   openLayer('<div class="win-h"><div class="win-t">' + esc(f.name.toUpperCase()) + '</div><div class="win-s">' + esc(f.qty) + '</div></div><div class="macros" style="margin-bottom:10px">' + [['cal', 'kcal'], ['p', 'Protein'], ['c', 'Carbs'], ['s', 'Sugar'], ['f', 'Fat'], ['fib', 'Fibre']].map(function (x) { return '<div><b>' + n1(f[x[0]]) + '</b>' + x[1] + '</div>'; }).join('') + '</div>' + (f.note ? '<p class="assume">' + esc(f.note) + '</p>' : '') +
     '<label class="field" style="margin:10px 0">Move to meal<select class="inp" id="fi-meal">' + MEAL_ORDER.map(function (m) { return '<option value="' + m + '"' + (f.meal === m ? ' selected' : '') + '>' + MEAL_NAME[m] + '</option>'; }).join('') + '</select></label>' +
+    (opOn(k) ? '<button class="quest treatrow ' + (f.tr ? 'done' : '') + '" style="margin-bottom:10px;width:100%;text-align:left" data-act="op-treat-toggle" data-id="' + esc(id) + '"><div class="qicon">🍫</div><div><div class="qname">' + (f.tr ? 'This is today’s treat' : 'Mark as today’s treat') + '</div><div class="qsub">One a day, ' + OPK.treatMax + ' kcal at most</div></div><div class="qrew">' + (f.tr ? '✓' : '') + '</div></button>' : '') +
     '<div class="row end"><button class="btn ghost" data-act="fi-fav" data-id="' + esc(id) + '">Save as saved meal</button><button class="btn danger" data-act="del" data-list="foods" data-id="' + esc(id) + '">Delete</button><button class="btn" data-act="close">Close</button></div>');
   $('#fi-meal').onchange = function (e) { f.meal = e.target.value; persist(); render(); toast('Moved to ' + MEAL_NAME[f.meal] + '.'); };
 }
@@ -6655,7 +7044,7 @@ function renderSuggest(q) {
 function quickLabel(it) {
   if (it.kind === 'water') return n0(it.ml) + 'ml water';
   if (it.kind === 'body') return [it.weight != null ? n1(it.weight) + 'kg' : '', it.waist != null ? 'waist ' + n1(it.waist) + 'cm' : '', it.bf != null ? n1(it.bf) + '% fat' : ''].filter(Boolean).join(', ') || 'measurements';
-  if (it.kind === 'activity') return it.type === 'steps' ? n0(it.steps) + ' steps' : (({ gym: 'Gym', football: 'Football', cardio: 'Cardio', sprint: 'Sprints', ballwork: 'Ball work', abs: 'Abs', other: 'Activity' })[it.type] || 'Activity') + ' ' + it.min + ' min';
+  if (it.kind === 'activity') return it.type === 'steps' ? n0(it.steps) + ' steps' : (({ gym: 'Gym', football: 'Football', cardio: 'Cardio', sprint: 'Sprints', ballwork: 'Ball work', abs: 'Abs', other: 'Activity', incline: 'Incline walk' })[it.type] || 'Activity') + ' ' + it.min + ' min';
   if (it.kind === 'exercise') return it.name + ' ' + it.sets.length + '×' + (it.sets[0] ? it.sets[0].reps : '') + (it.sets[0] && it.sets[0].kg ? ' @ ' + n1(it.sets[0].kg) + 'kg' : '');
   return it.name || 'Food';
 }
@@ -7012,8 +7401,8 @@ function planAlertsHTML(k) {
     function () { return R.isDeload(S, k) ? '<div class="alert cyan"><span>🪶</span><div>Deload week: same exercises at 60% of your usual weight. Keep the calories and steps.</div></div>' : ''; },
     function () { var owed = R.stepsOwed(S, k); return owed > 0 ? '<div class="alert"><span>👣</span><div>Yesterday was under ' + n0(S.targets.stepsMin) + ' steps, so today’s target is ' + n0(R.stepsTarget(S, k)) + ' (+' + n0(owed) + ').</div></div>' : ''; },
     function () { return R.stepsNotLogged(S, k) ? '<div class="alert"><span>👣</span><div class="grow">Yesterday’s steps were not logged, so nothing has been carried over. Add them to keep today’s target honest.</div><button class="btn small tint" style="--c:var(--steps)" data-act="steps-yday">Add</button></div>' : ''; },
-    function () { var u = R.underFloorNow(S, k, R.londonTime()); return u ? '<div class="alert red" id="under-floor"><span>⛔</span><div>You’ve eaten ' + n0(u.cal) + ' kcal today, under your ' + n0(u.floor) + ' floor. Have about ' + n0(u.short) + ' kcal more before bed (a protein shake or yogurt bowl does it). A day under the floor doesn’t count as on target.</div></div>' : ''; },
-    function () { var fb = R.floorBreach(S, k); return fb != null ? '<div class="alert red"><span>⛔</span><div>Yesterday you ate ' + n0(fb) + ' kcal, under your ' + n0(S.targets.floor) + ' floor. Eat to target today; going lower costs muscle.</div></div>' : ''; },
+    function () { var u = R.underFloorNow(S, k, R.londonTime()); return u ? '<div class="alert red" id="under-floor"><span>⛔</span><div>You’ve eaten ' + n0(u.cal) + ' kcal today, under ' + n0(u.floor) + '. Have about ' + n0(u.short) + ' kcal more before bed (a protein shake or yogurt bowl does it). Eating too little costs muscle, and the day doesn’t count as on target.</div></div>' : ''; },
+    function () { var fb = R.floorBreach(S, k); return fb != null ? '<div class="alert red"><span>⛔</span><div>Yesterday you ate ' + n0(fb) + ' kcal, under ' + n0(R.dayRules(S, R.addDays(k, -1)).floor) + '. Eat to target today; going lower costs muscle.</div></div>' : ''; },
     function () { var lm = R.leanMassAlert(S, k); return lm ? '<div class="alert red"><span>📉</span><div>Lean mass is ' + n1(lm.lbm) + 'kg on your ' + R.fmtDate(lm.date) + ' scan, down from ' + n1(lm.base) + 'kg. Add 150 kcal and keep protein at ' + S.targets.protein + 'g.</div></div>' : ''; }
   ]);
 }
@@ -7148,7 +7537,7 @@ function tileSrc(k) { return ART['art/t/' + k.slice(4)] || artSrc(k); }
 function setView(id, html) { var v = $(id); if (!v) return; if (v._html === html) return; v.innerHTML = html; v._html = html; }
 window.addEventListener('online', function () { $$('#v-bosses,#v-armoury').forEach(function (v) { v._html = null; }); });
 function duelCardHTML(b, k) {
-  return '<div class="win duel' + (b.lastChance ? ' last' : '') + '"><div class="win-h"><div class="win-t">' + (b.lastChance ? 'LAST CHANCE' : 'TODAY’S BOSS') + '</div><div class="win-s">' + b.no + ' / ' + NB + ' · ' + (b.lastChance ? 'gone at midnight' : 'gone tomorrow night') + '</div></div>' +
+  return '<div class="win duel' + (b.lastChance ? ' last' : '') + '"><div class="win-h"><div class="win-t">' + (b.lastChance ? 'LAST CHANCE' : b.returned ? 'RETURNED · HARDER' : 'TODAY’S BOSS') + '</div><div class="win-s">' + b.no + ' / ' + NB + ' · ' + (b.lastChance ? 'gone at midnight' : 'gone tomorrow night') + '</div></div>' +
     '<div class="duel-top"><button class="duel-pic" data-act="duel-info" data-i="' + b.i + '" aria-label="' + esc(b.name) + ' details"><span class="clip">' + artHTML(b.art, b.icon, '', true) + '<i class="shine"></i></span></button><div class="grow"><div class="duel-n">' + esc(b.name) + '</div><div class="qsub">' + esc(b.anime) + '</div><div class="duel-tt">“' + esc(b.title) + '”</div></div></div>' +
     '<div class="duel-task"><b>' + esc(b.task) + (b.gymTask ? ' · at the gym' : '') + '</b><span>' + esc(b.taskText) + '</span></div>' +
     '<div class="duel-rw"><span>🏷️ Title: <b>' + esc(b.title) + '</b></span><span>' + b.icon + ' Weapon: <b>' + esc(b.weapon) + '</b></span></div>' +
@@ -7169,6 +7558,7 @@ function duelCardsHTML(k, compact) {
 function bossRuleText() {
   var p = R.duelPlan(S), end = S.profile.seasonEnd, last = R.fmtDate(end).slice(4);
   var base = 'You get the day a boss arrives and the day after to beat its challenge. Win and you take their nickname as a title and their weapon for your Armoury. Miss both days and the boss escapes for good.';
+  if (R.duelOp(S)) { var back = Object.keys(R.duelOp(S).hard || {}).length; return 'OPERATION 79.9 redrew every boss you had not beaten onto a new day up to 30 Dec, at random: one most days, two on some, none in Iceland. ' + (back ? back + ' that had escaped are back with a harder challenge. ' : '') + 'Bosses you beat stay beaten. ' + base; }
   if (!p) return 'One boss a day. ' + base;
   if (!p.doubled) return 'One boss a day for ' + NB + ' days, ' + R.fmtDate(p.start).slice(4) + ' to ' + R.fmtDate(R.duelDay(S, NB - 1)).slice(4) + '. ' + base;
   var close = ' Nothing can be fought after ' + last + ', the last day of the arc.';
@@ -7287,7 +7677,7 @@ function heroesHTML(k) {
       return h.unlocked ? '<button class="shero won" data-act="hero-info" data-s="' + h.slot + '">' + artHTML(h.art, '🌟', '', false, true) + '<i class="shine"></i><span class="rt"><b>' + esc(h.name) + '</b><small>' + esc(h.power) + '</small></span></button>'
         : '<button class="shero locked' + (h.reachable ? '' : ' gone') + '" data-act="hero-info" data-s="' + h.slot + '" aria-label="Secret hero, locked"><span class="clip"><span class="chains gold"></span><span class="lockic gold lk"></span><span class="rt"><b>Secret hero</b><small>' + (h.reachable ? n2(h.need) + 'kg' : 'out of reach') + '</small></span></span></button>';
     }).join('') + '</div>' +
-    '<p class="dim" style="font-size:11.5px;margin:10px 0 0">One hero for every kilogram you lose from your ' + n1(S.profile.startKg) + 'kg start, in a hidden order. It counts the moment you weigh in, and a hero freed stays freed. The eleventh comes at ' + n2(S.profile.startKg - 11) + 'kg.</p></div>';
+    '<p class="dim" style="font-size:11.5px;margin:10px 0 0">' + (R.heroOp(S) ? 'OPERATION 79.9: the heroes you had freed stay freed. The rest are spread evenly from 86.5kg, so the last one breaks free at 80.0kg. Only weigh-ins from 13 Nov count.' : 'One hero for every kilogram you lose from your ' + n1(S.profile.startKg) + 'kg start, in a hidden order. It counts the moment you weigh in, and a hero freed stays freed. The eleventh comes at ' + n2(S.profile.startKg - 11) + 'kg.') + '</p></div>';
   return html;
 }
 function n2(v) { return String(Math.round(R.num(v) * 100) / 100); } // two decimals only when they are needed: 89.65, 90.5, 88
@@ -7469,7 +7859,7 @@ function settingsSheet() {
     '<div class="toggle"><span class="muted">Intro on open</span><button class="sw" role="switch" aria-checked="' + S.settings.splash + '" data-act="toggle" data-key="splash" aria-label="Intro on open"></button></div>' +
     '<div class="qname" style="margin:18px 0 8px">Your data</div><div class="row"><button class="btn small" data-act="shop">Reward shop</button><button class="btn small" data-act="export">Export backup</button><label class="btn small ghost">Import backup<input type="file" accept="application/json,.json" id="imp" class="sr"></label></div>' +
     '<div class="row" style="margin-top:8px"><button class="btn small ghost" data-act="diag">Diagnostics</button><button class="btn small danger" data-act="reset">Reset everything</button></div>' +
-    '<p class="dim" id="app-ver" style="font-size:11px;margin-top:16px">Ascend V21 · data v' + S.version + ' · stored on this device' + (connected() ? ' + your cloud copy' : '') + '.</p>';
+    '<p class="dim" id="app-ver" style="font-size:11px;margin-top:16px">Ascend V22 · data v' + S.version + ' · stored on this device' + (connected() ? ' + your cloud copy' : '') + '.</p>';
   openLayer(html);
   $$('[data-set]').forEach(function (inp) { inp.addEventListener('change', function () { setPath(inp.dataset.set, inp.dataset.text ? inp.value.trim().slice(0, 30) || 'Pavi' : inp.value, !!inp.dataset.text, inp); }); });
   $$('[data-week]').forEach(function (sel) { sel.addEventListener('change', function () { R.freezeDays(S, today()); S.week.pattern[+sel.dataset.week] = sel.value; persist(); render(); toast('Weekly pattern updated from today.'); }); });
@@ -7650,6 +8040,178 @@ function restartNote() {
   toast('Winter Arc now starts on ' + R.fmtDate(S.profile.startDate) + ' at ' + n1(S.profile.startKg) + 'kg. Everything you logged before is kept. XP, bosses and heroes begin from day one.', { icon: '❄️', ms: 12000 });
 }
 
+/* ───────────── OPERATION 79.9 (13 Nov – 31 Dec): the tracker, the deficit bank, the checklist sheets, the reviews ───────────── */
+QCOL.bowl = 'var(--protein)'; QCOL.treat = 'var(--gold)'; QCOL.weigh = 'var(--holo)';
+var OPK = R.OP, opChoice = { lvl: 'moderate', walk: 20, int: 'medium' }, opIntroDue = false;
+function opOn(k) { return R.inOp(S, k || today()); }
+function sgn(v) { return (v < 0 ? '−' : v > 0 ? '+' : '') + n0(Math.abs(v)); }
+function dShort(k) { return esc(R.fmtDate(k).slice(4)); }
+/* starts the operation on this save the first time the update opens. A copy of the save as it was is kept first
+   (Settings → Restore an earlier version), and nothing logged is changed. */
+function opStart() {
+  if (R.hasOp(S)) return;
+  try { backupLocal('Before OPERATION 79.9'); } catch (e) { reportErr(e, 'operation backup'); }
+  if (R.ensureOp(S, today())) { opIntroDue = true; try { persist(); } catch (e2) { reportErr(e2, 'operation save'); } }
+}
+function opNudgeText() { try { var k = today(), m = R.opMissing(S, k); return m.length ? m.join(' · ') : ''; } catch (e) { return ''; } }
+/* ── Home: the 79.9 Tracker ── */
+function trackerCardHTML(k) {
+  var t = R.opTracker(S, k), day = R.diffDays(OPK.start, k) + 1, total = R.diffDays(OPK.start, OPK.end) + 1, mode = R.opMode(S, k);
+  var label = { green: 'ON TRACK', amber: 'BEHIND', red: 'BEHIND', hold: 'HOLD', none: 'WEIGH IN' }[t.state];
+  var detail = t.state === 'none' ? 'Log this morning’s weight to start the tracker' : t.state === 'hold' ? 'Iceland: hold your level. Next weigh-in Tue 15 Dec' : t.diff < 0 ? n1(-t.diff) + 'kg ahead of the line' : t.diff === 0 ? 'Exactly on the line' : n1(t.diff) + 'kg behind the line';
+  var span = OPK.startKg - OPK.target, ticks = t.checkpoints.slice(0, -1).map(function (c) { return '<i class="tk' + (c.hit === true ? ' hit' : c.hit === false ? ' miss' : '') + '" style="left:' + (100 * (OPK.startKg - c.kg) / span).toFixed(1) + '%"></i>'; }).join('');
+  var pos = Math.max(0, Math.min(100, 100 * (OPK.startKg - t.cur) / span));
+  return '<button class="win opcard optrack lift st-' + t.state + '" data-act="op-track" aria-label="OPERATION 79.9 tracker: ' + esc(label) + '. ' + esc(detail) + '">' +
+    '<div class="win-h"><div class="win-t">OPERATION 79.9</div><div class="win-s">Day ' + day + ' of ' + total + ' · ' + t.daysLeft + ' day' + (t.daysLeft === 1 ? '' : 's') + ' left' + (mode === 'iceland' ? ' · Iceland' : mode === 'off' ? ' · day off' : '') + '</div></div>' +
+    '<div class="op-top"><div class="op-big"><b class="num">' + n1(t.cur) + '</b><span>kg' + (t.weighed ? ' · logged ' + (t.age === 0 ? 'today' : t.age === 1 ? 'yesterday' : dShort(t.curDay)) : ' · start weight') + '</span></div>' +
+    '<div class="op-state"><span class="op-pill">' + label + '</span><span class="op-detail" id="op-detail">' + esc(detail) + '</span></div></div>' +
+    '<div class="op-line" aria-hidden="true"><div class="op-fill" style="width:' + pos.toFixed(1) + '%"></div>' + ticks + '<i class="op-me" style="left:' + pos.toFixed(1) + '%"></i></div><div class="op-ends"><span>' + n1(OPK.startKg) + '</span><span>79.9</span></div>' +
+    '<div class="plan3"><div><span>7-day average</span><b>' + (t.avg7 != null ? n1(t.avg7) + 'kg' : '—') + '</b></div><div><span>' + (t.next ? 'Next: ' + dShort(t.next.date) : 'Finish') + '</span><b style="color:var(--kcal)">' + (t.next ? n1(t.next.kg) + 'kg' : '79.9kg') + '</b></div><div><span>To go</span><b style="color:var(--holo)">' + n1(t.toGo) + 'kg</b></div></div>' +
+    (t.warn ? '<div class="op-warn" id="op-warn">' + esc(t.warn) + '</div>' : t.stale ? '<div class="op-warn soft">Last weigh-in was ' + t.age + ' days ago. Weigh in tomorrow morning so this is real.</div>' : '') +
+    '</button>';
+}
+function trackerSheet() {
+  var k = today(), t = R.opTracker(S, k), hs = R.heroStatus(S, k);
+  var rows = t.checkpoints.map(function (c) {
+    var st = c.hit === true ? '<span class="status hit">hit</span>' : c.hit === false ? '<span class="status over">+' + n1(c.actual - c.kg) + 'kg</span>' : c.date < k ? '<span class="status under">no weigh-in</span>' : '<span class="dim">' + c.daysLeft + 'd</span>';
+    return '<tr><td>' + dShort(c.date) + (c.date === '2026-12-25' ? ' <span class="dim">· hardest</span>' : '') + '</td><td>' + n1(c.kg) + '</td><td>' + (c.actual != null ? n1(c.actual) : '—') + '</td><td>' + st + '</td></tr>';
+  }).join('');
+  openLayer('<div class="grab"></div><div class="win-h"><div class="win-t">OPERATION 79.9</div><div class="win-s">13 Nov – 31 Dec</div></div>' +
+    '<p class="muted" style="margin:-4px 0 10px;font-size:13.5px">86.5kg to 79.9kg. Each checkpoint is judged on the weight you log that morning: at or under the line is a hit. On 31 Dec anything above 79.9 is not done.</p>' +
+    '<div class="scroll-x"><table class="tbl ptbl"><thead><tr><th>Checkpoint</th><th>Line</th><th>You</th><th></th></tr></thead><tbody>' + rows + '</tbody></table></div>' +
+    '<div style="margin-top:12px"><div class="kv"><span>Current weight</span><b>' + n1(t.cur) + 'kg</b></div><div class="kv"><span>The line for that day</span><b>' + n1(t.plan) + 'kg</b></div><div class="kv"><span>7-day average (for context)</span><b>' + (t.avg7 != null ? n1(t.avg7) + 'kg' : '—') + '</b></div><div class="kv"><span>Lost since 13 Nov</span><b>' + n1(Math.max(0, t.lost)) + 'kg of 6.6</b></div>' +
+    '<div class="kv"><span>Heroes freed</span><b>' + hs.unlocked + ' of ' + hs.total + (hs.current ? ' · next at ' + n2(hs.current.need) + 'kg' : '') + '</b></div></div>' +
+    '<div class="qname" style="margin-top:12px">Rules of the operation</div><div class="qsub" style="line-height:1.5">1,450 kcal is the most you eat on a diet day (under 1,300 is too little). Protein 150–160g. Steps 13k on gym days, 15k on rest days, 10k on football. Iceland 9–13 Dec is maintenance (about 2,250). 21 Dec caps at 1,700 and Christmas Day at 2,100. More than 0.3kg over a checkpoint adds 2,000 steps a day and 20 minutes of incline walk on gym days for the week after; calories never drop.</div>' +
+    '<div class="row end" style="margin-top:14px"><button class="btn small ghost" data-act="plan">Full plan</button><button class="btn small tint" style="--c:var(--holo)" data-act="weigh">Weigh in</button></div>');
+}
+/* ── Home: the deficit bank ── */
+function bankCardHTML(k) {
+  var b = R.opBank(S, k), mode = R.opMode(S, k);
+  var foot = b.dietLeft ? b.dietLeft + ' diet day' + (b.dietLeft === 1 ? '' : 's') + ' left · the plan was ' + n0(b.planPerDay) + ' a day' : 'No diet days left';
+  var pace = b.behind > 300 ? '<span class="warnc">' + n0(b.behind) + ' behind pace</span>' : b.behind < -300 ? '<span class="good">' + n0(-b.behind) + ' ahead of pace</span>' : '<span class="good">On pace</span>';
+  return '<button class="win opcard opbank lift" style="--c:var(--good)" data-act="op-bank"><div class="win-h"><div class="win-t">DEFICIT BANK</div><div class="win-s num">' + n0(b.banked) + ' / ' + n0(b.need) + ' kcal</div></div>' +
+    '<div class="bar bankbar"><i style="width:' + Math.max(0, Math.round(b.pct * 1000) / 10) + '%"></i></div>' +
+    '<div class="plan3"><div><span>Left to bank</span><b>' + n0(b.left) + '</b></div><div><span>Needed a day</span><b id="bank-need" style="color:' + (b.perDay != null && b.perDay > b.planPerDay + 150 ? 'var(--warn)' : 'var(--good)') + '">' + (b.perDay != null ? n0(b.perDay) : '—') + '</b></div><div><span>Today so far</span><b>' + (mode !== 'diet' && b.today == null ? '—' : b.today == null ? 'log food' : sgn(b.today)) + '</b></div></div>' +
+    '<div class="row between" style="margin-top:8px;font-size:12.5px"><span class="muted">' + foot + '</span>' + pace + '</div></button>';
+}
+function bankSheet() {
+  var k = today(), b = R.opBank(S, k);
+  var rows = b.days.slice().reverse().map(function (x) { return '<tr><td>' + dShort(x.day) + (x.mode === 'iceland' ? ' <span class="dim">Iceland</span>' : x.mode === 'off' ? ' <span class="dim">day off</span>' : '') + '</td><td style="text-align:right">' + (x.missing ? '<span class="dim">not logged</span>' : '<b style="color:' + (x.deficit < 0 ? 'var(--bad)' : 'var(--good)') + '">' + sgn(x.deficit) + '</b>') + '</td></tr>'; }).join('');
+  openLayer('<div class="grab"></div><div class="win-h"><div class="win-t" style="color:var(--good)">DEFICIT BANK</div><div class="win-s">' + n0(b.banked) + ' of ' + n0(b.need) + '</div></div>' +
+    '<p class="muted" style="margin:-4px 0 10px;font-size:13.5px">About 6.1kg of fat is 47,000 kcal. Every day you log food, its deficit (burn minus food) goes in. A surplus comes out, holiday or not. A day with no food logged banks nothing.</p>' +
+    '<div class="kv"><span>Banked</span><b>' + n0(b.banked) + ' kcal · about ' + n1(b.kgFat) + 'kg of fat</b></div><div class="kv"><span>Left</span><b>' + n0(b.left) + ' kcal</b></div><div class="kv"><span>Diet days left</span><b>' + b.dietLeft + ' of ' + b.dietTotal + '</b></div><div class="kv"><span>Needed on each of them</span><b>' + (b.perDay != null ? n0(b.perDay) + ' kcal' : '—') + '</b></div><div class="kv"><span>Where the plan says you should be</span><b>' + n0(b.should) + ' kcal</b></div>' +
+    (b.missing.length ? '<div class="alert" style="margin-top:10px"><span>📝</span><div>' + b.missing.length + ' diet day' + (b.missing.length === 1 ? ' has' : 's have') + ' no food logged (' + b.missing.slice(-4).map(dShort).join(', ') + '). Log them from the Log tab and they count.</div></div>' : '') +
+    '<p class="dim" style="font-size:12px;margin:10px 0 6px">Burn = 1,900 + 35 per 1,000 steps + gym (light 175, moderate 275, high 325) + football (11.2 a minute; low ×0.75, high ×1.2) + incline walk (7 a minute). These are estimates: the scale has the final word.</p>' +
+    (rows ? '<div class="scroll-x" style="max-height:240px;overflow:auto"><table class="tbl ptbl"><thead><tr><th>Day</th><th style="text-align:right">Banked</th></tr></thead><tbody>' + rows + '</tbody></table></div>' : '') +
+    '<div class="row end" style="margin-top:14px"><button class="btn small" data-act="close">Close</button></div>');
+}
+/* ── Home: the 8pm nudge, the Sunday review, the verse, the finish ── */
+function nudgeHTML(k) {
+  if (R.opMode(S, k) !== 'diet' || R.londonTime() < '20:00') return '';
+  var m = R.opMissing(S, k); if (!m.length) return '<div class="alert cyan" id="op-nudge"><span>🌙</span><div>Everything is in for today. Lights out by 11.</div></div>';
+  return '<div class="alert violet" id="op-nudge"><span>🌙</span><div class="grow"><b>Still missing today</b><br>' + m.map(esc).join(' · ') + '</div><button class="btn small tint" style="--c:var(--train)" data-act="tab" data-tab="quests">Finish it</button></div>';
+}
+function reviewDay(k) { var wd = R.weekday(k); return wd === 0 ? k : wd === 1 && R.addDays(k, -1) >= OPK.start ? R.addDays(k, -1) : ''; } // Sunday, and Monday for the week just gone
+function reviewCardHTML(k) {
+  var rk = reviewDay(k); if (!rk) return ''; var w = R.opWeek(S, rk); if (!w) return '';
+  return '<button class="win opcard opreview lift" style="--c:var(--train)" data-act="op-review"><div class="win-h"><div class="win-t">SUNDAY REVIEW</div><div class="win-s">' + dShort(w.from) + ' – ' + dShort(w.to) + '</div></div>' +
+    '<div class="plan3"><div><span>Deficit</span><b style="color:' + (w.short <= 0 ? 'var(--good)' : 'var(--warn)') + '">' + n0(w.deficit) + '</b></div><div><span>Perfect days</span><b>' + w.perfect + ' / ' + w.days + '</b></div><div><span>Protein avg</span><b>' + (w.proteinAvg != null ? w.proteinAvg + 'g' : '—') + '</b></div></div>' +
+    '<p class="op-verdict" id="op-verdict">' + esc(w.line) + '</p></button>';
+}
+function reviewSheet() {
+  var k = today(), rk = reviewDay(k) || k, w = R.opWeek(S, rk); if (!w) { toast('The first review is on Sunday.'); return; }
+  openLayer('<div class="grab"></div><div class="win-h"><div class="win-t" style="color:var(--train)">SUNDAY REVIEW</div><div class="win-s">' + dShort(w.from) + ' – ' + dShort(w.to) + '</div></div>' +
+    '<div class="kv"><span>Average weight this week</span><b>' + (w.avg != null ? n1(w.avg) + 'kg' : 'no weigh-ins') + '</b></div>' +
+    '<div class="kv"><span>Checkpoint' + (w.checkpoint ? ' ' + dShort(w.checkpoint.date) + ' (' + n1(w.checkpoint.kg) + 'kg)' : '') + '</span><b>' + (!w.checkpoint ? 'first one is 20 Nov' : w.actual == null ? 'no weigh-in' : n1(w.actual) + 'kg · ' + (w.diff <= 0 ? '<span class="good">hit</span>' : '<span class="warnc">' + n1(w.diff) + 'kg over</span>')) + '</b></div>' +
+    '<div class="kv"><span>Deficit banked</span><b>' + n0(w.deficit) + ' of ' + n0(w.target) + ' kcal' + (w.full ? '' : ' so far') + '</b></div><div class="kv"><span>Perfect days</span><b>' + w.perfect + ' of ' + w.days + '</b></div><div class="kv"><span>Protein average</span><b>' + (w.proteinAvg != null ? w.proteinAvg + 'g a day' : 'nothing logged') + '</b></div><div class="kv"><span>Days with food logged</span><b>' + w.logged + ' of ' + w.days + '</b></div>' +
+    '<p class="op-verdict" style="margin-top:12px">' + esc(w.line) + '</p><p class="dim" style="font-size:12px;margin:8px 0 0">One bad day is one day. The fix is always the next one: 1,450, protein, steps.</p>' +
+    '<div class="row end" style="margin-top:14px"><button class="btn small ghost" data-act="op-bank">Deficit bank</button><button class="btn small" data-act="close">Close</button></div>');
+}
+function verseCardHTML(k) {
+  var v = R.opVerse(k); if (!v) return '';
+  return '<a class="win opcard opverse lift" style="--c:var(--gold)" href="' + esc(v.url) + '" target="_blank" rel="noopener" id="op-verse"><div class="win-h"><div class="win-t">TODAY’S VERSE</div><div class="win-s">' + v.n + ' of ' + v.total + '</div></div>' +
+    '<div class="vref">' + esc(v.ref) + '</div><p class="vline">' + esc(v.line) + '</p><div class="row between" style="font-size:12.5px"><span class="dim">In short, in our own words</span><span class="gold">Read it in the NIV ›</span></div></a>';
+}
+function opFinishCardHTML(k) {
+  var f = R.opFinish(S, k); if (!f) return '';
+  if (!f.weighed) return '<div class="win opcard opfinish" style="--c:var(--gold)"><div class="win-h"><div class="win-t">THE FINAL WEIGH-IN</div><div class="win-s">31 Dec</div></div><p class="muted" style="margin:0 0 10px">This is the one that counts. Fasted, after the toilet. 79.9 or under and OPERATION 79.9 is done.</p><button class="btn primary" data-act="weigh">Weigh in</button></div>';
+  return '<button class="win opcard opfinish lift ' + (f.done ? 'won' : 'short') + '" style="--c:' + (f.done ? 'var(--gold)' : 'var(--warn)') + '" data-act="op-finish"><div class="win-h"><div class="win-t">' + (f.done ? 'OPERATION 79.9 · DONE' : 'OPERATION 79.9 · NOT DONE') + '</div><div class="win-s">31 Dec</div></div>' +
+    '<div class="plan3"><div><span>Final weight</span><b style="color:var(--holo)">' + n1(f.kg) + 'kg</b></div><div><span>Target</span><b>79.9kg</b></div><div><span>Since 13 Nov</span><b style="color:var(--good)">−' + n1(Math.max(0, f.lostOp)) + 'kg</b></div></div>' +
+    '<div class="row between" style="margin-top:8px;font-size:13px"><span class="muted">' + (f.confirmed ? 'Confirmed' : 'Tap to confirm your weigh-in') + '</span><span class="holo">See the season ›</span></div></button>';
+}
+function opFinishSheet() {
+  var k = today(), f = R.confirmOpFinish(S, k); if (!f) return; persist();
+  var row = function (a, b) { return '<div class="kv"><span>' + a + '</span><b>' + b + '</b></div>'; };
+  if (f.done && S.player.opFinishSeen !== f.kg) { S.player.opFinishSeen = f.kg; persist(true); beep('level'); vib([120, 60, 120, 60, 200]); confetti(110, true); }
+  openLayer('<div class="grab"></div><div class="win-h"><div class="win-t" style="color:' + (f.done ? 'var(--gold)' : 'var(--warn)') + '">' + (f.done ? 'OPERATION 79.9: DONE' : 'OPERATION 79.9: NOT DONE') + '</div><button class="btn small ghost" data-act="close">Close</button></div>' +
+    '<p style="margin:-4px 0 12px;font-size:14px">' + (f.done ? 'You weighed ' + n1(f.kg) + 'kg on 31 Dec. Target met.' : 'You weighed ' + n1(f.kg) + 'kg on 31 Dec, ' + n1(f.over) + 'kg above 79.9. That is not the target, and the app will not call it one. It is still ' + n1(Math.max(0, f.lostOp)) + 'kg lost in ' + f.days + ' days.') + '</p>' +
+    '<div class="qname">The weight</div>' + row('Since 13 Nov (86.5kg)', '−' + n1(f.lostOp) + 'kg') + row('Since 14 Sept (90.5kg)', '−' + n1(f.lostSeason) + 'kg') + row('Since the start of the year (100kg)', '<span class="holo">−' + n1(f.lostYear) + 'kg</span>') +
+    '<div class="qname" style="margin-top:12px">The season</div>' + row('Perfect days', f.perfect + ' of ' + f.days) + row('Deficit banked', n0(f.banked) + ' of ' + n0(f.need) + ' kcal') + row('Checkpoints hit', f.checkpointsHit + ' of ' + f.checkpoints) + row('Best perfect-day streak', f.bestStreak + ' days') + row('Best protein streak', f.bestProtein + ' days') + row('Bosses beaten', f.bossesWon + ' of ' + f.bossesTotal) + row('Heroes freed', f.heroes + ' of ' + f.heroesTotal) +
+    '<div class="row end" style="margin-top:14px"><button class="btn small ghost" data-act="finish">The whole Winter Arc</button><button class="btn small" data-act="export">Export a backup</button></div>');
+}
+/* ── warnings that belong to the operation ── */
+function opAlertsHTML(k) {
+  var d = R.getDay(S, k), mode = R.opMode(S, k);
+  return alertList([
+    function () { return mode === 'iceland' ? '<div class="alert cyan" id="op-iceland"><span>🧊</span><div><b>Iceland mode</b><br>Maintenance, about 2,250 kcal. Protein at every meal (lamb, fish, chicken, skyr), up to 10,000 steps, one treat a day. No weigh-ins until Tue 15 Dec: expect 0.3–0.5kg of travel water when you do.</div></div>' : ''; },
+    function () { return mode === 'off' ? '<div class="alert cyan" id="op-off"><span>🎄</span><div><b>Day off</b><br>Cap ' + n0(R.calTarget(S, k)) + ' kcal. Under the cap there is no penalty. Back to 1,450 tomorrow morning.</div></div>' : ''; },
+    function () { var o = R.opOver(S, k); return o ? '<div class="alert red" id="op-over"><span>🔥</span><div class="grow"><b>' + n0(o.over) + ' kcal over ' + n0(R.calTarget(S, k)) + '</b><br>' + n0(o.steps) + ' extra steps cover it (or about ' + o.walkMin + ' minutes of incline walk). One day is one day: walk it off and move on.</div><button class="btn small tint" style="--c:var(--steps)" data-act="steps-sheet">Steps</button></div>' : ''; },
+    function () { var t = R.opTreats(d); return mode === 'diet' && t.banned.length ? '<div class="alert red" id="op-banned"><span>⛔</span><div class="grow"><b>' + esc(t.banned[0].name) + '</b> is banned until 31 Dec unless it is today’s one treat (150 kcal at most).</div><button class="btn small" data-act="op-treat">Sort it</button></div>' : ''; },
+    function () { var t = R.opTreats(d); return mode === 'diet' && !t.banned.length && (t.n > 1 || t.kcal > OPK.treatMax) ? '<div class="alert red" id="op-treat-over"><span>🍫</span><div>' + (t.n > 1 ? t.n + ' treats today. One a day.' : 'Today’s treat is ' + n0(t.kcal) + ' kcal. The limit is ' + OPK.treatMax + '.') + ' It still counts in your calories.</div></div>' : ''; },
+    function () { var b = R.opBoost(S, k); return b ? '<div class="alert red" id="op-boost"><span>📈</span><div><b>Behind-schedule rule is on</b><br>You weighed ' + n1(b.weighed.kg) + 'kg against ' + n1(b.cp.kg) + 'kg on ' + dShort(b.cp.date) + ', ' + n1(b.over) + 'kg over. Until ' + dShort(R.addDays(b.cp.date, 7)) + ': +2,000 steps a day and 40 minutes of incline walk on gym days. Calories stay at 1,450.</div></div>' : ''; },
+    function () { var m = R.opMuscle(S, k); return m ? '<div class="alert red" id="op-muscle"><span>💪</span><div>' + esc(m.text) + '</div></div>' : ''; }
+  ]);
+}
+/* ── the checklist's sheets ── */
+function segHTML(id, opts, cur) { return '<div class="seg segfull" id="' + id + '" role="group">' + opts.map(function (o) { return '<button type="button" data-act="op-seg" data-seg="' + id + '" data-v="' + o[0] + '" aria-pressed="' + (String(o[0]) === String(cur)) + '">' + o[1] + '</button>'; }).join('') + '</div>'; }
+function segVal(id) { var b = $('#' + id + ' [aria-pressed="true"]'); return b ? b.dataset.v : null; }
+function gymSheet() {
+  var k = today(), d = R.getDay(S, k), had = R.gymSessions(d) > 0, need = R.opWalkNeed(S, k), walked = R.inclineMinutes(d), sess = R.sessionFor(S, k);
+  opChoice.walk = walked >= need ? 0 : need;
+  openLayer('<div class="grab"></div><div class="win-h"><div class="win-t" style="color:var(--train)">GYM SESSION</div><div class="win-s">' + esc(sess ? sess.name : 'Any session') + '</div></div>' +
+    (had ? '<p class="muted" style="margin:-4px 0 10px">Gym is already logged today' + (walked ? ', with ' + n0(walked) + ' minutes of incline walk' : '') + '. Add more walk below.</p>' :
+      '<div class="qsub" style="margin-bottom:6px">How hard was the lifting?</div>' + segHTML('g-lvl', [['light', 'Light<small>long rests · 175</small>'], ['moderate', 'Moderate<small>60–90s rests · 275</small>'], ['high', 'High<small>heavy, short rests · 325</small>']], opChoice.lvl)) +
+    '<div class="qsub" style="margin:12px 0 6px">Incline walk' + (need > OPK.walkMin ? ' (40 minutes this week: you are behind a checkpoint)' : ' (20–30 minutes is today’s tick)') + '</div>' + segHTML('g-walk', [[0, 'None'], [20, '20 min'], [30, '30 min'], [40, '40 min']], opChoice.walk) +
+    '<div class="op-burn" id="g-burn"></div>' +
+    '<div class="row end" style="margin-top:12px"><button class="btn ghost" data-act="close">Cancel</button><button class="btn primary" data-act="op-gym-save" data-had="' + (had ? 1 : 0) + '">' + (had ? 'Add walk' : 'Log session') + '</button></div>');
+  gymBurn();
+}
+function gymBurn() { var el = $('#g-burn'); if (!el) return; var lvl = segVal('g-lvl'), walk = +segVal('g-walk') || 0, g = lvl ? R.GYM_LEVELS[lvl] : 0; el.innerHTML = 'Burn added today: <b class="num">' + n0(g + walk * 7) + ' kcal</b>' + (g && walk ? ' <span class="dim">(' + g + ' gym + ' + walk * 7 + ' walk)</span>' : ''); }
+function footballSheet() {
+  var k = today(), d = R.getDay(S, k), had = R.footballMinutes(d);
+  openLayer('<div class="grab"></div><div class="win-h"><div class="win-t" style="color:var(--steps)">FOOTBALL</div><div class="win-s">' + (had ? n0(had) + ' min already logged' : 'About 11 kcal a minute') + '</div></div>' +
+    '<label class="field">Minutes you actually played<input class="inp num" id="f-min" type="number" inputmode="numeric" min="1" max="300" value="90" style="font-size:22px;min-height:56px"></label>' +
+    '<div class="qsub" style="margin:12px 0 6px">How hard did you go?</div>' + segHTML('f-int', [['low', 'Low<small>×0.75</small>'], ['medium', 'Medium<small>×1</small>'], ['high', 'High<small>×1.2</small>']], opChoice.int) +
+    '<div class="op-burn" id="f-burn"></div>' +
+    '<div class="row end" style="margin-top:12px"><button class="btn ghost" data-act="close">Cancel</button><button class="btn primary" data-act="op-foot-save">Log football</button></div>');
+  var inp = $('#f-min'); inp.addEventListener('input', footBurn); footBurn();
+}
+function footBurn() { var el = $('#f-burn'), inp = $('#f-min'); if (!el || !inp) return; var m = Math.max(0, Math.min(300, parseFloat(inp.value) || 0)), it = segVal('f-int') || 'medium'; el.innerHTML = 'Burn: <b class="num">' + n0(m / 60 * S.tdee.footballPerHour * R.FOOT_INT[it]) + ' kcal</b> <span class="dim">(' + n0(m) + ' min × ' + n1(S.tdee.footballPerHour / 60 * R.FOOT_INT[it]) + ')</span>'; }
+function bowlSheet() {
+  var k = today(), d = R.getDay(S, k), done = R.bowlDone(d), late = R.londonTime() >= '10:00', meal = S.savedMeals.filter(function (m) { return m.id === 'protein-bowl' || /bowl/i.test(m.name); })[0];
+  openLayer('<div class="grab"></div><div class="win-h"><div class="win-t" style="color:var(--protein)">YOGURT BOWL</div><div class="win-s">Before 10am</div></div>' +
+    '<p class="muted" style="margin:-4px 0 12px">250g fat-free Greek yogurt + 65g whey isolate: 377 kcal, 72g protein. Nearly half the day’s protein before you leave the house.</p>' +
+    (done ? '<div class="alert cyan"><span>🥣</span><div class="grow">Ticked for today.</div>' + (d.bowl ? '<button class="btn small ghost" data-act="op-bowl-undo">Undo</button>' : '') + '</div>' :
+      (late ? '<div class="alert"><span>⏰</span><div>It is past 10am. Tick it only if you really had it before 10.</div></div>' : '') +
+      '<div class="row" style="flex-direction:column;align-items:stretch;gap:8px">' + (meal ? '<button class="btn primary" data-act="op-bowl-log">Log the bowl now (377 kcal, 72g)</button>' : '') + '<button class="btn" data-act="op-bowl-tick">I had it before 10am and it is already logged</button></div>') +
+    '<div class="row end" style="margin-top:12px"><button class="btn ghost" data-act="close">Close</button></div>');
+}
+function treatSheet() {
+  var k = viewDay || today(), d = R.getDay(S, k), t = R.opTreats(d);
+  var list = d.foods.map(function (f) { var ban = R.isBannedFood(f.name); return '<button class="quest treatrow ' + (f.tr ? 'done' : '') + '" data-act="op-treat-toggle" data-id="' + esc(f.id) + '"><div class="qicon">' + (f.tr ? '🍫' : ban ? '⛔' : '·') + '</div><div><div class="qname">' + esc(f.name) + '</div><div class="qsub num">' + n0(f.cal) + ' kcal' + (ban && !f.tr ? ' · banned unless it is your treat' : '') + (f.tr && f.cal > OPK.treatMax ? ' · over ' + OPK.treatMax : '') + '</div></div><div class="qrew">' + (f.tr ? 'Treat ✓' : 'Mark') + '</div></button>'; }).join('');
+  openLayer('<div class="grab"></div><div class="win-h"><div class="win-t" style="color:var(--gold)">TODAY’S TREAT</div><div class="win-s">' + (t.n ? t.n + ' marked · ' + n0(t.kcal) + ' kcal' : 'None marked') + '</div></div>' +
+    '<p class="muted" style="margin:-4px 0 10px">One a day, 150 kcal at most. Mutton rolls, samosas, crêpes and chocolate snacks only count if they are the treat. Tap a food to mark or unmark it.</p>' +
+    (list || '<p class="dim" style="margin:0 0 6px">Nothing logged yet today. Log the treat like any food, then mark it here.</p>') +
+    '<div class="row end" style="margin-top:12px"><button class="btn small tint" style="--c:var(--kcal)" data-act="open-cmd">Log food</button><button class="btn small" data-act="close">Done</button></div>');
+}
+/* shown once, the first time the update opens */
+function opIntro() {
+  if (!opIntroDue) return; if ($('.ceremony') || $('#splash') || $('#layer').innerHTML || $('.notice') || evShowing || evQueue.length) { setTimeout(opIntro, 800); return; }
+  opIntroDue = false; var k = today(), ds = R.duelSummary(S, k), hs = R.heroStatus(S, k), back = R.duelOp(S) ? Object.keys(R.duelOp(S).hard).length : 0;
+  beep('level'); vib([80, 40, 120]);
+  ceremony('A NEW SEASON', '79.9', '86.5kg to 79.9kg by 31 Dec.\n1,450 kcal a day · protein 150–160g · 47,000 kcal to bank.\n' + (ds.total - ds.won) + ' bosses are back in the draw' + (back ? ', ' + back + ' of them harder' : '') + '. ' + (hs.total - hs.unlocked) + ' heroes break free by 80.0kg.\nEverything you logged is kept.', 'rank', function () { try { trackerSheet(); } catch (e) { reportErr(e, 'tracker'); } });
+}
+
 /* ───────────── system notice ───────────── */
 function showNotice() {
   var k = today(); if (R.seasonOver(S, k)) { maybeFinish(); return; } // after the last day there is nothing to announce except the finish
@@ -7680,8 +8242,8 @@ var ACTIONS = {
     afterChange(); toast(R.fmtDate(k) + ': ' + n0(v) + ' steps. Today’s target is ' + n0(R.stepsTarget(S, today())) + '.', { action: 'Undo', ms: 6000, onAction: function () { R.undoCommit(S, res.undo); afterChange(); } });
   },
   'steps-yday': function () { closeLayer(); stepsSheet(R.addDays(today(), -1)); },
-  'gym-done': function (b) { quickLog([{ kind: 'activity', type: 'gym', min: 60 }], 'Gym session logged.', b); },
-  'football-done': function (b) { quickLog([{ kind: 'activity', type: 'football', min: 60 }], 'Football logged.', b); },
+  'gym-done': function (b) { if (opOn()) { closeLayer(); gymSheet(); return; } quickLog([{ kind: 'activity', type: 'gym', min: 60 }], 'Gym session logged.', b); },
+  'football-done': function (b) { if (opOn()) { closeLayer(); footballSheet(); return; } quickLog([{ kind: 'activity', type: 'football', min: 60 }], 'Football logged.', b); },
   recover: function (b) { var k = today(); var d = S.days[k] || (S.days[k] = R.emptyDay()); d.recover = !d.recover; afterChange(b); },
   lights: function (b) { var k = today(); var d = S.days[k] || (S.days[k] = R.emptyDay()); d.lightsOut = !d.lightsOut; afterChange(b); if (d.lightsOut) toast('Lights out. Sleep well.', { icon: '🌙' }); },
   penalty: function (b) { var k = today(); var d = S.days[k] || (S.days[k] = R.emptyDay()); d.penaltyDone = true; afterChange(b); vib([80, 40, 80]); toast('Penalty cleared. Half your streak is safe.', { icon: '⛓️' }); },
@@ -7814,10 +8376,36 @@ var MORE_ACTIONS = {
   'rc-cancel': function () { recipeDraft = null; closeLayer(); recipesSheet(); },
   'rc-del': function () { var r = recipeDraft; if (!r || !r.id) return; confirmBox('Delete recipe?', '“' + r.name + '” will be removed. Days you already logged it on are not changed.', 'Delete', function () { S.recipes = (S.recipes || []).filter(function (x) { return x.id !== r.id; }); recipeDraft = null; persist(); closeLayer(); recipesSheet(); toast('Recipe deleted.'); }, true); },
   'steps-sheet': function () { closeLayer(); stepsSheet(); },
+  'op-track': function () { closeLayer(); trackerSheet(); },
+  'op-bank': function () { closeLayer(); bankSheet(); },
+  'op-review': function () { closeLayer(); reviewSheet(); },
+  'op-finish': function () { closeLayer(); opFinishSheet(); },
+  'op-bowl': function () { closeLayer(); bowlSheet(); },
+  'op-treat': function () { closeLayer(); treatSheet(); },
+  'op-seg': function (b) { $$('#' + b.dataset.seg + ' button').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); }); vib(10); try { gymBurn(); footBurn(); } catch (e) {} },
+  'op-gym-save': function (b) {
+    var had = b.dataset.had === '1', lvl = segVal('g-lvl') || 'moderate', walk = +segVal('g-walk') || 0, items = [];
+    if (!had) { items.push({ kind: 'activity', type: 'gym', min: 60, lvl: lvl }); opChoice.lvl = lvl; }
+    if (walk > 0) items.push({ kind: 'activity', type: 'incline', min: walk });
+    if (!items.length) { closeLayer(); return; }
+    closeLayer(); quickLog(items, (had ? '' : 'Gym logged (' + lvl + ', ' + R.GYM_LEVELS[lvl] + ' kcal)' + (walk ? ' + ' : '.')) + (walk ? walk + ' min incline walk (' + walk * 7 + ' kcal).' : ''));
+  },
+  'op-foot-save': function () {
+    var m = Math.round(parseFloat($('#f-min').value)), it = segVal('f-int') || 'medium'; if (!(m >= 1 && m <= 300)) { toast('Minutes must be 1–300.', { bad: true }); return; }
+    opChoice.int = it; closeLayer(); quickLog([{ kind: 'activity', type: 'football', min: m, int: it }], 'Football: ' + m + ' min, ' + it + ' effort, ' + n0(m / 60 * S.tdee.footballPerHour * R.FOOT_INT[it]) + ' kcal.');
+  },
+  'op-bowl-log': function () { var meal = S.savedMeals.filter(function (m) { return m.id === 'protein-bowl' || /bowl/i.test(m.name); })[0]; if (!meal) return; closeLayer(); quickLog(R.savedMealItems(meal).map(function (x) { x.meal = 'breakfast'; return x; }), 'Yogurt bowl logged to breakfast.'); },
+  'op-bowl-tick': function () { var k = today(), d = S.days[k] || (S.days[k] = R.emptyDay()); d.bowl = true; closeLayer(); afterChange(); toast('Bowl ticked.', { icon: '🥣' }); },
+  'op-bowl-undo': function () { var k = today(), d = S.days[k]; if (d) delete d.bowl; closeLayer(); afterChange(); },
+  'op-treat-toggle': function (b) { var k = viewDay || today(), f = R.getDay(S, k).foods.filter(function (x) { return x.id === b.dataset.id; })[0]; if (!f) return; if (f.tr) delete f.tr; else f.tr = 1; vib(15); closeLayer(); afterChange(); treatSheet(); },
   qtile: function (b) {
     var id = b.dataset.q, k = today(), type = R.dayType(S, k), d = R.getDay(S, k), q = R.questStatus(S, k).filter(function (x) { return x.id === id; })[0];
     if (id === 'water') quickLog([{ kind: 'water', ml: 250 }], '+250ml water.', b);
     else if (id === 'steps') stepsSheet();
+    else if (id === 'bowl') bowlSheet();
+    else if (id === 'treat') treatSheet();
+    else if (id === 'weigh') weighSheet();
+    else if (id === 'training' && opOn(k) && type !== 'rest' && R.opMode(S, k) === 'diet') ACTIONS[type === 'football' ? 'football-done' : 'gym-done'](b);
     else if (id === 'training') { if (type === 'rest') ACTIONS.recover(b); else if (!q.done) ACTIONS[type === 'football' ? 'football-done' : 'gym-done'](b); else toast('Already logged today. Nice.'); }
     else if (id === 'lights') ACTIONS.lights(b);
     else openCmd();
@@ -7888,7 +8476,7 @@ function boot() {
   if (imp || /[?&]nosplash/.test(location.search)) { try { history.replaceState(null, '', location.pathname + (/[?&]nosplash/.test(location.search) && !imp ? '?nosplash' : '')); } catch (e) {} }
   var doParam = (/[?&]do=(water|log)/.exec(location.search) || [])[0] || '';
   if (doParam) { try { history.replaceState(null, '', location.pathname); } catch (e) {} }
-  function afterIntro() { if (doParam) setTimeout(function () { notifyOpen(doParam); }, 500); try { showNotice(); } catch (e) { reportErr(e, 'daily notice'); } try { restartNote(); } catch (e) { reportErr(e, 'restart note'); } setTimeout(maybeBossIntro, 900); setTimeout(maybeHeroReveal, 1600); if (imp) { if (!imp.date) imp.date = today(); setTimeout(function () { scanForm(imp, { banner: 'Body data from your iPhone Shortcut. Check it, then save.' }); }, 300); } setTimeout(function () { checkInbox(); }, 1200); }
+  function afterIntro() { if (doParam) setTimeout(function () { notifyOpen(doParam); }, 500); try { showNotice(); } catch (e) { reportErr(e, 'daily notice'); } try { restartNote(); } catch (e) { reportErr(e, 'restart note'); } if (opIntroDue) { opIntroDue = false; setTimeout(opIntro, 700); } else { setTimeout(maybeBossIntro, 900); setTimeout(maybeHeroReveal, 1600); } if (imp) { if (!imp.date) imp.date = today(); setTimeout(function () { scanForm(imp, { banner: 'Body data from your iPhone Shortcut. Check it, then save.' }); }, 300); } setTimeout(function () { checkInbox(); }, 1200); }
   // VF: the character's aura and the puzzle pieces start again only once the opening has faded away, so the fade is smooth
   function hideSplash() { if (gone) return; gone = true; sp.classList.add('out'); setTimeout(function () { sp.remove(); if (window.Aura) window.Aura.pause(false); if (window.Puzzle) window.Puzzle.hold(false); splashDone(); afterIntro(); }, 650); }
   setTimeout(function () { if (window.Aura) window.Aura.pause(false); splashDone(); }, 15000); // a safety net: never wait longer than this

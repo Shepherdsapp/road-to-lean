@@ -1,0 +1,27 @@
+// Quick checks for OPERATION 79.9. Run: node test/op-tests.js
+const R = require('../src/core.js'); let n = 0, bad = 0;
+const ok = (c, m) => { n++; if (!c) { bad++; console.log('FAIL ' + m); } };
+const s = R.defaultState ? R.defaultState() : R.migrate({});
+s.days['2026-11-01'] = Object.assign(R.emptyDay(), { weight: 87.2 });
+const before = JSON.stringify([s.days['2026-11-01'].weight, s.days['2026-11-01'].foods]);
+R.ensureOp(s, '2026-11-13');
+ok(R.hasOp(s) && R.inOp(s, '2026-11-13') && !R.inOp(s, '2026-11-12'), 'season window');
+ok(JSON.stringify([s.days['2026-11-01'].weight, s.days['2026-11-01'].foods]) === before && s.days['2026-11-01'].tg, 'history untouched, old targets frozen');
+ok(R.opCap('2026-11-16') === 0 && R.opCap('2026-12-21') === 1700 && R.opCap('2026-12-25') === 2100 && s.targets.calDay.every(c => c === 1450), 'caps');
+ok(R.opMode(s, '2026-12-08') === 'diet' && R.opMode(s, '2026-12-09') === 'iceland' && R.opMode(s, '2026-12-13') === 'iceland' && R.opMode(s, '2026-12-14') === 'diet', 'iceland dates');
+ok(R.opNoWeigh('2026-12-10') && !R.opNoWeigh('2026-12-15'), 'no weigh-in in Iceland');
+ok(R.stepsTarget(s, '2026-12-10') <= 10000, 'iceland steps max 10k');
+const k = '2026-11-16', d = s.days[k] = R.emptyDay();
+d.activities.push({ id: 'a', type: 'gym', min: 60, lvl: 'high' }, { id: 'b', type: 'incline', min: 20 }, { id: 'c', type: 'football', min: 60, int: 'high' });
+const eb = R.energyBreakdown(s, d);
+ok(eb.gym === 325 && eb.incline === 140 && Math.round(eb.football) === 804, 'burn numbers ' + JSON.stringify(eb));
+s.days['2026-11-13'] = Object.assign(R.emptyDay(), { weight: 86.5 }); const t = R.opTracker(s, '2026-11-13'); ok(t.state === 'green' && t.cur === 86.5, 'tracker uses logged weight');
+s.days['2026-11-20'] = Object.assign(R.emptyDay(), { weight: 85.3 }); ok(R.opTracker(s, '2026-11-20').state === 'red', 'red when >0.3 behind');
+s.days['2026-11-20'].weight = 85.1; ok(R.opTracker(s, '2026-11-20').state === 'amber', 'amber 0.1-0.3 behind');
+const q = R.questStatus(s, k); ok(q.length === 7 && q[1].id === 'calories', 'seven ticks');
+ok(R.opVerse('2026-11-13').ref !== R.opVerse('2026-11-14').ref, 'different verse each day');
+ok(new Set(Array.from({ length: 49 }, (_, i) => R.opVerse(R.addDays('2026-11-13', i)).ref)).size === 49, '49 distinct verses');
+s.days['2026-12-31'] = Object.assign(R.emptyDay(), { weight: 80.0 }); ok(R.opFinish(s, '2026-12-31').done === false, '80.0 is not done');
+s.days['2026-12-31'].weight = 79.9; ok(R.opFinish(s, '2026-12-31').done === true, '79.9 is done');
+const again = JSON.stringify(s.op); R.ensureOp(s, '2026-11-20'); ok(JSON.stringify(s.op) === again, 'starts once');
+console.log('Operation tests: ' + (n - bad) + '/' + n + ' passed'); process.exit(bad ? 1 : 0);
