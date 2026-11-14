@@ -48,6 +48,30 @@ self.addEventListener('fetch', e => {
     return hit || net;
   }));
 });
+/* "Update" in the app's Settings: fetch the page from the server itself, store it only if it is whole, and say
+   whether it differs from the copy on the device. The app reloads when it does, so one tap is the whole update. */
+async function refreshPage() {
+  try {
+    const c = await caches.open(VERSION);
+    const old = await c.match(PAGE);
+    const oldText = old ? await old.text() : '';
+    const r = await fetch(direct(PAGE));
+    if (!looksRight(r)) return { ok: false, changed: false };
+    const text = await r.text(), at = text.lastIndexOf(END);
+    if (at < 0 || text.length - at > 400) return { ok: false, changed: false }; // a page that arrived part-way is never stored
+    const changed = text !== oldText;
+    const m = /<meta name="build" content="([^"]*)">/.exec(text);
+    if (changed) await c.put(PAGE, new Response(text, { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8' } }));
+    await Promise.all(REST.map(u => fetch(direct(u)).then(rr => (rr && rr.ok ? c.put(u, rr) : null)).catch(() => null)));
+    return { ok: true, changed, build: m ? m[1] : '' };
+  } catch (x) { return { ok: false, changed: false, offline: true }; }
+}
+self.addEventListener('message', e => {
+  const d = e.data || {};
+  if (d.type !== 'refresh') return;
+  const reply = res => { try { if (e.ports && e.ports[0]) e.ports[0].postMessage(res); } catch (x) {} };
+  e.waitUntil(refreshPage().then(reply).catch(() => reply({ ok: false, changed: false })));
+});
 // iPhone reminders: the Worker sends water and protein reminders here; tapping one opens the app at the right place
 self.addEventListener('push', e => {
   let d = {}; try { d = e.data ? e.data.json() : {}; } catch (x) { d = { body: e.data ? e.data.text() : '' }; }

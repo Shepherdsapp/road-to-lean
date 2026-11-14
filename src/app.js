@@ -1960,7 +1960,8 @@ function settingsSheet() {
     '<div class="toggle"><span class="muted">Intro on open</span><button class="sw" role="switch" aria-checked="' + S.settings.splash + '" data-act="toggle" data-key="splash" aria-label="Intro on open"></button></div>' +
     '<div class="qname" style="margin:18px 0 8px">Your data</div><div class="row"><button class="btn small" data-act="shop">Reward shop</button><button class="btn small" data-act="export">Export backup</button><label class="btn small ghost">Import backup<input type="file" accept="application/json,.json" id="imp" class="sr"></label></div>' +
     '<div class="row" style="margin-top:8px"><button class="btn small ghost" data-act="diag">Diagnostics</button><button class="btn small danger" data-act="reset">Reset everything</button></div>' +
-    '<p class="dim" id="app-ver" style="font-size:11px;margin-top:16px">Ascend V23 · data v' + S.version + ' · stored on this device' + (connected() ? ' + your cloud copy' : '') + '.</p>';
+    '<div class="qname" style="margin:18px 0 8px">App version</div><div class="row"><button class="btn small" data-act="app-update">Update the app</button><span class="dim" style="font-size:11.5px;align-self:center">Gets the newest version and reloads</span></div>' +
+    '<p class="dim" id="app-ver" style="font-size:11px;margin-top:16px">Ascend V24 · data v' + S.version + ' · stored on this device' + (connected() ? ' + your cloud copy' : '') + '.</p>';
   openLayer(html);
   $$('[data-set]').forEach(function (inp) { inp.addEventListener('change', function () { setPath(inp.dataset.set, inp.dataset.text ? inp.value.trim().slice(0, 30) || 'Pavi' : inp.value, !!inp.dataset.text, inp); }); });
   $$('[data-week]').forEach(function (sel) { sel.addEventListener('change', function () { R.freezeDays(S, today()); S.week.pattern[+sel.dataset.week] = sel.value; persist(); render(); toast('Weekly pattern updated from today.'); }); });
@@ -2477,6 +2478,7 @@ var MORE_ACTIONS = {
   'rc-cancel': function () { recipeDraft = null; closeLayer(); recipesSheet(); },
   'rc-del': function () { var r = recipeDraft; if (!r || !r.id) return; confirmBox('Delete recipe?', '“' + r.name + '” will be removed. Days you already logged it on are not changed.', 'Delete', function () { S.recipes = (S.recipes || []).filter(function (x) { return x.id !== r.id; }); recipeDraft = null; persist(); closeLayer(); recipesSheet(); toast('Recipe deleted.'); }, true); },
   'steps-sheet': function () { closeLayer(); stepsSheet(); },
+  'app-update': function () { closeLayer(); updateNow(true); },
   'op-track': function () { closeLayer(); trackerSheet(); },
   'op-bank': function () { closeLayer(); bankSheet(); },
   'op-review': function () { closeLayer(); reviewSheet(); },
@@ -2570,7 +2572,8 @@ function boot() {
     function () { var q = R.questStatus(S, today()); lastQuestDone = {}; q.forEach(function (x) { lastQuestDone[x.id] = x.done; }); },
     function () { render(); }
   ].forEach(function (step, i) { try { step(); } catch (e) { reportErr(e, 'opening step ' + (i + 1)); } });
-  afterSplash(function () { syncCheck(false); }, 900); // VF: once the opening is over, so it has the phone to itself
+  afterSplash(function () { syncCheck(false); }, 900);
+  afterSplash(function () { try { updateNow(false); } catch (e) {} }, 4000); // a quiet look for a newer version, well after the opening // VF: once the opening is over, so it has the phone to itself
   var sp = $('#splash'), gone = false;
   try { var spd = sp && $('.sp-s', sp); if (spd) spd.textContent = (R.fmtDate(S.profile.startDate).slice(4) + ' – ' + R.fmtDate(S.profile.seasonEnd).slice(4)).toUpperCase(); } catch (e) {} // the dates on the opening screen are the arc's real ones
   var imp = null; try { imp = R.parseImportQuery(location.search); } catch (e) {}
@@ -2592,13 +2595,45 @@ function boot() {
     sp.addEventListener('click', skip); sp.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') skip(); });
     if (!intro) setTimeout(hideSplash, 3200);
   }
-  if ('serviceWorker' in navigator && location.protocol === 'https:') {
+  if ('serviceWorker' in navigator && (location.protocol === 'https:' || /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname))) {
     navigator.serviceWorker.register('sw.js').then(function (reg) {
       reg.addEventListener('updatefound', function () { var nw = reg.installing; if (!nw) return; nw.addEventListener('statechange', function () { if (nw.state === 'installed' && navigator.serviceWorker.controller) toast('Update ready.', { action: 'Reload', ms: 15000, onAction: function () { location.reload(); } }); }); });
     }).catch(function () {});
   }
 }
-window.RTLApp = { get state() { return S; }, builtinCount: function () { return builtin().length; }, loadGeneric: function () { return loadGeneric(); }, precacheArt: function () { precacheArt(); }, luckPop: function () { luckPop(); }, maybeBossIntro: function () { maybeBossIntro(); }, maybeHeroReveal: function () { maybeHeroReveal(); }, syncCheck: syncCheck, syncInfo: syncInfo, runDiagnostics: runDiagnostics, submitText: submitText, setTab: setTab, openCmd: openCmd, checkInbox: checkInbox, render: render, aura: function () { return window.Aura ? window.Aura.debug() : null; }, auraToday: function () { return auraNow(); }, get errors() { return errLog.slice(); } };
+var BUILD = (function () { var m = document.querySelector('meta[name=build]'); return (m && m.content) || ''; })();
+/* asks the service worker to fetch the page from the server and say whether it is newer than the stored copy */
+function askRefresh(ms) {
+  return new Promise(function (res) {
+    var sw = navigator.serviceWorker;
+    if (!sw || !sw.controller) { res(null); return; }
+    var ch, done = false;
+    var finish = function (v) { if (done) return; done = true; clearTimeout(t); res(v); };
+    var t = setTimeout(function () { finish(null); }, ms || 9000);
+    try { ch = new MessageChannel(); ch.port1.onmessage = function (ev) { finish(ev.data || null); }; sw.controller.postMessage({ type: 'refresh' }, [ch.port2]); }
+    catch (e) { finish(null); }
+  });
+}
+var updBusy = false;
+function updateNow(manual) {
+  if (updBusy) return; updBusy = true;
+  if (manual) toast('Checking for an update…', { ms: 9000 });
+  try { if (navigator.serviceWorker && navigator.serviceWorker.getRegistration) navigator.serviceWorker.getRegistration().then(function (reg) { if (reg) reg.update(); }).catch(function () {}); } catch (e) {}
+  askRefresh().then(function (res) {
+    updBusy = false;
+    // the page on the server is a different build from the one running here (or the stored copy just changed)
+    if (res && ((res.build && BUILD && res.build !== BUILD) || (res.changed && !res.build))) {
+      if (manual) { toast('Update found. Reloading…', { icon: '⬆️' }); setTimeout(function () { location.reload(); }, 700); }
+      else toast('Update ready.', { action: 'Reload', ms: 20000, onAction: function () { location.reload(); } });
+      return;
+    }
+    if (!manual) return;
+    if (res && res.ok) toast('You already have the newest version.', { icon: '✓' });
+    else if (res && res.offline) toast('Can’t check while you are offline.', { bad: true });
+    else { toast('Reloading…'); setTimeout(function () { location.reload(); }, 600); } // no service worker yet: a plain reload is the update
+  });
+}
+window.RTLApp = { build: BUILD, update: function () { updateNow(true); }, get state() { return S; }, builtinCount: function () { return builtin().length; }, loadGeneric: function () { return loadGeneric(); }, precacheArt: function () { precacheArt(); }, luckPop: function () { luckPop(); }, maybeBossIntro: function () { maybeBossIntro(); }, maybeHeroReveal: function () { maybeHeroReveal(); }, syncCheck: syncCheck, syncInfo: syncInfo, runDiagnostics: runDiagnostics, submitText: submitText, setTab: setTab, openCmd: openCmd, checkInbox: checkInbox, render: render, aura: function () { return window.Aura ? window.Aura.debug() : null; }, auraToday: function () { return auraNow(); }, get errors() { return errLog.slice(); } };
 /* ───────────── puzzle pieces (Blue Lock): a few drift up all the time, a burst from every tap ───────────── */
 /* VF: background work (sync, the food list, fetching pictures) waits until the opening is over */
 var splashGone = false, splashWaiters = [];

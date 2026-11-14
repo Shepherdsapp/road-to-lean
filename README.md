@@ -275,3 +275,14 @@ screens to build. Nothing was lost:
   *Show power* button became the same dropdown.
 - The Armoury used to draw 83 weapon tiles and 11 hero tiles every time it was opened, which is the main reason
   the app feels lighter.
+
+## V24 · one-tap updates (14 Nov 2026)
+
+Settings → **Update the app** fetches the newest page from GitHub Pages, stores it and reloads — no closing and
+reopening, no second launch. It says *You already have the newest version* when there is nothing to get, and it
+can't be fooled by the device's copy: every build now carries a stamp (`<meta name="build">`, a hash of the page
+written by `build.mjs`), and the app compares the stamp it is running with the one on the server.
+
+The service worker answers a `refresh` message from the app to do the fetching, so this works offline-safely: a
+page that arrives part-way is never stored. A quiet check also runs a few seconds after the app opens, and offers
+*Update ready · Reload* when the server has a newer build.
