@@ -20,8 +20,8 @@ var openLadders = {};
 var lastQuestDone = null, lastPRCount = R.strengthLog(S).prs.length;
 var evQueue = [], evShowing = false, cloudTimer = null, cloudState = '';
 var inboxQueue = [];
-var TAB_ORDER = ['status', 'quests', 'bosses', 'log', 'body', 'stats', 'armoury', 'aura'];
-var TABCOL = { status: 'var(--holo)', quests: 'var(--steps)', log: 'var(--kcal)', body: 'var(--holo)', stats: 'var(--train)', aura: 'var(--xp3)', bosses: 'var(--bad)', armoury: 'var(--xp1)' };
+var TAB_ORDER = ['status', 'bosses', 'log', 'body', 'stats', 'aura'];
+var TABCOL = { status: 'var(--holo)', log: 'var(--kcal)', body: 'var(--holo)', stats: 'var(--train)', aura: 'var(--xp3)', bosses: 'var(--bad)' };
 var QCOL = { protein: 'var(--protein)', calories: 'var(--kcal)', water: 'var(--water)', steps: 'var(--steps)', training: 'var(--train)', lights: 'var(--sleep)', fibre: 'var(--fibre)' };
 var STATCOL_DARK = { STR: '#9C8CFF', AGI: '#4FE3D0', END: '#38B6F5', VIT: '#7CF0C0', DISC: '#DFF4FF', FOCUS: '#6FB4FF' }, STATCOL = STATCOL_DARK;
 var STATCOL_LIGHT = { STR: '#5B48D6', AGI: '#087A6E', END: '#0A6699', VIT: '#087A52', DISC: '#2E4A6B', FOCUS: '#2B5CC0' };
@@ -416,7 +416,7 @@ function render(dir) {
   document.body.classList.toggle('calm', S.settings.motion === 'reduced'); applyTheme();
   if (window.Aura) window.Aura.calm = calm();
   snowCtl();
-  RENDERERS = RENDERERS || { status: renderStatus, quests: renderQuests, log: renderLog, body: renderBody, stats: renderStats, aura: renderAura, bosses: renderBosses, armoury: renderArmoury };
+  RENDERERS = RENDERERS || { status: renderStatus, log: renderLog, body: renderBody, stats: renderStats, aura: renderAura, bosses: renderBosses };
   try { RENDERERS[tab](); } catch (e) { reportErr(e, 'screen ' + tab); var v = $('#v-' + tab); if (v) { v.innerHTML = failCard('THIS SCREEN'); v._html = null; } }
   // VF: on a tab switch the new screen shows first; the character moves into it on the next frame (measuring the screen
   // straight away would hold up that first frame)
@@ -467,7 +467,7 @@ function renderStatus() {
       '<span class="chip" style="--c:var(--protein)" title="Protein streak">🥩 <span class="num">' + st.protein + '</span></span></div></div>' +
       '<div class="hero-aura aura-mount" data-mode="mini" data-act="tab" data-tab="body" role="button" style="' + auraVars(ch) + '" aria-label="Today’s character: ' + esc(ch.name) + ', ' + esc(ch.aura) + ' aura. Open the Body tab"><div class="aname"><span>' + esc(ch.short) + '</span></div><div class="tag"><span>' + n1(j.current) + 'KG · ' + j.pct + '%</span></div></div></div>';
     renderStatus.gold = p.gold;
-    if (st.pendingRestore) h += '<div class="alert red"><span>⛓️</span><div class="grow">Your streak broke yesterday. Clear today’s Penalty Quest to keep ' + st.pendingRestore + ' day' + (st.pendingRestore === 1 ? '' : 's') + ' of it.</div><button class="btn small danger" data-act="tab" data-tab="quests">Open</button></div>';
+    if (st.pendingRestore) h += '<div class="alert red"><span>⛓️</span><div class="grow">Your streak broke yesterday. Clear today’s Penalty Quest to keep ' + st.pendingRestore + ' day' + (st.pendingRestore === 1 ? '' : 's') + ' of it.</div><button class="btn small danger" data-act="tab" data-tab="status">Open</button></div>';
     return h;
   });
   var over = R.seasonOver(S, k), pre = R.notStarted(S, k);
@@ -496,6 +496,7 @@ function renderStatus() {
     if (op) html += safe('DEFICIT BANK', function () { return bankCardHTML(k); }) + safe('OPERATION', function () { return opAlertsHTML(k); });
     html += planAlertsHTML(k) + alertsHTML(k);
     html += safe('DAILY QUESTS', function () { var q = R.questStatus(S, k), doneN = q.filter(function (x) { return x.done; }).length; return '<div class="sec-h"><h2>' + (op ? 'Today’s checklist' : 'Daily quests') + '</h2><span class="num">' + doneN + '/7 · +' + R.CLEAR_XP + ' XP for all</span></div><div class="tiles">' + q.map(tileHTML).join('') + '</div>'; });
+    html += safe('TODAY’S SESSION', function () { return sessionCardHTML(k); });
     if (op) html += '<div style="height:14px"></div>' + safe('REVIEW', function () { return reviewCardHTML(k); }) + safe('VERSE', function () { return verseCardHTML(k); });
     html += '<div style="height:14px"></div>' + safe('WEEKLY BOSS', function () { return bossHTML(R.bossFor(S, R.mondayOf(k), k), true); });
   }
@@ -526,29 +527,8 @@ function bossHTML(b, compact) {
     '<div class="qsub num" style="margin-top:4px">HP ' + b.hpLeft + '/' + b.hp + ' · reward +' + b.xp + ' XP, +' + b.gold + ' G' + (compact ? '' : ', title “' + esc(b.loot) + '”') + '</div></div></div>', 'danger', 'Week of ' + R.fmtDate(b.monday));
 }
 
-/* ───────────── QUESTS ───────────── */
-function renderQuests() {
-  var k = today(), q = R.questStatus(S, k), d = R.getDay(S, k), type = R.dayType(S, k), html = '', pre = R.notStarted(S, k), over = R.seasonOver(S, k) || pre;
-  if (pre) html += win('THE ARC STARTS ' + startsWhen(k).toUpperCase(), '<p class="muted" style="margin:0 0 10px">Daily quests and the weekly boss begin on ' + esc(R.fmtDate(S.profile.startDate)) + '. Until then you can log anything you like, and the calisthenics trials below are open.</p><button class="btn small tint" style="--c:var(--train)" data-act="plan">See the plan</button>', 'violet');
-  else if (over) html += win('THE ARC IS COMPLETE', '<p class="muted" style="margin:0 0 10px">No daily quests or weekly boss after ' + esc(R.fmtDate(S.profile.seasonEnd)) + '. The calisthenics trials below are still yours to finish.</p><button class="btn small tint" style="--c:var(--gold)" data-act="finish">See the season</button>', 'goldw');
-  var pen = null; try { pen = R.penaltyFor(S, k); } catch (e) { reportErr(e, 'penalty'); }
-  if (pen && !over) html += win('PENALTY QUEST', '<div class="quest ' + (pen.done ? 'done' : '') + '"><div class="qicon">⛓️</div><div><div class="qname">' + esc(pen.text) + '</div><div class="qsub">Missed Daily Clear on ' + R.fmtDate(pen.missed) + '. Completing this keeps half your streak.</div></div><div class="qrew">+' + pen.xp + ' XP<br>+' + pen.gold + ' G</div>' +
-    '<div class="qactions">' + (pen.done ? '<span class="holo">Completed</span>' : (pen.auto ? '<span class="dim">Completes automatically when your steps reach the target.</span>' : '<button class="btn danger" data-act="penalty">Mark complete</button>')) + '</div></div>', 'danger');
-  if (!over) html += win('DAILY QUESTS', q.map(function (x) {
-    var act = '';
-    if (x.id === 'water') act = '<button class="btn small" data-act="water" data-ml="250">+250ml</button><button class="btn small" data-act="water" data-ml="500">+500ml</button>';
-    else if (x.id === 'steps') act = '<input class="inp num" id="q-steps" type="number" inputmode="numeric" min="0" max="100000" placeholder="Steps" value="' + (d.steps || '') + '" style="max-width:130px"><button class="btn small" data-act="steps-save">Save</button>';
-    else if (x.id === 'bowl') act = '<button class="btn small tint" style="--c:var(--protein)" data-act="op-bowl">' + (x.done ? 'Bowl ✓' : 'Yogurt bowl') + '</button>';
-    else if (x.id === 'treat') act = '<button class="btn small tint" style="--c:var(--gold)" data-act="op-treat">Treat</button>';
-    else if (x.id === 'weigh') act = '<button class="btn small tint" style="--c:var(--holo)" data-act="weigh">' + (d.weight != null ? 'Change' : 'Weigh in') + '</button>';
-    else if (x.id === 'training' && opOn(k) && type !== 'rest') act = '<button class="btn small" data-act="' + (type === 'gym' ? 'gym-done' : 'football-done') + '">' + (type === 'gym' ? (R.gymSessions(d) ? 'Add incline walk' : 'Log gym + walk') : 'Log football') + '</button>';
-    else if (x.id === 'training') act = type === 'gym' ? '<button class="btn small ' + (x.done ? 'done' : '') + '" data-act="gym-done"' + (x.done ? ' disabled' : '') + '>' + (x.done ? 'Gym logged' : 'Gym done') + '</button>' : type === 'football' ? '<button class="btn small ' + (x.done ? 'done' : '') + '" data-act="football-done"' + (x.done ? ' disabled' : '') + '>' + (x.done ? 'Football logged' : 'Played 60 min') + '</button>' : '<button class="btn small ' + (d.recover ? 'done' : '') + '" data-act="recover">' + (d.recover ? 'Recovered ✓' : 'I recovered') + '</button>';
-    else if (x.id === 'lights') act = '<button class="btn small ' + (d.lightsOut ? 'done' : '') + '" data-act="lights">' + (d.lightsOut ? 'Checked in ✓' : 'Lights out') + '</button>';
-    else act = '<button class="btn small tint" style="--c:' + QCOL[x.id] + '" data-act="open-cmd">Log food</button>';
-    return '<div class="quest ' + (x.done ? 'done' : '') + '" style="--c:' + QCOL[x.id] + '"><div class="qicon">' + x.icon + '</div><div><div class="qname">' + esc(x.name) + '</div><div class="qsub num">' + esc(x.label) + '</div><div class="bar ' + (x.done ? 'hit' : '') + '" style="margin-top:6px"><i style="width:' + Math.round(x.pct * 100) + '%"></i></div></div><div class="qrew">+' + x.xp + ' XP<br>+' + x.gold + ' G</div><div class="qactions">' + act + '</div></div>';
-  }).join(''), '', R.isMidweekNight(S, k) ? 'Men’s midweek tonight' : '');
-  if (!over) html += safe('TODAY’S SESSION', function () { return sessionCardHTML(k); });
-  if (!over) html += safe('WEEKLY BOSS', function () { return bossHTML(R.bossFor(S, R.mondayOf(k), k)); });
+/* ───────────── calisthenics trials (they live on the Bosses screen now) ───────────── */
+function trialsHTML() {
   var tr = '';
   Object.keys(R.TRIALS).forEach(function (key) {
     var T = R.TRIALS[key], done = S.trials[key] || 0, nodes = '';
@@ -557,8 +537,7 @@ function renderQuests() {
     tr += '<div class="trial" style="--c:' + TRIALCOL[key] + '"><div class="row between"><div class="qname">' + T.icon + ' ' + esc(T.name) + '</div><span class="dim num">' + done + '/' + T.stages.length + '</span></div><div class="nodes">' + nodes + '</div>' +
       (next ? '<div class="row between"><span class="qsub">Next: ' + esc(next) + '</span><button class="btn small tint" style="--c:' + TRIALCOL[key] + '" data-act="trial" data-tree="' + key + '">Cleared it</button></div>' : '<span class="holo">Trial complete</span>') + '</div>';
   });
-  html += win('CALISTHENICS TRIALS', tr, 'violet', '+50 XP, +20 G per stage');
-  $('#v-quests').innerHTML = html;
+  return win('CALISTHENICS TRIALS', tr, 'violet', '+50 XP, +20 G per stage');
 }
 
 /* ───────────── LOG ───────────── */
@@ -1649,7 +1628,7 @@ var PLAN_ACTIONS = {
   }
 };
 
-/* ───────────── daily bosses + armoury ───────────── */
+/* ───────────── daily bosses, heroes and their weapons ───────────── */
 var ART = window.RTL_ART || {};
 var NB = R.DUELS.length; // how many daily bosses there are
 function artSrc(k) { return ART[k] || k; }
@@ -1661,10 +1640,10 @@ function artHTML(src, icon, cls, eager, tile) {
 }
 /* the grid tiles use a copy sized for the tile (sharp on a 3x iPhone), so a tab of 80 pictures opens without decoding 80 full-size ones */
 function tileSrc(k) { return ART['art/t/' + k.slice(4)] || artSrc(k); }
-/* Bosses and Armoury hold hundreds of tiles: when nothing on them changed, the screen built last time is kept as it is
+/* The Bosses screen holds hundreds of tiles: when nothing on them changed, the screen built last time is kept as it is
    (pictures already decoded, nothing laid out again), so the tab opens at once */
 function setView(id, html) { var v = $(id); if (!v) return; if (v._html === html) return; v.innerHTML = html; v._html = html; }
-window.addEventListener('online', function () { $$('#v-bosses,#v-armoury').forEach(function (v) { v._html = null; }); });
+window.addEventListener('online', function () { $$('#v-bosses').forEach(function (v) { v._html = null; }); });
 function duelCardHTML(b, k) {
   return '<div class="win duel' + (b.lastChance ? ' last' : '') + '"><div class="win-h"><div class="win-t">' + (b.lastChance ? 'LAST CHANCE' : b.returned ? 'RETURNED · HARDER' : 'TODAY’S BOSS') + '</div><div class="win-s">' + b.no + ' / ' + NB + ' · ' + (b.lastChance ? 'gone at midnight' : 'gone tomorrow night') + '</div></div>' +
     '<div class="duel-top"><button class="duel-pic" data-act="duel-info" data-i="' + b.i + '" aria-label="' + esc(b.name) + ' details"><span class="clip">' + artHTML(b.art, b.icon, '', true) + '<i class="shine"></i></span></button><div class="grow"><div class="duel-n">' + esc(b.name) + '</div><div class="qsub">' + esc(b.anime) + '</div><div class="duel-tt">“' + esc(b.title) + '”</div></div></div>' +
@@ -1686,7 +1665,7 @@ function duelCardsHTML(k, compact) {
 /* the boss rule in words, for the arc as it really is */
 function bossRuleText() {
   var p = R.duelPlan(S), end = S.profile.seasonEnd, last = R.fmtDate(end).slice(4);
-  var base = 'You get the day a boss arrives and the day after to beat its challenge. Win and you take their nickname as a title and their weapon for your Armoury. Miss both days and the boss escapes for good.';
+  var base = 'You get the day a boss arrives and the day after to beat its challenge. Win and you take their nickname as a title and their weapon, which you open from the boss itself. Miss both days and the boss escapes for good.';
   if (R.duelOp(S)) { var back = Object.keys(R.duelOp(S).hard || {}).length; return 'OPERATION 79.9 redrew every boss you had not beaten onto a new day up to 30 Dec, at random: one most days, two on some, none in Iceland. ' + (back ? back + ' that had escaped are back with a harder challenge. ' : '') + 'Bosses you beat stay beaten. ' + base; }
   if (!p) return 'One boss a day. ' + base;
   if (!p.doubled) return 'One boss a day for ' + NB + ' days, ' + R.fmtDate(p.start).slice(4) + ' to ' + R.fmtDate(R.duelDay(S, NB - 1)).slice(4) + '. ' + base;
@@ -1708,21 +1687,13 @@ function renderBosses() {
     html += st === 'upcoming' ? '<button class="rost upcoming" data-act="duel-info" data-i="' + i + '" aria-label="Boss ' + b.no + ', locked until ' + R.fmtDate(R.duelDay(S, i)).slice(4) + '"><span class="chains"></span><span class="rn num">' + b.no + '</span><span class="lockic lk"></span><span class="rt"><b>Locked</b><small>' + R.fmtDate(R.duelDay(S, i)).slice(4) + '</small></span></button>' :
       '<button class="rost ' + st + '" data-act="duel-info" data-i="' + i + '">' + (st === 'active' ? '<span class="clip">' : '') + artHTML(b.art, b.icon, '', false, true) + '<span class="rn num">' + b.no + '</span><span class="rb">' + ({ won: '✓', escaped: '🔒', active: '⚔️' })[st] + '</span><span class="rt"><b>' + esc(b.name) + '</b><small>' + ({ won: 'defeated', escaped: 'escaped', active: 'fight now', upcoming: R.fmtDate(R.duelDay(S, i)).slice(4) })[st] + '</small></span>' + (st === 'active' ? '</span>' : '') + '</button>';
   }
+  html += '<div style="height:14px"></div>' + safe('TRIALS', function () { return trialsHTML(); });
   setView('#v-bosses', html + '</div>');
 }
-function renderArmoury() {
-  var k = today(), sum = R.duelSummary(S, k), html = '';
-  html += win('ARMOURY', '<p class="muted" style="margin:0;font-size:13.5px">Every weapon here was taken from a boss you beat. Tap one to read what it stands for.</p>' +
-    (S.player.title ? '<div class="kv" style="margin-top:8px"><span>Title in use</span><b class="holo">' + esc(S.player.title) + '</b></div>' : ''), '', sum.won + ' / ' + NB + ' weapons');
-  html += safe('HERO POWERS', function () { var hst = R.heroStatus(S, k);
-  return '<div class="sec-h"><h2 class="goldh">Hero powers</h2><span>' + hst.unlocked + ' / 11 · one per kg lost</span></div><div class="armoury ac">' + hst.slots.map(function (h) { return h.unlocked ? '<button class="slot won sh" data-act="hero-info" data-v="p" data-s="' + h.slot + '" aria-label="' + esc(h.power) + '">' + artHTML(h.part, '✨', '', false, true) + '<b>' + esc(h.power) + '</b><small>' + esc(h.name) + '</small></button>' : '<button class="slot sh locked" data-act="hero-info" data-s="' + h.slot + '" aria-label="Locked hero power"><span class="chains gold"></span><span class="lockic gold lk"></span><b>Hero power</b><small>' + (h.reachable ? 'sealed' : 'out of reach') + '</small></button>'; }).join('') + '</div>'; });
-  html += '<div class="sec-h"><h2>Boss weapons</h2><span>' + sum.won + ' / ' + NB + '</span></div><div class="armoury ac">';
-  for (var i = 0; i < R.DUELS.length; i++) {
-    var b = R.duelInfo(i, S), st = R.duelStatus(S, i, k);
-    if (i && i % 8 === 0) html += '</div><div class="armoury ac">'; // blocks of eight: the phone only draws the blocks on screen
-    html += '<button class="slot ' + st + '" data-act="duel-info" data-v="w" data-i="' + i + '" aria-label="' + (st === 'won' ? esc(b.weapon) : 'Locked weapon ' + b.no) + '">' + (st === 'won' ? artHTML(b.wart, b.icon, '', false, true) : (st === 'escaped' ? '<span class="si">🔒</span>' : '<span class="chains"></span><span class="lockic lk"></span>')) + '<b>' + (st === 'won' ? esc(b.weapon) : st === 'escaped' ? 'Lost' : 'Boss ' + b.no) + '</b><small>' + (st === 'won' ? esc(b.name) : st === 'escaped' ? esc(b.name) + ' escaped' : st === 'active' ? 'fight now' : R.fmtDate(R.duelDay(S, i)).slice(4)) + '</small></button>';
-  }
-  setView('#v-armoury', html + '</div>');
+/* the weapon or power picture, opened from inside the boss or hero sheet (this replaces the Armoury screen) */
+function dropHTML(label, name, art, icon, note) {
+  return '<details class="drop"><summary><span class="dsum"><span class="dlab">' + label + '</span><b>' + esc(name) + '</b></span><span class="dcar" aria-hidden="true">▾</span></summary>' +
+    '<div class="dropb"><div class="bigart">' + artHTML(art, icon, 'fit', true) + '<i class="shine"></i></div>' + (note ? '<p class="dim" style="font-size:12.5px;margin:8px 0 0">' + esc(note) + '</p>' : '') + '</div></details>';
 }
 /* the first day a missed boss is gone: two days after it arrived, or the day after the arc ends if that comes first */
 function escapeDay(i) { var a = R.addDays(R.duelDay(S, i), 2), b = R.addDays(S.profile.seasonEnd, 1); return a < b ? a : b; }
@@ -1738,6 +1709,7 @@ function duelSheet(i, view) {
   var head = '<div class="grab"></div><div class="win-h"><div class="win-t" style="color:' + (st === 'won' ? 'var(--good)' : st === 'escaped' ? 'var(--bad)' : 'var(--holo)') + '">BOSS ' + b.no + ' · ' + ({ won: 'DEFEATED', escaped: 'ESCAPED', active: 'FIGHT NOW', upcoming: 'UPCOMING' })[st] + '</div><button class="btn small ghost" data-act="close">Close</button></div>' +
     '<div class="duel-hero ' + st + (view === 'w' && st === 'won' ? ' wview' : '') + '">' + (view === 'w' && st === 'won' ? artHTML(b.wart, b.icon, 'fit', true) + artHTML(b.art, b.icon, 'wp', true) : artHTML(b.art, b.icon, '', true) + (st === 'won' ? artHTML(b.wart, b.icon, 'wp fit', true) : '')) + (st === 'escaped' ? '' : '<i class="shine"></i>') + '<div class="dh-t"><div class="duel-n">' + esc(b.name) + '</div><div class="qsub">' + esc(b.anime) + '</div></div></div>';
   var body = '<div class="kv"><span>Nickname (title)</span><b>' + esc(b.title) + '</b></div><div class="kv"><span>Weapon</span><b>' + esc(b.weapon) + '</b></div><div class="kv"><span>Challenge</span><b>' + esc(b.task) + '</b></div><p class="muted" style="font-size:13px;margin:6px 0 0">' + esc(b.taskText) + '</p>';
+  if (st === 'won') body += dropHTML('Weapon taken', b.weapon, b.wart, b.icon, 'Taken from ' + b.name + ' on ' + R.fmtDate(S.duels.won[i]) + '.');
   if (st === 'won') body += '<blockquote class="duel-line">' + esc(b.line) + '</blockquote><div class="kv"><span>Won on</span><b>' + R.fmtDate(S.duels.won[i]) + '</b></div><div class="row end" style="margin-top:12px"><button class="btn ' + (S.player.title === b.title ? 'done' : 'primary') + '" data-act="duel-title" data-i="' + i + '">' + (S.player.title === b.title ? 'Title in use' : 'Use “' + esc(b.title) + '” as my title') + '</button></div>';
   else if (st === 'escaped') body += '<p class="blood" style="font-size:13px;margin:10px 0 0">This boss escaped on ' + R.fmtDate(escapeDay(i)) + '. Its title and weapon stay locked.</p>';
   else if (st === 'active') body += '<div class="row end" style="margin-top:12px"><button class="btn primary" data-act="duel-win" data-i="' + i + '">I beat it</button></div>';
@@ -1786,7 +1758,7 @@ var DUEL_ACTIONS = {
       var w = R.defeatDuel(S, i, k); if (!w) { toast('That boss has already gone.', { bad: true }); render(); return; }
       S.duels.seen[i] = 1; persist(); render();
       bossDefeat(w, function () {
-        toast(w.weapon + ' added to your Armoury.', { action: 'Undo', onAction: function () { R.undoDuel(S, i); if (S.player.title === w.title) S.player.title = ''; persist(); render(); toast('Win removed.'); } });
+        toast(w.weapon + ' is yours. Open the boss to see it.', { action: 'Undo', onAction: function () { R.undoDuel(S, i); if (S.player.title === w.title) S.player.title = ''; persist(); render(); toast('Win removed.'); } });
       });
     });
   }
@@ -1823,7 +1795,8 @@ function heroSheet(slot, view) {
   openLayer('<div class="grab"></div><div class="win-h"><div class="win-t" style="color:var(--gold)">SECRET HERO · FREED</div><button class="btn small ghost" data-act="close">Close</button></div>' +
     '<div class="duel-hero won goldh' + (view === 'p' ? ' wview' : '') + '">' + main + '<i class="shine"></i><div class="dh-t"><div class="duel-n">' + esc(h.name) + '</div><div class="qsub">' + esc(h.anime) + '</div></div></div>' +
     '<div class="kv"><span>Title</span><b>' + esc(h.title) + '</b></div><div class="kv"><span>Power</span><b>' + esc(h.power) + '</b></div><div class="kv"><span>Freed</span><b>' + R.fmtDate(h.date) + ' · ' + h.kg + 'kg down</b></div>' +
-    '<div class="row end" style="margin-top:12px"><button class="btn small" data-act="hero-flip" data-s="' + slot + '" data-v="' + (view === 'p' ? '' : 'p') + '">' + (view === 'p' ? 'Show hero' : 'Show power') + '</button><button class="btn ' + (S.player.title === h.title ? 'done' : 'primary') + '" data-act="hero-title" data-s="' + slot + '">' + (S.player.title === h.title ? 'Title in use' : 'Use “' + esc(h.title) + '” as my title') + '</button></div>');
+    dropHTML('Power freed', h.power, h.part, '✨', h.name + ' · freed on ' + R.fmtDate(h.date) + ' at ' + h.kg + 'kg down.') +
+    '<div class="row end" style="margin-top:12px"><button class="btn ' + (S.player.title === h.title ? 'done' : 'primary') + '" data-act="hero-title" data-s="' + slot + '">' + (S.player.title === h.title ? 'Title in use' : 'Use “' + esc(h.title) + '” as my title') + '</button></div>');
 }
 function heroReveal(h, done) {
   var d = document.createElement('div'); d.className = 'ceremony bossfx herofx';
@@ -1848,7 +1821,6 @@ function maybeHeroReveal(tries) {
 }
 var HERO_ACTIONS = {
   'hero-info': function (b) { closeLayer(); heroSheet(+b.dataset.s, b.dataset.v); },
-  'hero-flip': function (b) { closeLayer(); heroSheet(+b.dataset.s, b.dataset.v); },
   'hero-title': function (b) { var h = R.heroStatus(S, today()).slots[+b.dataset.s]; if (!h || !h.unlocked) return; S.player.title = h.title; persist(); closeLayer(); render(); toast('Title equipped: ' + h.title); }
 };
 
@@ -1988,7 +1960,7 @@ function settingsSheet() {
     '<div class="toggle"><span class="muted">Intro on open</span><button class="sw" role="switch" aria-checked="' + S.settings.splash + '" data-act="toggle" data-key="splash" aria-label="Intro on open"></button></div>' +
     '<div class="qname" style="margin:18px 0 8px">Your data</div><div class="row"><button class="btn small" data-act="shop">Reward shop</button><button class="btn small" data-act="export">Export backup</button><label class="btn small ghost">Import backup<input type="file" accept="application/json,.json" id="imp" class="sr"></label></div>' +
     '<div class="row" style="margin-top:8px"><button class="btn small ghost" data-act="diag">Diagnostics</button><button class="btn small danger" data-act="reset">Reset everything</button></div>' +
-    '<p class="dim" id="app-ver" style="font-size:11px;margin-top:16px">Ascend V22 · data v' + S.version + ' · stored on this device' + (connected() ? ' + your cloud copy' : '') + '.</p>';
+    '<p class="dim" id="app-ver" style="font-size:11px;margin-top:16px">Ascend V23 · data v' + S.version + ' · stored on this device' + (connected() ? ' + your cloud copy' : '') + '.</p>';
   openLayer(html);
   $$('[data-set]').forEach(function (inp) { inp.addEventListener('change', function () { setPath(inp.dataset.set, inp.dataset.text ? inp.value.trim().slice(0, 30) || 'Pavi' : inp.value, !!inp.dataset.text, inp); }); });
   $$('[data-week]').forEach(function (sel) { sel.addEventListener('change', function () { R.freezeDays(S, today()); S.week.pattern[+sel.dataset.week] = sel.value; persist(); render(); toast('Weekly pattern updated from today.'); }); });
@@ -2238,7 +2210,7 @@ function bankSheet() {
 function nudgeHTML(k) {
   if (R.opMode(S, k) !== 'diet' || R.londonTime() < '20:00') return '';
   var m = R.opMissing(S, k); if (!m.length) return '<div class="alert cyan" id="op-nudge"><span>🌙</span><div>Everything is in for today. Lights out by 11.</div></div>';
-  return '<div class="alert violet" id="op-nudge"><span>🌙</span><div class="grow"><b>Still missing today</b><br>' + m.map(esc).join(' · ') + '</div><button class="btn small tint" style="--c:var(--train)" data-act="tab" data-tab="quests">Finish it</button></div>';
+  return '<div class="alert violet" id="op-nudge"><span>🌙</span><div class="grow"><b>Still missing today</b><br>' + m.map(esc).join(' · ') + '</div><button class="btn small tint" style="--c:var(--train)" data-act="tab" data-tab="status">Finish it</button></div>';
 }
 function reviewDay(k) { var wd = R.weekday(k); return wd === 0 ? k : wd === 1 && R.addDays(k, -1) >= OPK.start ? R.addDays(k, -1) : ''; } // Sunday, and Monday for the week just gone
 function reviewCardHTML(k) {

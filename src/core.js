@@ -1776,7 +1776,7 @@ function heroStatus(s, k) {
    on 1 Oct; when the start moved to 8 Oct, seven were taken out at random (v14): numbers 3, 11, 20, 29, 45, 67 and 85 of
    the old list. Everyone left keeps their own picture, title and weapon; DUEL_ART is each boss's picture number.
    You have that day and the next (48 hours) to beat its challenge.
-   Win → their nickname becomes a title you can equip, and their weapon goes in your Armoury.
+   Win → their nickname becomes a title you can equip, and their weapon is yours, shown inside the boss.
    Miss the window → the boss escapes and that reward stays locked. */
 var DUELS = [
   /* name, anime, nickname (title), weapon, fallback icon. In order; each one's pictures are art/b/NN.webp and art/w/NN.webp with NN from DUEL_ART */
@@ -1928,7 +1928,7 @@ var DUEL_LINES = [
   'The work is boring. The result will not be.',
   'Be strong and courageous. (Joshua 1:9)',
   'Shoulders back. You are becoming the goal ghost.',
-  'Another weapon for the Armoury, another reason not to quit.',
+  'Another weapon taken, another reason not to quit.',
   'You chose the harder option on purpose. Respect.',
   'Whatever you do, work at it with all your heart. (Colossians 3:23)',
   'Consistency is your superpower. Use it again tomorrow.',

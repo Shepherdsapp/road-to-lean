@@ -262,3 +262,16 @@ incline walk 7 kcal a minute. Unbeaten bosses were redrawn onto the remaining da
 
 Build: `node build.mjs` (from `src/`). Tests: `node test/run-core.js` and `node test/op-tests.js`.
 The worker (version 8) adds the 8pm phone nudge; paste `worker.js` into Cloudflare to get it.
+
+## V23 · fewer screens (14 Nov 2026)
+
+The Quests and Armoury tabs are gone, so the dock holds six tabs instead of eight and the app has two fewer
+screens to build. Nothing was lost:
+
+- **Today's session** and the **calisthenics trials** moved — the session to Home, under the checklist, and the
+  trials to the Bosses screen, with the heroes and the roster.
+- **Weapons and hero powers** are now a dropdown inside the boss or hero itself: tap a boss you have beaten and
+  open *Weapon taken* to see the picture whole and full size, the way the Armoury showed it. The hero sheet's
+  *Show power* button became the same dropdown.
+- The Armoury used to draw 83 weapon tiles and 11 hero tiles every time it was opened, which is the main reason
+  the app feels lighter.
