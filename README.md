@@ -286,3 +286,9 @@ written by `build.mjs`), and the app compares the stamp it is running with the o
 The service worker answers a `refresh` message from the app to do the fetching, so this works offline-safely: a
 page that arrives part-way is never stored. A quiet check also runs a few seconds after the app opens, and offers
 *Update ready · Reload* when the server has a newer build.
+
+**Also in V24 — the screen no longer zooms.** The boss roster used `repeat(3,1fr)`, and a single tile with a wide
+minimum could stretch one column to the full screen width, pushing the page about 36px wider than the phone; Safari
+then let you pinch and the Bosses tab sat zoomed. The grids use `minmax(0,1fr)` now, every tab measures exactly the
+viewport width, and the page is pinned: `maximum-scale=1,user-scalable=no` plus `touch-action:pan-y` on the body, so
+it only scrolls up and down. Rows that genuinely scroll sideways (`.scroll-x`, `.nodes`) keep their own gestures.

@@ -2,7 +2,7 @@
 <html lang="en-GB">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#04080f">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -11,7 +11,7 @@
 <meta name="description" content="Pavi's levelling fitness tracker: food logging, bosses, ranks, InBody scans and a new anime character with a blazing aura every day.">
 <title>Ascend</title>
 <script>document.documentElement.className += ' js';</script>
-<meta name="build" content="580b7e6bacb0">
+<meta name="build" content="a59347b32b72">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -50,7 +50,9 @@ html[data-theme="shadow"]{--acc:222,229,240;--acc2:164,174,192;--acc3:124,134,15
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;background:var(--night);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.45}
 html{-webkit-text-size-adjust:100%;text-size-adjust:100%} /* an iPhone turned on its side must not enlarge some of the text */
-body{min-height:100vh;overflow-x:hidden}
+html{overflow-x:hidden}
+body{min-height:100vh;overflow-x:hidden;touch-action:pan-y;-webkit-text-size-adjust:100%}
+.view{max-width:100%;overflow-x:hidden}
 body::before{content:"";position:fixed;inset:-20%;z-index:0;pointer-events:none;
   background:
     radial-gradient(42% 30% at 12% 8%,rgba(var(--acc),.20),transparent 70%),
@@ -214,6 +216,8 @@ select.inp{appearance:none;-webkit-appearance:none;background-image:linear-gradi
 /* ── trials ── */
 .trial{margin-bottom:14px}
 .nodes{display:flex;align-items:center;margin:8px 0;overflow-x:auto;padding:4px 2px}
+/* the rows that really do scroll sideways keep their own gestures, since the page itself no longer pans sideways */
+.scroll-x,.nodes,.hrow,.segrow{touch-action:auto}
 .node{flex:none;width:30px;height:30px;border-radius:50%;border:2px solid var(--ink-3);display:grid;place-items:center;font-size:11px;font-family:var(--mono);color:var(--ink-3);background:var(--night-2)}
 .node.on{border-color:var(--c);color:var(--night);background:var(--c);box-shadow:0 0 10px var(--c)}
 .node.next{border-color:var(--c);color:var(--c);animation:bossPulse 2s infinite}
@@ -578,8 +582,8 @@ body::after{opacity:1;background:
 .duel-task span{font-size:14.5px}
 .duel-rw{display:flex;flex-direction:column;gap:3px;margin-top:10px;font-size:12.5px;color:var(--ink-2)} .duel-rw b{color:var(--gold);font-weight:600}
 .duel-line{margin:12px 0;padding:12px 14px;border-left:2px solid var(--holo);background:rgba(var(--acc),.07);border-radius:0 12px 12px 0;font-size:14.5px;color:var(--ink)}
-.roster{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.rost{position:relative;display:block;aspect-ratio:1/1.18;padding:0;overflow:hidden;text-align:left;color:var(--ink);font:inherit;border-radius:16px;border:1px solid var(--line);background:var(--night-2);contain:content}
+.roster{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.rost{position:relative;display:block;min-width:0;aspect-ratio:1/1.18;padding:0;overflow:hidden;text-align:left;color:var(--ink);font:inherit;border-radius:16px;border:1px solid var(--line);background:var(--night-2);contain:content}
 .rost .art{position:absolute;inset:0}
 .rost .rn{position:absolute;left:6px;top:6px;z-index:2;font-size:10.5px;padding:2px 6px;border-radius:99px;background:rgba(var(--deep),.72);color:var(--ink-2)}
 .rost .rb{position:absolute;right:6px;top:5px;z-index:2;font-size:14px;text-shadow:0 0 6px #000}
@@ -589,7 +593,7 @@ body::after{opacity:1;background:
 .rost.won{border-color:rgba(124,240,192,.55);box-shadow:0 0 18px -8px var(--good)} .rost.won small,.rost.won .rb{color:var(--good)}
 .rost.active{border-color:var(--bad);box-shadow:0 0 22px -6px var(--bad);animation:lastPulse 2.4s ease-in-out infinite} .rost.active small{color:var(--bad);font-weight:700}
 .rost.escaped .art img{filter:grayscale(1) brightness(.4)} .rost.escaped b{text-decoration:line-through;color:var(--ink-3)}
-.armoury{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.armoury{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .slot{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:2px;text-align:center;color:var(--ink);font:inherit;min-height:128px;padding:8px 6px;overflow:hidden;border-radius:16px;border:1px solid var(--line);
   background:linear-gradient(180deg,rgba(var(--tint),.25),rgba(var(--deep),.7));contain:content}
 .slot .si{font-size:28px;line-height:1.1;margin-bottom:auto;margin-top:18px} .slot b{position:relative;z-index:2;font-size:11.5px;font-weight:600;line-height:1.2} .slot small{position:relative;z-index:2;font-size:10px;color:var(--ink-3)}
